@@ -4,6 +4,7 @@ from .models import Funcionario
 from .forms import FuncionarioForm
 from django.urls import reverse_lazy
 
+
 class ListFuncionario(ListView):
     template_name = 'index.html'
     model = Funcionario
@@ -13,3 +14,4 @@ class CreateFuncionario(CreateView):
     form_class = FuncionarioForm
     template_name = 'form.html'
     success_url = reverse_lazy('Listar')
+

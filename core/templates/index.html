@@ -3,37 +3,73 @@
 {% block title %}Lista de Funcionários{% endblock %}
 
 {% block content %}
-    <div class="container d-flex flex-column align-items-center mt-5">
-        <table class="table table-bordered table-striped">
-            <thead class="table-dark">
-                <tr>
-                    <th scope="col">MATRÍCULA</th>
-                    <th scope="col">NOME</th>
-                    <th scope="col">FUNÇÃO</th>
-                    <th scope="col">STATUS</th>
-                    <th scope="col">OBRA</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for funcionario in funcionarios %}
-                    <tr>
-                        <td>{{ funcionario.matricula }}</td>
-                        <td>{{ funcionario.nome }}</td>
-                        <td>{{ funcionario.funcao }}</td>
-                        <td>{{ funcionario.status }}</td>
-                        <td>{{ funcionario.obra }}</td>
-                    </tr>
-                {% empty %}
-                    <tr>
-                        <td colspan="5" class="text-center">Nenhum funcionário cadastrado.</td>
-                    </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-        <div class="w-100 d-flex justify-content-between mb-2">
-            <a href="{% url 'create' %}" class="btn btn-success text-decoration-none text-white">
-                <i class="bi bi-person-plus"></i> Incluir novo funcionário
-            </a>
+<div class="container d-flex flex-column align-items-center mt-5">
+    <div class="w-100 d-flex justify-content-between mb-2">
+        <a href="{% url 'create' %}" class="btn btn-success text-decoration-none text-white">
+            <i class="bi bi-person-plus"></i> Incluir novo funcionário
+        </a>
+    </div>
+
+    <table class="table table-bordered table-striped">
+        <thead class="table-dark">
+            <tr>
+                <th scope="col">MATRÍCULA</th>
+                <th scope="col">NOME</th>
+                <th scope="col">FUNÇÃO</th>
+                <th scope="col">STATUS</th>
+                <th scope="col">OBRA</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for funcionario in funcionarios %}
+            <tr>
+                <td>{{ funcionario.matricula }}</td>
+                <td>{{ funcionario.nome }}</td>
+                <td>{{ funcionario.funcao }}</td>
+                <td>{{ funcionario.status }}</td>
+                <td>{{ funcionario.obra }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="5" class="text-center">Nenhum funcionário cadastrado.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<div class='modal fade' id='modalVisualizar$id' tabindex='-1' aria-labelledby='modalVisualizarLabel$id'
+    aria-hidden='true'>
+    <div class='modal-dialog'>
+        <div class='modal-content'>
+            <div class='modal-header bg-dark text-white'>
+                <h5 class='modal-title' id='modalVisualizarLabel<?php echo $id; ?>'>Dados do Usuário</h5>
+                <button type='button' class='btn-close btn-close-white' data-bs-dismiss='modal'
+                    aria-label='Fechar'></button>
+            </div>
+            <div class='modal-body text-dark'>
+                <p><strong>Nome:</strong> " . htmlspecialchars($nome) . "</p>
+                <p><strong>Data de Nascimento:</strong> " . htmlspecialchars($data) . "</p>
+                <p><strong>Sexo:</strong> " . htmlspecialchars($sexo) . "</p>
+                <p><strong>Nome Materno:</strong> " . htmlspecialchars($nomematerno) . "</p>
+                <p><strong>CPF:</strong> " . htmlspecialchars($cpf) . "</p>
+                <p><strong>Telefone Celular:</strong> " . htmlspecialchars($celular) . "</p>
+                <p><strong>Telefone Fixo:</strong> " . htmlspecialchars($fixo) . "</p>
+                <p><strong>Login:</strong> " . htmlspecialchars($login) . "</p>
+                <p><strong>Email:</strong> " . htmlspecialchars($email) . "</p>
+                <p><strong>Senha:</strong> " . htmlspecialchars($senha) . ' (Criptografia MD5)'. "</p>
+                <p><strong>CEP:</strong> " . htmlspecialchars($cep) . "</p>
+                <p><strong>Logradouro:</strong> " . htmlspecialchars($logradouro) . "</p>
+                <p><strong>Número:</strong> " . htmlspecialchars($numero) . "</p>
+                <p><strong>Bairro:</strong> " . htmlspecialchars($bairro) . "</p>
+                <p><strong>Cidade:</strong> " . htmlspecialchars($cidade) . "</p>
+                <p><strong>Estado:</strong> " . htmlspecialchars($estado) . "</p>
+
+            </div>
+            <div class='modal-footer'>
+                <button type='button' class='btn btn-secondary' data-bs-dismiss='modal'>Fechar</button>
+            </div>
         </div>
     </div>
+</div>
 {% endblock %}

@@ -8,6 +8,7 @@ class FuncionarioForm(forms.ModelForm):
         widgets = {
             'matricula': forms.NumberInput(attrs={'class': 'form-control'}),
             'nome': forms.TextInput(attrs={'class': 'form-control'}),
+            'funcao': forms.TextInput(attrs={'class': 'form-control'}),
             'status': forms.Select(attrs={'class': 'form-control'}),
             'obra': forms.TextInput(attrs={'class': 'form-control'}),
         }
