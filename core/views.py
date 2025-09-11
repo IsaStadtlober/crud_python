@@ -3,6 +3,7 @@ from django.views.generic import ListView, CreateView
 from .models import Funcionario
 from .forms import FuncionarioForm
 from django.urls import reverse_lazy
+from django.shortcuts import get_object_or_404, redirect
 
 
 class ListFuncionario(ListView):
@@ -19,3 +20,13 @@ class CreateFuncionario(CreateView):
     form_class = FuncionarioForm
     template_name = 'form.html'  # não será usado
     success_url = reverse_lazy('Listar')
+
+def update_funcionario(request, matricula):
+    funcionario = get_object_or_404(Funcionario, matricula=matricula)
+    if request.method == 'POST':
+        funcionario.nome = request.POST.get('nome')
+        funcionario.funcao = request.POST.get('funcao')
+        funcionario.status = request.POST.get('status')
+        funcionario.obra = request.POST.get('obra')
+        funcionario.save()
+        return redirect('listar')
