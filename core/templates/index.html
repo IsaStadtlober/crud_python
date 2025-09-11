@@ -18,6 +18,7 @@
                 <th scope="col">Função</th>
                 <th scope="col">Status</th>
                 <th scope="col">Obra</th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
@@ -28,6 +29,17 @@
                 <td>{{ funcionario.funcao }}</td>
                  <td>{{ funcionario.get_status_display }}</td>
                 <td>{{ funcionario.obra }}</td>
+                <td class="text-center">
+                <!-- Visualizar -->
+                <button type="button" class="btn btn-sm btn-info text-white" data-bs-toggle="modal"
+                    data-bs-target="#viewModal{{ funcionario.matricula }}">
+                    <i class="bi bi-eye"></i>
+                </button>
+                <!-- Editar -->
+                <button type="button" class="btn btn-sm btn-warning text-white" data-bs-toggle="modal"
+                    data-bs-target="#editModal{{ funcionario.matricula }}">
+                    <i class="bi bi-pencil"></i>
+                </button>
             </tr>
             {% empty %}
             <tr>
