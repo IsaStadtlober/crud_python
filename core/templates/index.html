@@ -91,7 +91,6 @@
         <div class="modal-content">
             <form method="post" id="funcionarioForm">
                 {% csrf_token %}
-                <input type="hidden" name="matricula" id="id_matricula">
                 <div class="modal-header bg-success text-white">
                     <h5 class="modal-title" id="funcionarioModalLabel">Cadastrar Funcionário</h5>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
@@ -135,25 +134,29 @@
         document.getElementById("funcionarioModalLabel").innerText = "Cadastrar Funcionário";
         document.getElementById("funcionarioForm").action = "{% url 'create' %}";
 
-        // Limpa os campos
+        document.getElementById('id_matricula').value = '';
         document.getElementById('id_nome').value = '';
         document.getElementById('id_funcao').value = '';
         document.getElementById('id_status').value = '';
         document.getElementById('id_obra').value = '';
+
+        // Permite editar matrícula no modo criação
+        document.getElementById('id_matricula').readOnly = false;
     }
 
     function setUpdateMode(matricula, nome, funcao, status, obra) {
         document.getElementById("funcionarioModalLabel").innerText = "Editar Funcionário";
         document.getElementById("funcionarioForm").action = "/update/" + matricula + "/";
 
-        // Preenche o campo da matrícula (agora editável)
+        // Preenche campos
         document.getElementById('id_matricula').value = matricula;
-
-        // Preenche os outros campos do form
         document.getElementById('id_nome').value = nome;
         document.getElementById('id_funcao').value = funcao;
         document.getElementById('id_status').value = status;
         document.getElementById('id_obra').value = obra;
+
+        // Torna a matrícula apenas leitura
+        document.getElementById('id_matricula').readOnly = true;
     }
 </script>
 
