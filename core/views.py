@@ -24,9 +24,14 @@ class CreateFuncionario(CreateView):
 def update_funcionario(request, matricula):
     funcionario = get_object_or_404(Funcionario, matricula=matricula)
     if request.method == 'POST':
-        funcionario.nome = request.POST.get('nome')
-        funcionario.funcao = request.POST.get('funcao')
-        funcionario.status = request.POST.get('status')
-        funcionario.obra = request.POST.get('obra')
-        funcionario.save()
-        return redirect('listar')
+        # Atualiza usando o form do Django
+        form = FuncionarioForm(request.POST, instance=funcionario)
+        if form.is_valid():
+            form.save()
+            return redirect('Listar')
+    else:
+        # Se for GET, instancia o form com os dados do funcionário
+        form = FuncionarioForm(instance=funcionario)
+
+    # Como estamos usando modal na mesma página, apenas redireciona
+    return redirect('Listar')
