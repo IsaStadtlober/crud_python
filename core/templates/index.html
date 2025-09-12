@@ -99,10 +99,25 @@
                 </div>
                 <div class="modal-body">
                     <div class="mb-3">
-                        <label class="form-label">Matrícula</label>
-                        <input type="text" id="display_matricula" class="form-control" readonly>
+                        <label for="id_matricula" class="form-label">Matrícula</label>
+                        {{ form.matricula }}
                     </div>
-                    {{ form.as_p }}
+                    <div class="mb-3">
+                        <label for="id_nome" class="form-label">Nome</label>
+                        {{ form.nome }}
+                    </div>
+                    <div class="mb-3">
+                        <label for="id_funcao" class="form-label">Função</label>
+                        {{ form.funcao }}
+                    </div>
+                    <div class="mb-3">
+                        <label for="id_status" class="form-label">Status</label>
+                        {{ form.status }}
+                    </div>
+                    <div class="mb-3">
+                        <label for="id_obra" class="form-label">Obra</label>
+                        {{ form.obra }}
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
@@ -127,16 +142,12 @@
         document.getElementById('id_obra').value = '';
     }
 
-    // Modo Edit
     function setUpdateMode(matricula, nome, funcao, status, obra) {
         document.getElementById("funcionarioModalLabel").innerText = "Editar Funcionário";
         document.getElementById("funcionarioForm").action = "/update/" + matricula + "/";
 
-        // Preenche o hidden para envio no POST
+        // Preenche o campo da matrícula (agora editável)
         document.getElementById('id_matricula').value = matricula;
-
-        // Preenche o campo visível
-        document.getElementById('display_matricula').value = matricula;
 
         // Preenche os outros campos do form
         document.getElementById('id_nome').value = nome;
