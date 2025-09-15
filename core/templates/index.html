@@ -158,6 +158,35 @@
     </div>
 </form>
 
+<!-- Modal de Sucesso -->
+<div class="modal fade" id="cadastroSucessoModal" tabindex="-1" aria-labelledby="cadastroSucessoLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm modal-dialog-centered">
+        <div class="modal-content border-success text-center">
+            <div class="modal-header bg-success text-white py-2 d-flex justify-content-center position-relative">
+                <h6 class="modal-title w-100" id="cadastroSucessoLabel">Sucesso!</h6>
+                <button type="button" class="btn-close btn-close-white position-absolute end-0 me-2" data-bs-dismiss="modal" aria-label="Fechar"></button>
+            </div>
+            <div class="modal-body">
+                Funcionário cadastrado com sucesso!
+            </div>
+        </div>
+    </div>
+
+{% if cadastro_sucesso %}
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const successModalEl = document.getElementById('cadastroSucessoModal');
+        const successModal = new bootstrap.Modal(successModalEl);
+        successModal.show();
+
+        // Fecha automaticamente após 3 segundos
+        setTimeout(() => {
+            successModal.hide();
+        }, 3000);
+    });
+</script>
+{% endif %}
+
 <!-- Script para alternar Create/Update -->
 <script>
     // Modo Create

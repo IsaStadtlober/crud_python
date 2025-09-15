@@ -22,15 +22,19 @@ def create_funcionario(request):
         form = FuncionarioForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('Listar')  # redireciona com sucesso
+            funcionarios = Funcionario.objects.all()
+            return render(request, 'index.html', {
+                'form': FuncionarioForm(),  # limpa o form
+                'funcionarios': funcionarios,
+                'cadastro_sucesso': True  # flag para modal de sucesso
+            })
         else:
-            # Se o form tem erro, exibe novamente com erro
             funcionarios = Funcionario.objects.all()
             return render(request, 'index.html', {
                 'form': form,
                 'funcionarios': funcionarios
             })
-    return redirect('Listar')  # se alguém acessar via GET, só redireciona
+    return redirect('Listar')
 
 def update_funcionario(request, matricula):
     funcionario = get_object_or_404(Funcionario, matricula=matricula)
