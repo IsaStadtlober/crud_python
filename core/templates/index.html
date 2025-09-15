@@ -145,8 +145,18 @@
         document.getElementById('id_status').value = '';
         document.getElementById('id_obra').value = '';
 
-        // Permite editar matrícula no modo criação
         document.getElementById('id_matricula').readOnly = false;
+
+        // Remove a classe 'is-invalid' dos inputs
+        document.querySelectorAll('#funcionarioForm .is-invalid').forEach(function (el) {
+            el.classList.remove('is-invalid');
+        });
+
+        // Esconde as mensagens de erro
+        document.querySelectorAll('#funcionarioForm .invalid-feedback').forEach(function (el) {
+            el.style.display = 'none';
+            el.classList.remove('d-block');
+        });
     }
 
     function setUpdateMode(matricula, nome, funcao, status, obra) {

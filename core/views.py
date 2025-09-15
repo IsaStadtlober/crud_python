@@ -13,7 +13,8 @@ class ListFuncionario(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['form'] = FuncionarioForm()  # envia o formulário para o template
+        # Sempre envia um formulário vazio
+        context['form'] = FuncionarioForm()
         return context
 
 def create_funcionario(request):
@@ -21,15 +22,15 @@ def create_funcionario(request):
         form = FuncionarioForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('Listar')
+            return redirect('Listar')  # redireciona com sucesso
         else:
-            # Em caso de erro, reenviar a página com os dados + erros
+            # Se o form tem erro, exibe novamente com erro
             funcionarios = Funcionario.objects.all()
             return render(request, 'index.html', {
                 'form': form,
                 'funcionarios': funcionarios
             })
-    return redirect('Listar')
+    return redirect('Listar')  # se alguém acessar via GET, só redireciona
 
 def update_funcionario(request, matricula):
     funcionario = get_object_or_404(Funcionario, matricula=matricula)
