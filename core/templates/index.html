@@ -5,14 +5,18 @@
 {% block content %}
 
 <div class="container mt-3">
-    <div class="row mb-3">
-        <div class="col-md-6">
+    <div class="container mt-3">
+    <div class="row mb-3 align-items-center">
+        <!-- Campo de busca com largura md-4 -->
+        <div class="col-md-4">
             <input id="searchInput" type="search" class="form-control" placeholder="Pesquisar funcionário...">
         </div>
-        <div class="col-md-6 text-end">
+
+        <!-- Espaço flexível para empurrar o botão à direita -->
+        <div class="col-md-8 text-end">
             <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#funcionarioModal"
                 onclick="setCreateMode()">
-                <i class="bi bi-person-plus"></i> Incluir novo funcionário
+                <i class="bi bi-person-plus"></i> Novo funcionário
             </button>
         </div>
     </div>
@@ -38,21 +42,21 @@
                 <td>{{ funcionario.obra }}</td>
                 <td class="text-center">
                     <!-- Visualizar -->
-                    <button type="button" class="btn btn-sm btn-info text-white" data-bs-toggle="modal"
+                    <button type="button" class="btn btn-sm btn-info text-white" style="background-color: #78b7ff;" data-bs-toggle="modal"
                         data-bs-target="#viewModal{{ funcionario.matricula }}">
-                        <i class="bi bi-eye"></i>
+                        <i class="bi bi-eye text-muted"></i>
                     </button>
 
                     <!-- Editar -->
-                    <button class="btn btn-warning text-white" data-bs-toggle="modal" data-bs-target="#funcionarioModal"
+                    <button class="btn btn-warning text-white" style="background-color: #f7f440;" data-bs-toggle="modal" data-bs-target="#funcionarioModal"
                         onclick="setUpdateMode('{{ funcionario.matricula }}', '{{ funcionario.nome }}', '{{ funcionario.funcao }}', '{{ funcionario.status }}', '{{ funcionario.obra }}')">
-                        <i class="bi bi-pencil"></i>
+                        <i class="bi bi-pencil text-muted"></i>
                     </button>
 
                     <!-- Deletar -->
-                    <button type="button" class="btn btn-sm btn-danger text-white" data-bs-toggle="modal"
+                    <button type="button" class="btn btn-sm btn-danger text-white" style="background-color: #ff5555;" data-bs-toggle="modal"
                         data-bs-target="#deleteModal{{ funcionario.matricula }}">
-                        <i class="bi bi-trash"></i>
+                        <i class="bi bi-trash text-muted"></i>
                     </button>
                 </td>
 
