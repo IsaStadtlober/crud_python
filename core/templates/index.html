@@ -178,19 +178,23 @@
         </div>
     </div>
 
-{% if cadastro_sucesso %}
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const successModalEl = document.getElementById('cadastroSucessoModal');
-        const successModal = new bootstrap.Modal(successModalEl);
-        successModal.show();
+{% if messages %}
+  {% for message in messages %}
+    {% if message.tags == 'success' %}
+      <script>
+        document.addEventListener('DOMContentLoaded', function () {
+          const successModalEl = document.getElementById('cadastroSucessoModal');
+          if (successModalEl) {
+            const successModal = new bootstrap.Modal(successModalEl);
+            successModal.show();
 
-        // Fecha automaticamente após 3 segundos
-        setTimeout(() => {
-            successModal.hide();
-        }, 3000);
-    });
-</script>
+            // Fecha automaticamente após 3 segundos
+            setTimeout(() => successModal.hide(), 3000);
+          }
+        });
+      </script>
+    {% endif %}
+  {% endfor %}
 {% endif %}
 
 <!-- Script para alternar Create/Update -->
@@ -239,7 +243,6 @@
 {% if form.errors %}
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        // Reabre o modal automaticamente se houver erros no formulário
         const modalElement = document.getElementById('funcionarioModal');
         const modal = new bootstrap.Modal(modalElement);
         modal.show();

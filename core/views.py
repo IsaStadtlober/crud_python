@@ -13,8 +13,11 @@ class ListFuncionario(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        # Sempre envia um formulário vazio
-        context['form'] = FuncionarioForm()
+        
+        # Só adiciona o form se não estiver vindo de um erro (i.e., via render com form com erros)
+        if 'form' not in context:
+            context['form'] = FuncionarioForm()
+        
         return context
 
 def create_funcionario(request):
@@ -22,12 +25,8 @@ def create_funcionario(request):
         form = FuncionarioForm(request.POST)
         if form.is_valid():
             form.save()
-            funcionarios = Funcionario.objects.all()
-            return render(request, 'index.html', {
-                'form': FuncionarioForm(),  # limpa o form
-                'funcionarios': funcionarios,
-                'cadastro_sucesso': True  # flag para modal de sucesso
-            })
+            messages.success(request, 'Funcionário cadastrado com sucesso!')
+            return redirect('Listar')  # Isso limpa o estado do POST
         else:
             funcionarios = Funcionario.objects.all()
             return render(request, 'index.html', {
