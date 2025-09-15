@@ -5,10 +5,26 @@ class FuncionarioForm(forms.ModelForm):
     class Meta:
         model = Funcionario
         fields = '__all__'
-        widgets = {
-            'matricula': forms.NumberInput(attrs={'class': 'form-control'}),
-            'nome': forms.TextInput(attrs={'class': 'form-control'}),
-            'funcao': forms.TextInput(attrs={'class': 'form-control'}),
-            'status': forms.Select(attrs={'class': 'form-control'}),
-            'obra': forms.TextInput(attrs={'class': 'form-control'}),
-        }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        for field_name, field in self.fields.items():
+            # Começa com form-control
+            css_class = 'form-control'
+
+            # Se o campo tem erro, adiciona 'is-invalid'
+            if self.errors.get(field_name):
+                css_class += ' is-invalid'
+
+            # Aplica no widget
+            field.widget.attrs.update({'class': css_class})
+
+    def clean_matricula(self):
+        matricula = self.cleaned_data.get('matricula')
+        qs = Funcionario.objects.filter(matricula=matricula)
+        if self.instance.pk:
+            qs = qs.exclude(pk=self.instance.pk)
+        if qs.exists():
+            raise forms.ValidationError("Esta matrícula já está cadastrada.")
+        return matricula

@@ -16,10 +16,20 @@ class ListFuncionario(ListView):
         context['form'] = FuncionarioForm()  # envia o formulário para o template
         return context
 
-class CreateFuncionario(CreateView):
-    form_class = FuncionarioForm
-    template_name = 'form.html'  # não será usado
-    success_url = reverse_lazy('Listar')
+def create_funcionario(request):
+    if request.method == 'POST':
+        form = FuncionarioForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('Listar')
+        else:
+            # Em caso de erro, reenviar a página com os dados + erros
+            funcionarios = Funcionario.objects.all()
+            return render(request, 'index.html', {
+                'form': form,
+                'funcionarios': funcionarios
+            })
+    return redirect('Listar')
 
 def update_funcionario(request, matricula):
     funcionario = get_object_or_404(Funcionario, matricula=matricula)
