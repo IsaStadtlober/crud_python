@@ -3,12 +3,18 @@
 {% block title %}Lista de Funcionários{% endblock %}
 
 {% block content %}
-<div class="container d-flex flex-column align-items-center mt-5">
-    <div class="w-100 d-flex justify-content-between mb-2">
-        <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#funcionarioModal"
-            onclick="setCreateMode()">
-            <i class="bi bi-person-plus"></i> Incluir novo funcionário
-        </button>
+
+<div class="container mt-3">
+    <div class="row mb-3">
+        <div class="col-md-6">
+            <input id="searchInput" type="search" class="form-control" placeholder="Pesquisar funcionário...">
+        </div>
+        <div class="col-md-6 text-end">
+            <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#funcionarioModal"
+                onclick="setCreateMode()">
+                <i class="bi bi-person-plus"></i> Incluir novo funcionário
+            </button>
+        </div>
     </div>
 
     <table class="table table-bordered table-striped">
@@ -240,6 +246,34 @@
     });
 </script>
 {% endif %}
+
+<!-- barra de pesquisa -->
+<script>
+    document.getElementById('searchInput').addEventListener('input', function () {
+        const filter = this.value.toLowerCase();
+        const rows = document.querySelectorAll('table tbody tr');
+
+        rows.forEach(row => {
+            const matricula = row.cells[0].textContent.toLowerCase();
+            const nome = row.cells[1].textContent.toLowerCase();
+            const funcao = row.cells[2].textContent.toLowerCase();
+            const status = row.cells[3].textContent.toLowerCase();
+            const obra = row.cells[4].textContent.toLowerCase();
+
+            if (
+                matricula.includes(filter) ||
+                nome.includes(filter) ||
+                funcao.includes(filter) ||
+                status.includes(filter) ||
+                obra.includes(filter)
+            ) {
+                row.style.display = '';
+            } else {
+                row.style.display = 'none';
+            }
+        });
+    });
+</script>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 {% endblock %}
