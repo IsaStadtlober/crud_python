@@ -76,6 +76,29 @@
                     </div>
                 </div>
 
+                <!-- Modal de Deleção (dentro do for) -->
+                <div class="modal fade" id="deleteModal{{ funcionario.matricula }}" tabindex="-1"
+                    aria-labelledby="deleteModalLabel{{ funcionario.matricula }}" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header bg-danger text-white">
+                                <h5 class="modal-title" id="deleteModalLabel{{ funcionario.matricula }}">Confirmar
+                                    Exclusão</h5>
+                                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                                    aria-label="Fechar"></button>
+                            </div>
+                            <div class="modal-body">
+                                Tem certeza que deseja excluir o funcionário <strong>{{ funcionario.nome }}</strong>?
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary"
+                                    data-bs-dismiss="modal">Cancelar</button>
+                                <a href="{% url 'delete' funcionario.matricula %}" class="btn btn-danger">Excluir</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             </tr>
             {% empty %}
             <tr>
@@ -86,51 +109,54 @@
     </table>
 </div>
 
-<div class="modal fade" id="funcionarioModal" tabindex="-1" aria-labelledby="funcionarioModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <form method="post" id="funcionarioForm">
-                {% csrf_token %}
-                <div class="modal-header bg-success text-white">
-                    <h5 class="modal-title" id="funcionarioModalLabel">Cadastrar Funcionário</h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
-                        aria-label="Fechar"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="mb-3">
-                        <label for="id_matricula" class="form-label">Matrícula</label>
-                        {{ form.matricula }}
-                        {% if form.matricula.errors %}
-                        <div class="invalid-feedback d-block">
-                            {{ form.matricula.errors.0 }}
+<form method="post" id="funcionarioForm" autocomplete="off">
+    <div class="modal fade" id="funcionarioModal" tabindex="-1" aria-labelledby="funcionarioModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form method="post" id="funcionarioForm">
+                    {% csrf_token %}
+                    <div class="modal-header bg-success text-white">
+                        <h5 class="modal-title" id="funcionarioModalLabel">Cadastrar Funcionário</h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                            aria-label="Fechar"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="id_matricula" class="form-label">Matrícula</label>
+                            {{ form.matricula }}
+                            {% if form.matricula.errors %}
+                            <div class="invalid-feedback d-block">
+                                {{ form.matricula.errors.0 }}
+                            </div>
+                            {% endif %}
                         </div>
-                        {% endif %}
+                        <div class="mb-3">
+                            <label for="id_nome" class="form-label">Nome</label>
+                            {{ form.nome }}
+                        </div>
+                        <div class="mb-3">
+                            <label for="id_funcao" class="form-label">Função</label>
+                            {{ form.funcao }}
+                        </div>
+                        <div class="mb-3">
+                            <label for="id_status" class="form-label">Status</label>
+                            {{ form.status }}
+                        </div>
+                        <div class="mb-3">
+                            <label for="id_obra" class="form-label">Obra</label>
+                            {{ form.obra }}
+                        </div>
                     </div>
-                    <div class="mb-3">
-                        <label for="id_nome" class="form-label">Nome</label>
-                        {{ form.nome }}
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-success">Salvar</button>
                     </div>
-                    <div class="mb-3">
-                        <label for="id_funcao" class="form-label">Função</label>
-                        {{ form.funcao }}
-                    </div>
-                    <div class="mb-3">
-                        <label for="id_status" class="form-label">Status</label>
-                        {{ form.status }}
-                    </div>
-                    <div class="mb-3">
-                        <label for="id_obra" class="form-label">Obra</label>
-                        {{ form.obra }}
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="submit" class="btn btn-success">Salvar</button>
-                </div>
-            </form>
+                </form>
+            </div>
         </div>
     </div>
-</div>
+</form>
 
 <!-- Script para alternar Create/Update -->
 <script>

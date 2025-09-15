@@ -4,7 +4,7 @@ from .models import Funcionario
 from .forms import FuncionarioForm
 from django.urls import reverse_lazy
 from django.shortcuts import get_object_or_404, redirect
-
+from django.contrib import messages
 
 class ListFuncionario(ListView):
     template_name = 'index.html'
@@ -45,4 +45,10 @@ def update_funcionario(request, matricula):
         form = FuncionarioForm(instance=funcionario)
 
     # Como estamos usando modal na mesma página, apenas redireciona
+    return redirect('Listar')
+
+def delete_funcionario(request, matricula):
+    funcionario = get_object_or_404(Funcionario, matricula=matricula)
+    funcionario.delete()
+    messages.success(request, 'Funcionário deletado com sucesso!')
     return redirect('Listar')
