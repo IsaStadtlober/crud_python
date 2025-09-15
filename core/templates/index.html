@@ -180,7 +180,7 @@
 
 {% if messages %}
   {% for message in messages %}
-    {% if message.tags == 'success' %}
+    {% if 'cadastro' in message.tags %}
       <script>
         document.addEventListener('DOMContentLoaded', function () {
           const successModalEl = document.getElementById('cadastroSucessoModal');

@@ -25,7 +25,7 @@ def create_funcionario(request):
         form = FuncionarioForm(request.POST)
         if form.is_valid():
             form.save()
-            messages.success(request, 'Funcionário cadastrado com sucesso!')
+            messages.success(request, 'Funcionário cadastrado com sucesso!', extra_tags='cadastro')
             return redirect('Listar')  # Isso limpa o estado do POST
         else:
             funcionarios = Funcionario.objects.all()
