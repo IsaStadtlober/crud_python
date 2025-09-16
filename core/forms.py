@@ -36,12 +36,32 @@ class FuncionarioForm(forms.ModelForm):
         if not cpf:
             raise forms.ValidationError('Campo CPF é obrigatório.')
 
-        cpf = cpf.replace('.', '').replace('-', '').strip()
+        # Remove caracteres não numéricos
+        cpf = re.sub(r'\D', '', cpf)
 
-        # Aqui você pode continuar sua validação, por exemplo:
-        if len(cpf) != 11 or not cpf.isdigit():
-            raise forms.ValidationError('CPF inválido.')
+        if len(cpf) != 11:
+            raise forms.ValidationError('CPF deve conter exatamente 11 dígitos numéricos.')
 
-        # Pode adicionar a validação dos dígitos verificadores aqui
+        if cpf == cpf[0] * 11:
+            raise forms.ValidationError('CPF inválido (todos os dígitos são iguais)')
 
-        return cpf
+        # Validação do 1º dígito verificador
+        soma = sum(int(cpf[i]) * (10 - i) for i in range(9))
+        digito1 = (soma * 10 % 11) % 10
+        if int(cpf[9]) != digito1:
+            raise forms.ValidationError('CPF inválido')
+
+        # Validação do 2º dígito verificador
+        soma = sum(int(cpf[i]) * (11 - i) for i in range(10))
+        digito2 = (soma * 10 % 11) % 10
+        if int(cpf[10]) != digito2:
+            raise forms.ValidationError('CPF inválido')
+
+        # Verifica se já existe esse CPF no banco (caso de novo cadastro)
+        qs = Funcionario.objects.filter(cpf=cpf)
+        if self.instance.pk:
+            qs = qs.exclude(pk=self.instance.pk)
+        if qs.exists():
+            raise forms.ValidationError('Este CPF já está cadastrado.')
+
+        return cpf  # ✅ CPF limpo e válido

@@ -37,17 +37,19 @@ def create_funcionario(request):
 
 def update_funcionario(request, matricula):
     funcionario = get_object_or_404(Funcionario, matricula=matricula)
+
     if request.method == 'POST':
-        # Atualiza usando o form do Django
         form = FuncionarioForm(request.POST, request.FILES, instance=funcionario)
         if form.is_valid():
             form.save()
             return redirect('Listar')
-    else:
-        # Se for GET, instancia o form com os dados do funcionário
-        form = FuncionarioForm(instance=funcionario)
+        else:
+            funcionarios = Funcionario.objects.all()
+            return render(request, 'index.html', {
+                'form': form,
+                'funcionarios': funcionarios
+            })
 
-    # Como estamos usando modal na mesma página, apenas redireciona
     return redirect('Listar')
 
 def delete_funcionario(request, matricula):
