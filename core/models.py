@@ -18,6 +18,7 @@ class Funcionario(models.Model):
     funcao = models.CharField( max_length=100, verbose_name="Função", default='')
     status = models.CharField(max_length=2, choices=STATUS_CHOICES, default='A')
     obra = models.CharField(max_length=150, default='')
-
+    foto = models.ImageField(upload_to='fotos_funcionarios/', blank=True, null=True)
+    
     def __str__(self) -> str:
         return self.nome 

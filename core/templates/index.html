@@ -4,283 +4,303 @@
 
 {% block content %}
 
+{% load static %}
+
 <div class="container mt-3">
     <div class="container mt-3">
-    <div class="row mb-3 align-items-center">
-        <!-- Campo de busca com largura md-4 -->
-        <div class="col-md-4">
-            <input id="searchInput" type="search" class="form-control" placeholder="Pesquisar funcionário...">
+        <div class="row mb-3 align-items-center">
+            <!-- Campo de busca com largura md-4 -->
+            <div class="col-md-4">
+                <input id="searchInput" type="search" class="form-control" placeholder="Pesquisar funcionário...">
+            </div>
+
+            <!-- Espaço flexível para empurrar o botão à direita -->
+            <div class="col-md-8 text-end">
+                <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#funcionarioModal"
+                    onclick="setCreateMode()">
+                    <i class="bi bi-person-plus"></i> Novo funcionário
+                </button>
+            </div>
         </div>
 
-        <!-- Espaço flexível para empurrar o botão à direita -->
-        <div class="col-md-8 text-end">
-            <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#funcionarioModal"
-                onclick="setCreateMode()">
-                <i class="bi bi-person-plus"></i> Novo funcionário
-            </button>
-        </div>
+        <table class="table table-bordered table-striped">
+            <thead class="table-dark">
+                <tr>
+                    <th scope="col">Matrícula</th>
+                    <th scope="col">Nome</th>
+                    <th scope="col">Função</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Obra</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for funcionario in funcionarios %}
+                <tr>
+                    <td>{{ funcionario.matricula }}</td>
+                    <td>{{ funcionario.nome }}</td>
+                    <td>{{ funcionario.funcao }}</td>
+                    <td>{{ funcionario.get_status_display }}</td>
+                    <td>{{ funcionario.obra }}</td>
+                    <td class="text-center">
+                        <!-- Visualizar -->
+                        <button type="button" class="btn btn-sm btn-info text-white" style="background-color: #78b7ff;"
+                            data-bs-toggle="modal" data-bs-target="#viewModal{{ funcionario.matricula }}">
+                            <i class="bi bi-eye text-muted"></i>
+                        </button>
+
+                        <!-- Editar -->
+                        <button class="btn btn-warning text-white" style="background-color: #f7f440;"
+                            data-bs-toggle="modal" data-bs-target="#funcionarioModal"
+                            onclick="setUpdateMode('{{ funcionario.matricula }}', '{{ funcionario.nome }}', '{{ funcionario.funcao }}', '{{ funcionario.status }}', '{{ funcionario.obra }}')">
+                            <i class="bi bi-pencil text-muted"></i>
+                        </button>
+
+                        <!-- Deletar -->
+                        <button type="button" class="btn btn-sm btn-danger text-white"
+                            style="background-color: #ff5555;" data-bs-toggle="modal"
+                            data-bs-target="#deleteModal{{ funcionario.matricula }}">
+                            <i class="bi bi-trash text-muted"></i>
+                        </button>
+                    </td>
+
+                    <!-- Modal de Visualizar -->
+                    <div class="modal fade" id="viewModal{{ funcionario.matricula }}" tabindex="-1"
+                        aria-labelledby="viewModalLabel{{ funcionario.matricula }}" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header bg-info text-white">
+                                    <h5 class="modal-title" id="viewModalLabel{{ funcionario.matricula }}">
+                                        Detalhes do Funcionário
+                                    </h5>
+                                    <button type="button" class="btn-close btn-close-white"
+                                        data-bs-dismiss="modal"></button>
+                                </div>
+                                <div class="modal-body">
+                                    {% if funcionario.foto %}
+                                    <img src="{{ funcionario.foto.url }}" alt="Foto de {{ funcionario.nome }}"
+                                        class="img-fluid rounded mb-3" style="max-height: 200px;">
+                                    {% else %}
+                                    <img src="{% static 'img/sem-foto.png' %}" alt="Sem foto"
+                                        class="img-fluid rounded mb-3" style="max-height: 200px;">
+                                    {% endif %}
+
+                                    <p><strong>Matrícula:</strong> {{ funcionario.matricula }}</p>
+                                    <p><strong>Nome:</strong> {{ funcionario.nome }}</p>
+                                    <p><strong>Função:</strong> {{ funcionario.funcao }}</p>
+                                    <p><strong>Status:</strong> {{ funcionario.get_status_display }}</p>
+                                    <p><strong>Obra:</strong> {{ funcionario.obra }}</p>
+                                </div>
+                                <div class="modal-footer">
+                                    <button class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Modal de Deleção (dentro do for) -->
+                    <div class="modal fade" id="deleteModal{{ funcionario.matricula }}" tabindex="-1"
+                        aria-labelledby="deleteModalLabel{{ funcionario.matricula }}" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header bg-danger text-white">
+                                    <h5 class="modal-title" id="deleteModalLabel{{ funcionario.matricula }}">Confirmar
+                                        Exclusão</h5>
+                                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                                        aria-label="Fechar"></button>
+                                </div>
+                                <div class="modal-body">
+                                    Tem certeza que deseja excluir o funcionário <strong>{{ funcionario.nome
+                                        }}</strong>?
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary"
+                                        data-bs-dismiss="modal">Cancelar</button>
+                                    <a href="{% url 'delete' funcionario.matricula %}"
+                                        class="btn btn-danger">Excluir</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="5" class="text-center">Nenhum funcionário cadastrado.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
     </div>
 
-    <table class="table table-bordered table-striped">
-        <thead class="table-dark">
-            <tr>
-                <th scope="col">Matrícula</th>
-                <th scope="col">Nome</th>
-                <th scope="col">Função</th>
-                <th scope="col">Status</th>
-                <th scope="col">Obra</th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for funcionario in funcionarios %}
-            <tr>
-                <td>{{ funcionario.matricula }}</td>
-                <td>{{ funcionario.nome }}</td>
-                <td>{{ funcionario.funcao }}</td>
-                <td>{{ funcionario.get_status_display }}</td>
-                <td>{{ funcionario.obra }}</td>
-                <td class="text-center">
-                    <!-- Visualizar -->
-                    <button type="button" class="btn btn-sm btn-info text-white" style="background-color: #78b7ff;" data-bs-toggle="modal"
-                        data-bs-target="#viewModal{{ funcionario.matricula }}">
-                        <i class="bi bi-eye text-muted"></i>
-                    </button>
-
-                    <!-- Editar -->
-                    <button class="btn btn-warning text-white" style="background-color: #f7f440;" data-bs-toggle="modal" data-bs-target="#funcionarioModal"
-                        onclick="setUpdateMode('{{ funcionario.matricula }}', '{{ funcionario.nome }}', '{{ funcionario.funcao }}', '{{ funcionario.status }}', '{{ funcionario.obra }}')">
-                        <i class="bi bi-pencil text-muted"></i>
-                    </button>
-
-                    <!-- Deletar -->
-                    <button type="button" class="btn btn-sm btn-danger text-white" style="background-color: #ff5555;" data-bs-toggle="modal"
-                        data-bs-target="#deleteModal{{ funcionario.matricula }}">
-                        <i class="bi bi-trash text-muted"></i>
-                    </button>
-                </td>
-
-                <!-- Modal de Visualizar -->
-                <div class="modal fade" id="viewModal{{ funcionario.matricula }}" tabindex="-1"
-                    aria-labelledby="viewModalLabel{{ funcionario.matricula }}" aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header bg-info text-white">
-                                <h5 class="modal-title" id="viewModalLabel{{ funcionario.matricula }}">
-                                    Detalhes do Funcionário
-                                </h5>
-                                <button type="button" class="btn-close btn-close-white"
-                                    data-bs-dismiss="modal"></button>
+    <form method="post" id="funcionarioForm" enctype="multipart/form-data" autocomplete="off">
+        <div class="modal fade" id="funcionarioModal" tabindex="-1" aria-labelledby="funcionarioModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <form method="post" id="funcionarioForm">
+                        {% csrf_token %}
+                        <div class="modal-header bg-success text-white">
+                            <h5 class="modal-title" id="funcionarioModalLabel">Cadastrar Funcionário</h5>
+                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                                aria-label="Fechar"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="mb-3">
+                                <label for="id_matricula" class="form-label">Matrícula</label>
+                                {{ form.matricula }}
+                                {% if form.matricula.errors %}
+                                <div class="invalid-feedback d-block">
+                                    {{ form.matricula.errors.0 }}
+                                </div>
+                                {% endif %}
                             </div>
-                            <div class="modal-body">
-                                <p><strong>Matrícula:</strong> {{ funcionario.matricula }}</p>
-                                <p><strong>Nome:</strong> {{ funcionario.nome }}</p>
-                                <p><strong>Função:</strong> {{ funcionario.funcao }}</p>
-                                <p><strong>Status:</strong> {{ funcionario.get_status_display }}</p>
-                                <p><strong>Obra:</strong> {{ funcionario.obra }}</p>
+                            <div class="mb-3">
+                                <label for="id_nome" class="form-label">Nome</label>
+                                {{ form.nome }}
                             </div>
-                            <div class="modal-footer">
-                                <button class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                            <div class="mb-3">
+                                <label for="id_funcao" class="form-label">Função</label>
+                                {{ form.funcao }}
+                            </div>
+                            <div class="mb-3">
+                                <label for="id_status" class="form-label">Status</label>
+                                {{ form.status }}
+                            </div>
+                            <div class="mb-3">
+                                <label for="id_obra" class="form-label">Obra</label>
+                                {{ form.obra }}
+                            </div>
+                            <div class="mb-3">
+                                <label for="id_foto" class="form-label">Foto</label>
+                                {{ form.foto }}
                             </div>
                         </div>
-                    </div>
-                </div>
-
-                <!-- Modal de Deleção (dentro do for) -->
-                <div class="modal fade" id="deleteModal{{ funcionario.matricula }}" tabindex="-1"
-                    aria-labelledby="deleteModalLabel{{ funcionario.matricula }}" aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header bg-danger text-white">
-                                <h5 class="modal-title" id="deleteModalLabel{{ funcionario.matricula }}">Confirmar
-                                    Exclusão</h5>
-                                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
-                                    aria-label="Fechar"></button>
-                            </div>
-                            <div class="modal-body">
-                                Tem certeza que deseja excluir o funcionário <strong>{{ funcionario.nome }}</strong>?
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary"
-                                    data-bs-dismiss="modal">Cancelar</button>
-                                <a href="{% url 'delete' funcionario.matricula %}" class="btn btn-danger">Excluir</a>
-                            </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                            <button type="submit" class="btn btn-success">Salvar</button>
                         </div>
-                    </div>
+                    </form>
                 </div>
+            </div>
+        </div>
+    </form>
 
-            </tr>
-            {% empty %}
-            <tr>
-                <td colspan="5" class="text-center">Nenhum funcionário cadastrado.</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-</div>
-
-<form method="post" id="funcionarioForm" autocomplete="off">
-    <div class="modal fade" id="funcionarioModal" tabindex="-1" aria-labelledby="funcionarioModalLabel"
+    <!-- Modal de Sucesso -->
+    <div class="modal fade" id="cadastroSucessoModal" tabindex="-1" aria-labelledby="cadastroSucessoLabel"
         aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <form method="post" id="funcionarioForm">
-                    {% csrf_token %}
-                    <div class="modal-header bg-success text-white">
-                        <h5 class="modal-title" id="funcionarioModalLabel">Cadastrar Funcionário</h5>
-                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
-                            aria-label="Fechar"></button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="mb-3">
-                            <label for="id_matricula" class="form-label">Matrícula</label>
-                            {{ form.matricula }}
-                            {% if form.matricula.errors %}
-                            <div class="invalid-feedback d-block">
-                                {{ form.matricula.errors.0 }}
-                            </div>
-                            {% endif %}
-                        </div>
-                        <div class="mb-3">
-                            <label for="id_nome" class="form-label">Nome</label>
-                            {{ form.nome }}
-                        </div>
-                        <div class="mb-3">
-                            <label for="id_funcao" class="form-label">Função</label>
-                            {{ form.funcao }}
-                        </div>
-                        <div class="mb-3">
-                            <label for="id_status" class="form-label">Status</label>
-                            {{ form.status }}
-                        </div>
-                        <div class="mb-3">
-                            <label for="id_obra" class="form-label">Obra</label>
-                            {{ form.obra }}
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                        <button type="submit" class="btn btn-success">Salvar</button>
-                    </div>
-                </form>
+        <div class="modal-dialog modal-sm modal-dialog-centered">
+            <div class="modal-content border-success text-center">
+                <div class="modal-header bg-success text-white py-2 d-flex justify-content-center position-relative">
+                    <h6 class="modal-title w-100" id="cadastroSucessoLabel">Sucesso!</h6>
+                    <button type="button" class="btn-close btn-close-white position-absolute end-0 me-2"
+                        data-bs-dismiss="modal" aria-label="Fechar"></button>
+                </div>
+                <div class="modal-body">
+                    Funcionário cadastrado com sucesso!
+                </div>
             </div>
         </div>
-    </div>
-</form>
 
-<!-- Modal de Sucesso -->
-<div class="modal fade" id="cadastroSucessoModal" tabindex="-1" aria-labelledby="cadastroSucessoLabel" aria-hidden="true">
-    <div class="modal-dialog modal-sm modal-dialog-centered">
-        <div class="modal-content border-success text-center">
-            <div class="modal-header bg-success text-white py-2 d-flex justify-content-center position-relative">
-                <h6 class="modal-title w-100" id="cadastroSucessoLabel">Sucesso!</h6>
-                <button type="button" class="btn-close btn-close-white position-absolute end-0 me-2" data-bs-dismiss="modal" aria-label="Fechar"></button>
-            </div>
-            <div class="modal-body">
-                Funcionário cadastrado com sucesso!
-            </div>
-        </div>
-    </div>
+        {% if messages %}
+        {% for message in messages %}
+        {% if 'cadastro' in message.tags %}
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                const successModalEl = document.getElementById('cadastroSucessoModal');
+                if (successModalEl) {
+                    const successModal = new bootstrap.Modal(successModalEl);
+                    successModal.show();
 
-{% if messages %}
-  {% for message in messages %}
-    {% if 'cadastro' in message.tags %}
-      <script>
-        document.addEventListener('DOMContentLoaded', function () {
-          const successModalEl = document.getElementById('cadastroSucessoModal');
-          if (successModalEl) {
-            const successModal = new bootstrap.Modal(successModalEl);
-            successModal.show();
+                    // Fecha automaticamente após 3 segundos
+                    setTimeout(() => successModal.hide(), 3000);
+                }
+            });
+        </script>
+        {% endif %}
+        {% endfor %}
+        {% endif %}
 
-            // Fecha automaticamente após 3 segundos
-            setTimeout(() => successModal.hide(), 3000);
-          }
-        });
-      </script>
-    {% endif %}
-  {% endfor %}
-{% endif %}
+        <!-- Script para alternar Create/Update -->
+        <script>
+            // Modo Create
+            function setCreateMode() {
+                document.getElementById("funcionarioModalLabel").innerText = "Cadastrar Funcionário";
+                document.getElementById("funcionarioForm").action = "{% url 'create' %}";
 
-<!-- Script para alternar Create/Update -->
-<script>
-    // Modo Create
-    function setCreateMode() {
-        document.getElementById("funcionarioModalLabel").innerText = "Cadastrar Funcionário";
-        document.getElementById("funcionarioForm").action = "{% url 'create' %}";
+                document.getElementById('id_matricula').value = '';
+                document.getElementById('id_nome').value = '';
+                document.getElementById('id_funcao').value = '';
+                document.getElementById('id_status').value = '';
+                document.getElementById('id_obra').value = '';
 
-        document.getElementById('id_matricula').value = '';
-        document.getElementById('id_nome').value = '';
-        document.getElementById('id_funcao').value = '';
-        document.getElementById('id_status').value = '';
-        document.getElementById('id_obra').value = '';
+                document.getElementById('id_matricula').readOnly = false;
 
-        document.getElementById('id_matricula').readOnly = false;
+                // Remove a classe 'is-invalid' dos inputs
+                document.querySelectorAll('#funcionarioForm .is-invalid').forEach(function (el) {
+                    el.classList.remove('is-invalid');
+                });
 
-        // Remove a classe 'is-invalid' dos inputs
-        document.querySelectorAll('#funcionarioForm .is-invalid').forEach(function (el) {
-            el.classList.remove('is-invalid');
-        });
-
-        // Esconde as mensagens de erro
-        document.querySelectorAll('#funcionarioForm .invalid-feedback').forEach(function (el) {
-            el.style.display = 'none';
-            el.classList.remove('d-block');
-        });
-    }
-
-    function setUpdateMode(matricula, nome, funcao, status, obra) {
-        document.getElementById("funcionarioModalLabel").innerText = "Editar Funcionário";
-        document.getElementById("funcionarioForm").action = "/update/" + matricula + "/";
-
-        // Preenche campos
-        document.getElementById('id_matricula').value = matricula;
-        document.getElementById('id_nome').value = nome;
-        document.getElementById('id_funcao').value = funcao;
-        document.getElementById('id_status').value = status;
-        document.getElementById('id_obra').value = obra;
-
-        // Torna a matrícula apenas leitura
-        document.getElementById('id_matricula').readOnly = true;
-    }
-</script>
-
-{% if form.errors %}
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const modalElement = document.getElementById('funcionarioModal');
-        const modal = new bootstrap.Modal(modalElement);
-        modal.show();
-    });
-</script>
-{% endif %}
-
-<!-- barra de pesquisa -->
-<script>
-    document.getElementById('searchInput').addEventListener('input', function () {
-        const filter = this.value.toLowerCase();
-        const rows = document.querySelectorAll('table tbody tr');
-
-        rows.forEach(row => {
-            const matricula = row.cells[0].textContent.toLowerCase();
-            const nome = row.cells[1].textContent.toLowerCase();
-            const funcao = row.cells[2].textContent.toLowerCase();
-            const status = row.cells[3].textContent.toLowerCase();
-            const obra = row.cells[4].textContent.toLowerCase();
-
-            if (
-                matricula.includes(filter) ||
-                nome.includes(filter) ||
-                funcao.includes(filter) ||
-                status.includes(filter) ||
-                obra.includes(filter)
-            ) {
-                row.style.display = '';
-            } else {
-                row.style.display = 'none';
+                // Esconde as mensagens de erro
+                document.querySelectorAll('#funcionarioForm .invalid-feedback').forEach(function (el) {
+                    el.style.display = 'none';
+                    el.classList.remove('d-block');
+                });
             }
-        });
-    });
-</script>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-{% endblock %}
+            function setUpdateMode(matricula, nome, funcao, status, obra) {
+                document.getElementById("funcionarioModalLabel").innerText = "Editar Funcionário";
+                document.getElementById("funcionarioForm").action = "/update/" + matricula + "/";
+
+                // Preenche campos
+                document.getElementById('id_matricula').value = matricula;
+                document.getElementById('id_nome').value = nome;
+                document.getElementById('id_funcao').value = funcao;
+                document.getElementById('id_status').value = status;
+                document.getElementById('id_obra').value = obra;
+
+                // Torna a matrícula apenas leitura
+                document.getElementById('id_matricula').readOnly = true;
+            }
+        </script>
+
+        {% if form.errors %}
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                const modalElement = document.getElementById('funcionarioModal');
+                const modal = new bootstrap.Modal(modalElement);
+                modal.show();
+            });
+        </script>
+        {% endif %}
+
+        <!-- barra de pesquisa -->
+        <script>
+            document.getElementById('searchInput').addEventListener('input', function () {
+                const filter = this.value.toLowerCase();
+                const rows = document.querySelectorAll('table tbody tr');
+
+                rows.forEach(row => {
+                    const matricula = row.cells[0].textContent.toLowerCase();
+                    const nome = row.cells[1].textContent.toLowerCase();
+                    const funcao = row.cells[2].textContent.toLowerCase();
+                    const status = row.cells[3].textContent.toLowerCase();
+                    const obra = row.cells[4].textContent.toLowerCase();
+
+                    if (
+                        matricula.includes(filter) ||
+                        nome.includes(filter) ||
+                        funcao.includes(filter) ||
+                        status.includes(filter) ||
+                        obra.includes(filter)
+                    ) {
+                        row.style.display = '';
+                    } else {
+                        row.style.display = 'none';
+                    }
+                });
+            });
+        </script>
+
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+        {% endblock %}

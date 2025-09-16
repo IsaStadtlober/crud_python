@@ -22,7 +22,7 @@ class ListFuncionario(ListView):
 
 def create_funcionario(request):
     if request.method == 'POST':
-        form = FuncionarioForm(request.POST)
+        form = FuncionarioForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
             messages.success(request, 'Funcionário cadastrado com sucesso!', extra_tags='cadastro')
@@ -39,7 +39,7 @@ def update_funcionario(request, matricula):
     funcionario = get_object_or_404(Funcionario, matricula=matricula)
     if request.method == 'POST':
         # Atualiza usando o form do Django
-        form = FuncionarioForm(request.POST, instance=funcionario)
+        form = FuncionarioForm(request.POST, request.FILES, instance=funcionario)
         if form.is_valid():
             form.save()
             return redirect('Listar')
