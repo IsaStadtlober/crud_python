@@ -80,7 +80,7 @@
                                 <div class="modal-body"
                                     style="display: flex; flex-wrap: wrap; gap: 20px; align-items: flex-start;">
                                     <!-- Informações do funcionário -->
-                                    <div style="flex: 1; min-width: 200px;">
+                                    <div style="flex: 1; min-width: 200px; margin-top: 10px;">
                                         <p><strong>Matrícula:</strong> {{ funcionario.matricula }}</p>
                                         <p><strong>Nome:</strong> {{ funcionario.nome }}</p>
                                         <p><strong>Função:</strong> {{ funcionario.funcao }}</p>
@@ -89,15 +89,15 @@
                                     </div>
 
                                     <!-- Foto do funcionário com ajuste -->
-                                    <div style="flex: 0 0 150px; margin-right: 50px; margin-top: 20px;">
+                                    <div style="flex: 0 0 150px; margin-right: 30px; margin-top: 10px;">
                                         {% if funcionario.foto %}
                                         <img src="{{ funcionario.foto.url }}" alt="Foto de {{ funcionario.nome }}"
                                             class="img-fluid rounded"
-                                            style="width: 150px; height: 150px; object-fit: cover;">
+                                            style="width: 150px; height: 200px; object-fit: cover;">
                                         {% else %}
                                         <img src="{% static 'img/sem-foto.png' %}" alt="Sem foto"
                                             class="img-fluid rounded"
-                                            style="width: 150px; height: 150px; object-fit: cover;">
+                                            style="width: 150px; height: 200px; object-fit: cover;">
                                         {% endif %}
                                     </div>
                                 </div>
