@@ -92,7 +92,11 @@
                                         <p><strong>Função:</strong> {{ funcionario.funcao }}</p>
                                         <p><strong>Status:</strong> {{ funcionario.get_status_display }}</p>
                                         <p><strong>Obra:</strong> {{ funcionario.obra }}</p>
-                                        <p><strong>CPF:</strong> {{ funcionario.cpf }}</p>
+                                        {% if funcionario.cpf %}
+                                        <p><strong>CPF:</strong> {{ funcionario.cpf|stringformat:"s"|slice:":3" }}.{{funcionario.cpf|stringformat:"s"|slice:"3:6" }}.{{funcionario.cpf|stringformat:"s"|slice:"6:9" }}-{{funcionario.cpf|stringformat:"s"|slice:"9:" }}</p>
+                                        {% else %}
+                                        <p><strong>CPF:</strong> Não informado</p>
+                                        {% endif %}
                                     </div>
 
                                     <!-- Foto do funcionário com ajuste -->
@@ -127,8 +131,7 @@
                                         aria-label="Fechar"></button>
                                 </div>
                                 <div class="modal-body">
-                                    Tem certeza que deseja excluir o funcionário <strong>{{ funcionario.nome
-                                        }}</strong>?
+                                    Tem certeza que deseja excluir o funcionário <strong>{{ funcionario.nome}}</strong>?
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary"
@@ -274,6 +277,12 @@
                 });
             }
 
+            function formatCPF(cpf) {
+                cpf = cpf.replace(/\D/g, ''); // só números
+                if (cpf.length !== 11) return cpf; // se não for 11 dígitos, retorna sem formatação
+                return cpf.substring(0, 3) + '.' + cpf.substring(3, 6) + '.' + cpf.substring(6, 9) + '-' + cpf.substring(9, 11);
+            }
+
             function setUpdateMode(matricula, nome, funcao, status, obra, cpf) {
                 document.getElementById("funcionarioModalLabel").innerText = "Editar Funcionário";
                 document.getElementById("funcionarioForm").action = "/update/" + matricula + "/";
@@ -284,8 +293,7 @@
                 document.getElementById('id_funcao').value = funcao;
                 document.getElementById('id_status').value = status;
                 document.getElementById('id_obra').value = obra;
-                document.getElementById('id_cpf').value = cpf;
-
+                document.getElementById('id_cpf').value = formatCPF(cpf);
                 // Torna a matrícula apenas leitura
                 document.getElementById('id_matricula').readOnly = true;
             }
