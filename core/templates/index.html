@@ -50,9 +50,15 @@
                         </button>
 
                         <!-- Editar -->
-                        <button class="btn btn-warning text-white" style="background-color: #f7f440;"
-                            data-bs-toggle="modal" data-bs-target="#funcionarioModal"
-                            onclick="setUpdateMode('{{ funcionario.matricula }}', '{{ funcionario.nome }}', '{{ funcionario.funcao }}', '{{ funcionario.status }}', '{{ funcionario.obra }}')">
+                        <button class="btn btn-warning text-white" data-bs-toggle="modal"
+                            data-bs-target="#funcionarioModal" onclick="setUpdateMode(
+                                '{{ funcionario.matricula }}',
+                                '{{ funcionario.nome }}',
+                                '{{ funcionario.funcao }}',
+                                '{{ funcionario.status }}',
+                                '{{ funcionario.obra }}',
+                                '{{ funcionario.cpf }}',
+                            )">
                             <i class="bi bi-pencil text-muted"></i>
                         </button>
 
@@ -86,6 +92,7 @@
                                         <p><strong>Função:</strong> {{ funcionario.funcao }}</p>
                                         <p><strong>Status:</strong> {{ funcionario.get_status_display }}</p>
                                         <p><strong>Obra:</strong> {{ funcionario.obra }}</p>
+                                        <p><strong>CPF:</strong> {{ funcionario.cpf }}</p>
                                     </div>
 
                                     <!-- Foto do funcionário com ajuste -->
@@ -185,6 +192,15 @@
                                 <label for="id_foto" class="form-label">Foto</label>
                                 {{ form.foto }}
                             </div>
+                            <div class="mb-3">
+                                <label for="id_cpf" class="form-label">CPF</label>
+                                {{ form.cpf }}
+                                {% if form.cpf.errors %}
+                                <div class="invalid-feedback d-block">
+                                    {{ form.cpf.errors.0 }}
+                                </div>
+                                {% endif %}
+                            </div>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
@@ -258,7 +274,7 @@
                 });
             }
 
-            function setUpdateMode(matricula, nome, funcao, status, obra) {
+            function setUpdateMode(matricula, nome, funcao, status, obra, cpf) {
                 document.getElementById("funcionarioModalLabel").innerText = "Editar Funcionário";
                 document.getElementById("funcionarioForm").action = "/update/" + matricula + "/";
 
@@ -268,6 +284,7 @@
                 document.getElementById('id_funcao').value = funcao;
                 document.getElementById('id_status').value = status;
                 document.getElementById('id_obra').value = obra;
+                document.getElementById('id_cpf').value = cpf;
 
                 // Torna a matrícula apenas leitura
                 document.getElementById('id_matricula').readOnly = true;
@@ -311,6 +328,21 @@
                 });
             });
         </script>
+
+        <!-- Máscara para o campo CPF -->
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                const cpfInput = document.getElementById('id_cpf');
+
+                if (cpfInput) {
+                    IMask(cpfInput, {
+                        mask: '000.000.000-00'
+                    });
+                }
+            });
+        </script>
+
+        <script src="https://unpkg.com/imask"></script>
 
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
         {% endblock %}

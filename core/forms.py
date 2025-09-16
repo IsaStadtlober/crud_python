@@ -1,5 +1,6 @@
 from django import forms
 from core.models import Funcionario
+import re
 
 class FuncionarioForm(forms.ModelForm):
     class Meta:
@@ -28,3 +29,19 @@ class FuncionarioForm(forms.ModelForm):
         if qs.exists():
             raise forms.ValidationError("Esta matrícula já está cadastrada.")
         return matricula
+    
+    def clean_cpf(self):
+        cpf = self.cleaned_data.get('cpf')
+
+        if not cpf:
+            raise forms.ValidationError('Campo CPF é obrigatório.')
+
+        cpf = cpf.replace('.', '').replace('-', '').strip()
+
+        # Aqui você pode continuar sua validação, por exemplo:
+        if len(cpf) != 11 or not cpf.isdigit():
+            raise forms.ValidationError('CPF inválido.')
+
+        # Pode adicionar a validação dos dígitos verificadores aqui
+
+        return cpf
