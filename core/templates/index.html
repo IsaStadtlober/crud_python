@@ -56,7 +56,9 @@
                             data-nivel_funcao="{{ funcionario.nivel_funcao }}" data-status="{{ funcionario.status }}"
                             data-obra="{{ funcionario.obra }}" data-cpf="{{ funcionario.cpf }}"
                             data-data_admissao="{{ funcionario.data_admissao|date:'Y-m-d' }}"
-                            onclick="handleEditClick(this)">
+                            data-cep="{{ funcionario.cep }}" data-logradouro="{{ funcionario.logradouro }}"
+                            data-bairro="{{ funcionario.bairro }}" data-cidade="{{ funcionario.cidade }}"
+                            data-uf="{{ funcionario.uf }}" onclick="handleEditClick(this)">
                             <i class="bi bi-pencil text-muted"></i>
                         </button>
 
@@ -101,11 +103,17 @@
                                         </p>
 
                                         {% if funcionario.data_admissao %}
-                                        <p><strong>Data de Admissão:</strong> {{funcionario.data_admissao|date:"d/m/Y"}}</p>
+                                        <p><strong>Data de Admissão:</strong> {{funcionario.data_admissao|date:"d/m/Y"}}
+                                        </p>
                                         {% else %}
                                         <p><strong>Data de Admissão:</strong> Não informada</p>
                                         {% endif %}
 
+                                        <p><strong>CEP:</strong> {{ funcionario.cep }}</p>
+                                        <p><strong>Logradouro:</strong> {{ funcionario.logradouro }}</p>
+                                        <p><strong>Bairro:</strong> {{ funcionario.bairro }}</p>
+                                        <p><strong>Cidade:</strong> {{ funcionario.cidade }}</p>
+                                        <p><strong>UF:</strong> {{ funcionario.uf }}</p>
                                     </div>
 
 
@@ -176,6 +184,7 @@
                                 aria-label="Fechar"></button>
                         </div>
                         <div class="modal-body">
+
                             <div class="mb-3">
                                 <label for="id_matricula" class="form-label">Matrícula</label>
                                 {{ form.matricula }}
@@ -185,30 +194,37 @@
                                 </div>
                                 {% endif %}
                             </div>
+
                             <div class="mb-3">
                                 <label for="id_nome" class="form-label">Nome</label>
                                 {{ form.nome }}
                             </div>
+
                             <div class="mb-3">
                                 <label for="id_funcao" class="form-label">Função</label>
                                 {{ form.funcao }}
                             </div>
+
                             <div class="mb-3">
                                 <label for="id_nivel_funcao" class="form-label">Nível da Função</label>
                                 {{ form.nivel_funcao }}
                             </div>
+
                             <div class="mb-3">
                                 <label for="id_status" class="form-label">Status</label>
                                 {{ form.status }}
                             </div>
+
                             <div class="mb-3">
                                 <label for="id_obra" class="form-label">Obra</label>
                                 {{ form.obra }}
                             </div>
+
                             <div class="mb-3">
                                 <label for="id_foto" class="form-label">Foto</label>
                                 {{ form.foto }}
                             </div>
+
                             <div class="mb-3">
                                 <label for="id_cpf" class="form-label">CPF</label>
                                 {{ form.cpf }}
@@ -218,10 +234,36 @@
                                 </div>
                                 {% endif %}
                             </div>
+
                             <div class="mb-3">
                                 <label for="dataAdmissao" class="form-label">Data de Admissão</label>
                                 <input type="date" class="form-control" id="dataAdmissao" name="data_admissao"
                                     value="{{ form.data_admissao.value|default_if_none:'' }}">
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="id_cep" class="form-label">CEP</label>
+                                <input type="text" class="form-control" id="id_cep" name="cep" maxlength="9">
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="id_logradouro" class="form-label">Logradouro</label>
+                                <input type="text" class="form-control" id="id_logradouro" name="logradouro">
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="id_bairro" class="form-label">Bairro</label>
+                                <input type="text" class="form-control" id="id_bairro" name="bairro">
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="id_cidade" class="form-label">Cidade</label>
+                                <input type="text" class="form-control" id="id_cidade" name="cidade">
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="id_uf" class="form-label">Estado (UF)</label>
+                                <input type="text" class="form-control" id="id_uf" name="uf">
                             </div>
                         </div>
                         <div class="modal-footer">
@@ -317,6 +359,13 @@
                 document.getElementById('id_nivel_funcao').value = nivel_funcao;
                 document.getElementById('dataAdmissao').value = data_admissao;
 
+                // Endereço
+                document.getElementById('id_cep').value = cep || '';
+                document.getElementById('id_logradouro').value = logradouro || '';
+                document.getElementById('id_bairro').value = bairro || '';
+                document.getElementById('id_cidade').value = cidade || '';
+                document.getElementById('id_uf').value = uf || '';
+
                 document.getElementById('id_matricula').readOnly = true;
 
             }
@@ -332,7 +381,12 @@
                     data.status,
                     data.obra,
                     data.cpf,
-                    data.data_admissao
+                    data.data_admissao,
+                    data.cep,
+                    data.logradouro,
+                    data.bairro,
+                    data.cidade,
+                    data.uf
                 );
             }
 
@@ -402,6 +456,44 @@
                             rawCpf.slice(9);
                     }
                 });
+            });
+        </script>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                const cepInput = document.getElementById('id_cep');
+
+                if (cepInput) {
+                    IMask(cepInput, {
+                        mask: '00000-000'
+                    });
+
+                    cepInput.addEventListener('input', function () {
+                        const cep = cepInput.value.replace(/\D/g, '');
+                        if (cep.length === 8) {
+                            buscarEnderecoPorCep(cep);
+                        }
+                    });
+                }
+
+                function buscarEnderecoPorCep(cep) {
+                    fetch(`https://viacep.com.br/ws/${cep}/json/`)
+                        .then(response => response.json())
+                        .then(data => {
+                            if (!data.erro) {
+                                document.getElementById('id_logradouro').value = data.logradouro || '';
+                                document.getElementById('id_bairro').value = data.bairro || '';
+                                document.getElementById('id_cidade').value = data.localidade || '';
+                                document.getElementById('id_uf').value = data.uf || '';
+                            } else {
+                                alert('CEP não encontrado.');
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Erro ao buscar o CEP:', error);
+                            alert('Erro ao buscar o CEP.');
+                        });
+                }
             });
         </script>
 

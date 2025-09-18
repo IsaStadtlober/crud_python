@@ -9,6 +9,11 @@ class FuncionarioForm(forms.ModelForm):
         widgets = {
             'foto': forms.FileInput(),
             'nivel_funcao': forms.Select(),
+            'cep': forms.TextInput(attrs={'id': 'id_cep'}),
+            'logradouro': forms.TextInput(attrs={'id': 'id_logradouro'}),
+            'bairro': forms.TextInput(attrs={'id': 'id_bairro'}),
+            'cidade': forms.TextInput(attrs={'id': 'id_cidade'}),
+            'uf': forms.TextInput(attrs={'id': 'id_uf'}),
         }
 
     def __init__(self, *args, **kwargs):

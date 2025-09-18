@@ -30,6 +30,11 @@ class Funcionario(models.Model):
     foto = models.ImageField(upload_to='fotos_funcionarios/', blank=True, null=True)
     cpf = models.CharField(max_length=14, blank=True, null=True)
     data_admissao = models.DateField(null=True, blank=True)
+    cep = models.CharField(max_length=9, blank=True, null=True)
+    logradouro = models.CharField(max_length=255, blank=True, null=True)
+    bairro = models.CharField(max_length=100, blank=True, null=True)
+    cidade = models.CharField(max_length=100, blank=True, null=True)
+    uf = models.CharField(max_length=2, blank=True, null=True)
     
     def __str__(self) -> str:
         return self.nome 
