@@ -6,6 +6,9 @@ class FuncionarioForm(forms.ModelForm):
     class Meta:
         model = Funcionario
         fields = '__all__'
+        widgets = {
+            'foto': forms.FileInput(),  # <--- isso remove o "Currently" e o link da imagem atual
+        }
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
