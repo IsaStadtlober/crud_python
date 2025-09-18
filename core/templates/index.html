@@ -51,15 +51,12 @@
 
                         <!-- Editar -->
                         <button class="btn btn-warning text-white" data-bs-toggle="modal"
-                            data-bs-target="#funcionarioModal" onclick="setUpdateMode(
-                                '{{ funcionario.matricula }}',
-                                '{{ funcionario.nome }}',
-                                '{{ funcionario.funcao }}',
-                                '{{ funcionario.nivel_funcao }}',
-                                '{{ funcionario.status }}',
-                                '{{ funcionario.obra }}',
-                                '{{ funcionario.cpf }}',
-                            )">
+                            data-bs-target="#funcionarioModal" data-matricula="{{ funcionario.matricula }}"
+                            data-nome="{{ funcionario.nome }}" data-funcao="{{ funcionario.funcao }}"
+                            data-nivel_funcao="{{ funcionario.nivel_funcao }}" data-status="{{ funcionario.status }}"
+                            data-obra="{{ funcionario.obra }}" data-cpf="{{ funcionario.cpf }}"
+                            data-data_admissao="{{ funcionario.data_admissao|date:'Y-m-d' }}"
+                            onclick="handleEditClick(this)">
                             <i class="bi bi-pencil text-muted"></i>
                         </button>
 
@@ -103,7 +100,12 @@
                                             {% endif %}
                                         </p>
 
-                                      <p><strong>Data de Admissão:</strong> {{ funcionario.data_admissao|date:"d/m/Y" }}</p>
+                                        {% if funcionario.data_admissao %}
+                                        <p><strong>Data de Admissão:</strong> {{funcionario.data_admissao|date:"d/m/Y"}}</p>
+                                        {% else %}
+                                        <p><strong>Data de Admissão:</strong> Não informada</p>
+                                        {% endif %}
+
                                     </div>
 
 
@@ -219,7 +221,7 @@
                             <div class="mb-3">
                                 <label for="dataAdmissao" class="form-label">Data de Admissão</label>
                                 <input type="date" class="form-control" id="dataAdmissao" name="data_admissao"
-                                    value="{{ funcionario.data_admissao|default_if_none:'' }}">
+                                    value="{{ form.data_admissao.value|default_if_none:'' }}">
                             </div>
                         </div>
                         <div class="modal-footer">
@@ -313,9 +315,27 @@
                 document.getElementById('id_obra').value = obra;
                 document.getElementById('id_cpf').value = formatCPF(cpf);
                 document.getElementById('id_nivel_funcao').value = nivel_funcao;
+                document.getElementById('dataAdmissao').value = data_admissao;
+
                 document.getElementById('id_matricula').readOnly = true;
 
             }
+
+            function handleEditClick(button) {
+                const data = button.dataset;
+
+                setUpdateMode(
+                    data.matricula,
+                    data.nome,
+                    data.funcao,
+                    data.nivel_funcao,
+                    data.status,
+                    data.obra,
+                    data.cpf,
+                    data.data_admissao
+                );
+            }
+
         </script>
 
         {% if form.errors %}
