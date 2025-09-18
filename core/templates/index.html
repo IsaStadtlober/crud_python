@@ -94,12 +94,18 @@
                                         <p><strong>Nível da função:</strong> {{ funcionario.nivel_funcao }}</p>
                                         <p><strong>Status:</strong> {{ funcionario.get_status_display }}</p>
                                         <p><strong>Obra:</strong> {{ funcionario.obra }}</p>
-                                        {% if funcionario.cpf %}
-                                        <p><strong>CPF:</strong> {{ funcionario.cpf|stringformat:"s"|slice:":3"}}.{{funcionario.cpf|stringformat:"s"|slice:"3:6"}}.{{funcionario.cpf|stringformat:"s"|slice:"6:9"}}-{{funcionario.cpf|stringformat:"s"|slice:"9:" }}</p>
-                                        {% else %}
-                                        <p><strong>CPF:</strong> Não informado</p>
-                                        {% endif %}
+
+                                        <p><strong>CPF:</strong>
+                                            {% if funcionario.cpf %}
+                                            <span data-format-cpf>{{ funcionario.cpf }}</span>
+                                            {% else %}
+                                            Não informado
+                                            {% endif %}
+                                        </p>
+
+                                      <p><strong>Data de Admissão:</strong> {{ funcionario.data_admissao|date:"d/m/Y" }}</p>
                                     </div>
+
 
                                     <!-- Foto do funcionário com ajuste -->
                                     <div style="flex: 0 0 150px; margin-right: 30px; margin-top: 10px;">
@@ -210,6 +216,11 @@
                                 </div>
                                 {% endif %}
                             </div>
+                            <div class="mb-3">
+                                <label for="dataAdmissao" class="form-label">Data de Admissão</label>
+                                <input type="date" class="form-control" id="dataAdmissao" name="data_admissao"
+                                    value="{{ funcionario.data_admissao|default_if_none:'' }}">
+                            </div>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
@@ -290,7 +301,7 @@
                 return cpf.substring(0, 3) + '.' + cpf.substring(3, 6) + '.' + cpf.substring(6, 9) + '-' + cpf.substring(9, 11);
             }
 
-            function setUpdateMode(matricula, nome, funcao, nivel_funcao, status, obra, cpf) {
+            function setUpdateMode(matricula, nome, funcao, nivel_funcao, status, obra, cpf, data_admissao) {
                 document.getElementById("funcionarioModalLabel").innerText = "Editar Funcionário";
                 document.getElementById("funcionarioForm").action = "/update/" + matricula + "/";
 
@@ -302,8 +313,8 @@
                 document.getElementById('id_obra').value = obra;
                 document.getElementById('id_cpf').value = formatCPF(cpf);
                 document.getElementById('id_nivel_funcao').value = nivel_funcao;
-                // Torna a matrícula apenas leitura
                 document.getElementById('id_matricula').readOnly = true;
+
             }
         </script>
 
@@ -355,6 +366,22 @@
                         mask: '000.000.000-00'
                     });
                 }
+            });
+        </script>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                const cpfElements = document.querySelectorAll('[data-format-cpf]');
+
+                cpfElements.forEach(el => {
+                    let rawCpf = el.textContent.replace(/\D/g, '');
+                    if (rawCpf.length === 11) {
+                        el.textContent = rawCpf.slice(0, 3) + '.' +
+                            rawCpf.slice(3, 6) + '.' +
+                            rawCpf.slice(6, 9) + '-' +
+                            rawCpf.slice(9);
+                    }
+                });
             });
         </script>
 

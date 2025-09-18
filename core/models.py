@@ -29,6 +29,7 @@ class Funcionario(models.Model):
     obra = models.CharField(max_length=150, default='')
     foto = models.ImageField(upload_to='fotos_funcionarios/', blank=True, null=True)
     cpf = models.CharField(max_length=14, blank=True, null=True)
+    data_admissao = models.DateField(null=True, blank=True)
     
     def __str__(self) -> str:
         return self.nome 
