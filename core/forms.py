@@ -7,7 +7,8 @@ class FuncionarioForm(forms.ModelForm):
         model = Funcionario
         fields = '__all__'
         widgets = {
-            'foto': forms.FileInput(),  # <--- isso remove o "Currently" e o link da imagem atual
+            'foto': forms.FileInput(),
+            'nivel_funcao': forms.Select(),
         }
 
     def __init__(self, *args, **kwargs):

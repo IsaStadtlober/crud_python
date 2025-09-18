@@ -55,6 +55,7 @@
                                 '{{ funcionario.matricula }}',
                                 '{{ funcionario.nome }}',
                                 '{{ funcionario.funcao }}',
+                                '{{ funcionario.nivel_funcao }}',
                                 '{{ funcionario.status }}',
                                 '{{ funcionario.obra }}',
                                 '{{ funcionario.cpf }}',
@@ -90,10 +91,11 @@
                                         <p><strong>Matrícula:</strong> {{ funcionario.matricula }}</p>
                                         <p><strong>Nome:</strong> {{ funcionario.nome }}</p>
                                         <p><strong>Função:</strong> {{ funcionario.funcao }}</p>
+                                        <p><strong>Nível da função:</strong> {{ funcionario.nivel_funcao }}</p>
                                         <p><strong>Status:</strong> {{ funcionario.get_status_display }}</p>
                                         <p><strong>Obra:</strong> {{ funcionario.obra }}</p>
                                         {% if funcionario.cpf %}
-                                        <p><strong>CPF:</strong> {{ funcionario.cpf|stringformat:"s"|slice:":3" }}.{{funcionario.cpf|stringformat:"s"|slice:"3:6" }}.{{funcionario.cpf|stringformat:"s"|slice:"6:9" }}-{{funcionario.cpf|stringformat:"s"|slice:"9:" }}</p>
+                                        <p><strong>CPF:</strong> {{ funcionario.cpf|stringformat:"s"|slice:":3"}}.{{funcionario.cpf|stringformat:"s"|slice:"3:6"}}.{{funcionario.cpf|stringformat:"s"|slice:"6:9"}}-{{funcionario.cpf|stringformat:"s"|slice:"9:" }}</p>
                                         {% else %}
                                         <p><strong>CPF:</strong> Não informado</p>
                                         {% endif %}
@@ -184,6 +186,10 @@
                                 {{ form.funcao }}
                             </div>
                             <div class="mb-3">
+                                <label for="id_nivel_funcao" class="form-label">Nível da Função</label>
+                                {{ form.nivel_funcao }}
+                            </div>
+                            <div class="mb-3">
                                 <label for="id_status" class="form-label">Status</label>
                                 {{ form.status }}
                             </div>
@@ -260,6 +266,7 @@
                 document.getElementById('id_matricula').value = '';
                 document.getElementById('id_nome').value = '';
                 document.getElementById('id_funcao').value = '';
+                document.getElementById('id_nivel_funcao').value = '';
                 document.getElementById('id_status').value = '';
                 document.getElementById('id_obra').value = '';
 
@@ -283,7 +290,7 @@
                 return cpf.substring(0, 3) + '.' + cpf.substring(3, 6) + '.' + cpf.substring(6, 9) + '-' + cpf.substring(9, 11);
             }
 
-            function setUpdateMode(matricula, nome, funcao, status, obra, cpf) {
+            function setUpdateMode(matricula, nome, funcao, nivel_funcao, status, obra, cpf) {
                 document.getElementById("funcionarioModalLabel").innerText = "Editar Funcionário";
                 document.getElementById("funcionarioForm").action = "/update/" + matricula + "/";
 
@@ -294,6 +301,7 @@
                 document.getElementById('id_status').value = status;
                 document.getElementById('id_obra').value = obra;
                 document.getElementById('id_cpf').value = formatCPF(cpf);
+                document.getElementById('id_nivel_funcao').value = nivel_funcao;
                 // Torna a matrícula apenas leitura
                 document.getElementById('id_matricula').readOnly = true;
             }

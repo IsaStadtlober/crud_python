@@ -12,10 +12,19 @@ STATUS_CHOICES = [
     ('EC', 'Em contratação')
 ]
 
+NIVEL_FUNCAO_CHOICES = [
+        (1, 'Nível 1'),
+        (2, 'Nível 2'),
+        (3, 'Nível 3'),
+        (4, 'Nível 4'),
+        (5, 'Nível 5'),
+    ]
+
 class Funcionario(models.Model):
     matricula = models.IntegerField(primary_key=True)
     nome = models.CharField(max_length=100, default='')
     funcao = models.CharField( max_length=100, verbose_name="Função", default='')
+    nivel_funcao = models.IntegerField(choices=NIVEL_FUNCAO_CHOICES, default=1)
     status = models.CharField(max_length=2, choices=STATUS_CHOICES, default='A')
     obra = models.CharField(max_length=150, default='')
     foto = models.ImageField(upload_to='fotos_funcionarios/', blank=True, null=True)
