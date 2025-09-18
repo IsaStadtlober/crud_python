@@ -334,13 +334,6 @@
                 document.getElementById('id_cidade').value = '';
                 document.getElementById('id_uf').value = '';
 
-                document.getElementById('id_matricula').value = '';
-                document.getElementById('id_nome').value = '';
-                document.getElementById('id_funcao').value = '';
-                document.getElementById('id_nivel_funcao').value = '';
-                document.getElementById('id_status').value = '';
-                document.getElementById('id_obra').value = '';
-
                 document.getElementById('id_matricula').readOnly = false;
 
                 // Remove a classe 'is-invalid' dos inputs
@@ -361,7 +354,7 @@
                 return cpf.substring(0, 3) + '.' + cpf.substring(3, 6) + '.' + cpf.substring(6, 9) + '-' + cpf.substring(9, 11);
             }
 
-            function setUpdateMode(matricula, nome, funcao, nivel_funcao, status, obra, cpf, data_admissao) {
+            function setUpdateMode(matricula, nome, funcao, nivel_funcao, status, obra, cpf, data_admissao, cep, logradouro, bairro, cidade, uf) {
                 document.getElementById("funcionarioModalLabel").innerText = "Editar Funcionário";
                 document.getElementById("funcionarioForm").action = "/update/" + matricula + "/";
 
@@ -383,7 +376,6 @@
                 document.getElementById('id_uf').value = uf || '';
 
                 document.getElementById('id_matricula').readOnly = true;
-
             }
 
             function handleEditClick(button) {
