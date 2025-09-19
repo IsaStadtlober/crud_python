@@ -246,7 +246,9 @@
 
                             <div class="mb-3">
                                 <label for="id_cep" class="form-label">CEP</label>
-                                <input type="text" class="form-control" id="id_cep" name="cep" maxlength="9">
+                                <input type="text" class="form-control" id="id_cep" name="cep" maxlength="9" required>
+                                <div class="invalid-feedback" id="cep-error" style="display: none;">CEP inválido ou não
+                                    encontrado.</div>
                             </div>
 
                             <div class="mb-3">
@@ -472,38 +474,77 @@
 
         <script>
             document.addEventListener('DOMContentLoaded', function () {
+                const form = document.getElementById('funcionarioForm');
                 const cepInput = document.getElementById('id_cep');
+                const cepError = document.getElementById('cep-error');
 
                 if (cepInput) {
                     IMask(cepInput, {
                         mask: '00000-000'
                     });
-
-                    cepInput.addEventListener('input', function () {
-                        const cep = cepInput.value.replace(/\D/g, '');
-                        if (cep.length === 8) {
-                            buscarEnderecoPorCep(cep);
-                        }
-                    });
                 }
 
-                function buscarEnderecoPorCep(cep) {
-                    fetch(`https://viacep.com.br/ws/${cep}/json/`)
-                        .then(response => response.json())
-                        .then(data => {
-                            if (!data.erro) {
-                                document.getElementById('id_logradouro').value = data.logradouro || '';
-                                document.getElementById('id_bairro').value = data.bairro || '';
-                                document.getElementById('id_cidade').value = data.localidade || '';
-                                document.getElementById('id_uf').value = data.uf || '';
-                            } else {
-                                alert('CEP não encontrado.');
-                            }
-                        })
-                        .catch(error => {
-                            console.error('Erro ao buscar o CEP:', error);
-                            alert('Erro ao buscar o CEP.');
-                        });
+                // Armazenar o estado de validade do CEP
+                let cepValido = true;
+
+                form.addEventListener('submit', function (event) {
+                    const rawCep = cepInput.value.replace(/\D/g, '');
+
+                    if (rawCep.length !== 8 || cepInput.classList.contains('is-invalid')) {
+                        // Impede envio
+                        event.preventDefault();
+                        event.stopPropagation();
+
+                        // Adiciona estilo de erro se não tiver
+                        cepInput.classList.add('is-invalid');
+                        cepError.style.display = 'block';
+                        cepValido = false;
+                    }
+                });
+
+                // Validação ao digitar
+                cepInput.addEventListener('input', function () {
+                    const rawCep = cepInput.value.replace(/\D/g, '');
+
+                    if (rawCep.length === 8) {
+                        fetch(`https://viacep.com.br/ws/${rawCep}/json/`)
+                            .then(response => response.json())
+                            .then(data => {
+                                if (!data.erro) {
+                                    // CEP válido
+                                    cepInput.classList.remove('is-invalid');
+                                    cepError.style.display = 'none';
+                                    cepValido = true;
+
+                                    // Preenche os campos
+                                    document.getElementById('id_logradouro').value = data.logradouro || '';
+                                    document.getElementById('id_bairro').value = data.bairro || '';
+                                    document.getElementById('id_cidade').value = data.localidade || '';
+                                    document.getElementById('id_uf').value = data.uf || '';
+                                } else {
+                                    mostrarErro();
+                                }
+                            })
+                            .catch(() => {
+                                mostrarErro();
+                            });
+                    } else {
+                        // Ainda não há 8 dígitos - apenas limpa erros visuais
+                        cepInput.classList.remove('is-invalid');
+                        cepError.style.display = 'none';
+                    }
+                });
+
+                function mostrarErro() {
+                    cepInput.classList.add('is-invalid');
+                    cepError.style.display = 'block';
+                    cepValido = false;
+
+                    // Limpa os campos
+                    document.getElementById('id_logradouro').value = '';
+                    document.getElementById('id_bairro').value = '';
+                    document.getElementById('id_cidade').value = '';
+                    document.getElementById('id_uf').value = '';
                 }
             });
         </script>
