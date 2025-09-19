@@ -237,8 +237,8 @@
 
                             <div class="mb-3">
                                 <label for="dataAdmissao" class="form-label">Data de Admissão</label>
-                                <input type="date" class="form-control" id="dataAdmissao" name="data_admissao"
-                                    value="{{ form.data_admissao.value|default_if_none:'' }}">
+                                <input type="date" id="dataAdmissao" name="data_admissao" class="form-control"
+                                    value="{{ form.data_admissao.value|default:'' }}" max="{% now 'Y-m-d' %}">
                             </div>
 
                             <div class="mb-3">
