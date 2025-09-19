@@ -388,6 +388,13 @@
             }
 
             function setUpdateMode(matricula, nome, funcao, nivel_funcao, status, obra, cpf, data_admissao, cep, logradouro, bairro, cidade, uf) {
+                function cleanValue(value) {
+                    if (!value || value === "None") {
+                        return '';
+                    }
+                    return value;
+                }
+
                 document.getElementById("funcionarioModalLabel").innerText = "Editar Funcionário";
                 document.getElementById("funcionarioForm").action = "/update/" + matricula + "/";
 
@@ -402,11 +409,12 @@
                 document.getElementById('id_data_admissao').value = data_admissao;
 
                 // Endereço
-                document.getElementById('id_cep').value = cep;
-                document.getElementById('id_logradouro').value = logradouro;
-                document.getElementById('id_bairro').value = bairro;
-                document.getElementById('id_cidade').value = cidade;
-                document.getElementById('id_uf').value = uf;
+                document.getElementById('id_cep').value = cleanValue(cep);
+                document.getElementById('id_logradouro').value = cleanValue(logradouro);
+                document.getElementById('id_bairro').value = cleanValue(bairro);
+                document.getElementById('id_cidade').value = cleanValue(cidade);
+                document.getElementById('id_uf').value = cleanValue(uf);
+                document.getElementById('id_data_admissao').value = cleanValue(data_admissao);
 
                 document.getElementById('id_matricula').readOnly = true;
             }
