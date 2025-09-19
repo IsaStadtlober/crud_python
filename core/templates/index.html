@@ -86,14 +86,11 @@
                                     style="display: flex; flex-wrap: wrap; gap: 20px; align-items: flex-start;">
                                     <!-- Informações do funcionário -->
                                     <div style="flex: 1; min-width: 200px; margin-top: 10px;">
-                                        <p><strong>Matrícula:</strong> {{ funcionario.matricula|default:"Não
-                                            informado"}}</p>
+                                        <p><strong>Matrícula:</strong> {{ funcionario.matricula|default:"Nãoinformado"}}</p>
                                         <p><strong>Nome:</strong> {{ funcionario.nome|default:"Não informado" }}</p>
                                         <p><strong>Função:</strong> {{ funcionario.funcao|default:"Não informado" }}</p>
-                                        <p><strong>Nível da função:</strong> {{ funcionario.nivel_funcao|default:"Não
-                                            informado" }}</p>
-                                        <p><strong>Status:</strong> {{ funcionario.get_status_display|default:"Não
-                                            informado" }}</p>
+                                        <p><strong>Nível da função:</strong> {{ funcionario.nivel_funcao|default:"Não informado" }}</p>
+                                        <p><strong>Status:</strong> {{ funcionario.get_status_display|default:"Não informado" }}</p>
                                         <p><strong>Obra:</strong> {{ funcionario.obra|default:"Não informado" }}</p>
 
                                         <p><strong>CPF:</strong>
@@ -105,15 +102,13 @@
                                         </p>
 
                                         {% if funcionario.data_admissao %}
-                                        <p><strong>Data de Admissão:</strong> {{
-                                            funcionario.data_admissao|date:"d/m/Y"}}</p>
+                                        <p><strong>Data de Admissão:</strong> {{ funcionario.data_admissao|date:"d/m/Y"}}</p>
                                         {% else %}
                                         <p><strong>Data de Admissão:</strong> Não informada</p>
                                         {% endif %}
 
                                         <p><strong>CEP:</strong> {{ funcionario.cep|default:"Não informado" }}</p>
-                                        <p><strong>Logradouro:</strong> {{ funcionario.logradouro|default:"Não
-                                            informado" }}</p>
+                                        <p><strong>Logradouro:</strong> {{ funcionario.logradouro|default:"Não informado" }}</p>
                                         <p><strong>Bairro:</strong> {{ funcionario.bairro|default:"Não informado" }}</p>
                                         <p><strong>Cidade:</strong> {{ funcionario.cidade|default:"Não informado" }}</p>
                                         <p><strong>UF:</strong> {{ funcionario.uf|default:"Não informado" }}</p>
@@ -187,118 +182,134 @@
                                 aria-label="Fechar"></button>
                         </div>
                         <div class="modal-body">
+                            <div class="container-fluid">
+                                <div class="row">
+                                    <!-- Coluna 1 -->
+                                    <div class="col-md-4">
+                                        <div class="mb-3">
+                                            <label for="id_matricula" class="form-label">Matrícula</label>
+                                            {{ form.matricula }}
+                                            {% if form.matricula.errors %}
+                                            <div class="invalid-feedback d-block">
+                                                {{ form.matricula.errors.0 }}
+                                            </div>
+                                            {% endif %}
+                                        </div>
 
-                            <div class="mb-3">
-                                <label for="id_matricula" class="form-label">Matrícula</label>
-                                {{ form.matricula }}
-                                {% if form.matricula.errors %}
-                                <div class="invalid-feedback d-block">
-                                    {{ form.matricula.errors.0 }}
+                                        <div class="mb-3">
+                                            <label for="id_nome" class="form-label">Nome</label>
+                                            {{ form.nome }}
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label for="id_funcao" class="form-label">Função</label>
+                                            {{ form.funcao }}
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label for="id_nivel_funcao" class="form-label">Nível da Função</label>
+                                            {{ form.nivel_funcao }}
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label for="id_status" class="form-label">Status</label>
+                                            {{ form.status }}
+                                        </div>
+                                    </div>
+
+                                    <!-- Coluna 2 -->
+                                    <div class="col-md-4">
+                                        <div class="mb-3">
+                                            <label for="id_obra" class="form-label">Obra</label>
+                                            {{ form.obra }}
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label for="id_foto" class="form-label">Foto</label>
+                                            {{ form.foto }}
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label for="id_cpf" class="form-label">CPF</label>
+                                            {{ form.cpf }}
+                                            {% if form.cpf.errors %}
+                                            <div class="invalid-feedback d-block">
+                                                {{ form.cpf.errors.0 }}
+                                            </div>
+                                            {% endif %}
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label for="id_data_admissao" class="form-label">Data de Admissão</label>
+                                            {{ form.data_admissao }}
+                                            {% if form.data_admissao.errors %}
+                                            <div class="invalid-feedback d-block">
+                                                {{ form.data_admissao.errors.0 }}
+                                            </div>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+
+                                    <!-- Coluna 3 -->
+                                    <div class="col-md-4">
+                                        <div class="mb-3">
+                                            <label for="id_cep" class="form-label">CEP</label>
+                                            <input type="text"
+                                                class="form-control{% if form.errors.cep %} is-invalid{% endif %}"
+                                                id="id_cep" name="cep" maxlength="9" required
+                                                value="{{ form.data.cep|default_if_none:'' }}">
+                                            <div class="invalid-feedback" id="cep-error" style="display: none;">CEP
+                                                inválido ou não encontrado.</div>
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label for="{{ form.logradouro.id_for_label }}"
+                                                class="form-label">Logradouro</label>
+                                            {{ form.logradouro }}
+                                            {% if form.logradouro.errors %}
+                                            <div class="invalid-feedback d-block">
+                                                {{ form.logradouro.errors.0 }}
+                                            </div>
+                                            {% endif %}
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label for="{{ form.bairro.id_for_label }}"
+                                                class="form-label">Bairro</label>
+                                            {{ form.bairro }}
+                                            {% if form.bairro.errors %}
+                                            <div class="invalid-feedback d-block">
+                                                {{ form.bairro.errors.0 }}
+                                            </div>
+                                            {% endif %}
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label for="{{ form.cidade.id_for_label }}"
+                                                class="form-label">Cidade</label>
+                                            {{ form.cidade }}
+                                            {% if form.cidade.errors %}
+                                            <div class="invalid-feedback d-block">
+                                                {{ form.cidade.errors.0 }}
+                                            </div>
+                                            {% endif %}
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label for="{{ form.uf.id_for_label }}" class="form-label">Estado
+                                                (UF)</label>
+                                            {{ form.uf }}
+                                            {% if form.uf.errors %}
+                                            <div class="invalid-feedback d-block">
+                                                {{ form.uf.errors.0 }}
+                                            </div>
+                                            {% endif %}
+                                        </div>
+                                    </div>
                                 </div>
-                                {% endif %}
-                            </div>
-
-                            <div class="mb-3">
-                                <label for="id_nome" class="form-label">Nome</label>
-                                {{ form.nome }}
-                            </div>
-
-                            <div class="mb-3">
-                                <label for="id_funcao" class="form-label">Função</label>
-                                {{ form.funcao }}
-                            </div>
-
-                            <div class="mb-3">
-                                <label for="id_nivel_funcao" class="form-label">Nível da Função</label>
-                                {{ form.nivel_funcao }}
-                            </div>
-
-                            <div class="mb-3">
-                                <label for="id_status" class="form-label">Status</label>
-                                {{ form.status }}
-                            </div>
-
-                            <div class="mb-3">
-                                <label for="id_obra" class="form-label">Obra</label>
-                                {{ form.obra }}
-                            </div>
-
-                            <div class="mb-3">
-                                <label for="id_foto" class="form-label">Foto</label>
-                                {{ form.foto }}
-                            </div>
-
-                            <div class="mb-3">
-                                <label for="id_cpf" class="form-label">CPF</label>
-                                {{ form.cpf }}
-                                {% if form.cpf.errors %}
-                                <div class="invalid-feedback d-block">
-                                    {{ form.cpf.errors.0 }}
-                                </div>
-                                {% endif %}
-                            </div>
-
-                            <div class="mb-3">
-                                <label for="id_data_admissao" class="form-label">Data de Admissão</label>
-                                {% if form.data_admissao.errors %}
-                                {{ form.data_admissao }}
-                                <div class="invalid-feedback d-block">
-                                    {{ form.data_admissao.errors.0 }}
-                                </div>
-                                {% else %}
-                                {{ form.data_admissao }}
-                                {% endif %}
-                            </div>
-
-                            <div class="mb-3">
-                                <label for="id_cep" class="form-label">CEP</label>
-                                <input type="text" class="form-control{% if form.errors.cep %} is-invalid{% endif %}"
-                                    id="id_cep" name="cep" maxlength="9" required
-                                    value="{{ form.data.cep|default_if_none:'' }}">
-                                <div class="invalid-feedback" id="cep-error" style="display: none;">CEP inválido ou não
-                                    encontrado.</div>
-                            </div>
-
-                            <div class="mb-3">
-                                <label for="{{ form.logradouro.id_for_label }}" class="form-label">Logradouro</label>
-                                {{ form.logradouro }}
-                                {% if form.logradouro.errors %}
-                                <div class="invalid-feedback d-block">
-                                    {{ form.logradouro.errors.0 }}
-                                </div>
-                                {% endif %}
-                            </div>
-
-                            <div class="mb-3">
-                                <label for="{{ form.bairro.id_for_label }}" class="form-label">Bairro</label>
-                                {{ form.bairro }}
-                                {% if form.bairro.errors %}
-                                <div class="invalid-feedback d-block">
-                                    {{ form.bairro.errors.0 }}
-                                </div>
-                                {% endif %}
-                            </div>
-
-                            <div class="mb-3">
-                                <label for="{{ form.cidade.id_for_label }}" class="form-label">Cidade</label>
-                                {{ form.cidade }}
-                                {% if form.cidade.errors %}
-                                <div class="invalid-feedback d-block">
-                                    {{ form.cidade.errors.0 }}
-                                </div>
-                                {% endif %}
-                            </div>
-
-                            <div class="mb-3">
-                                <label for="{{ form.uf.id_for_label }}" class="form-label">Estado (UF)</label>
-                                {{ form.uf }}
-                                {% if form.uf.errors %}
-                                <div class="invalid-feedback d-block">
-                                    {{ form.uf.errors.0 }}
-                                </div>
-                                {% endif %}
                             </div>
                         </div>
+
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
                             <button type="submit" class="btn btn-success">Salvar</button>
