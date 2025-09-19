@@ -50,19 +50,14 @@
 
                         <!-- Editar -->
                         <button class="btn btn-warning text-white" data-bs-toggle="modal"
-                            data-bs-target="#funcionarioModal" 
-                            data-matricula="{{ funcionario.matricula }}"
-                            data-nome="{{ funcionario.nome }}"
-                            data-cpf="{{ funcionario.cpf }}"
-                            data-funcao="{{ funcionario.funcao }}"
-                            data-nivel_funcao="{{ funcionario.nivel_funcao }}" 
-                            data-status="{{ funcionario.status }}"
-                            data-obra="{{ funcionario.obra }}" 
+                            data-bs-target="#funcionarioModal" data-matricula="{{ funcionario.matricula }}"
+                            data-nome="{{ funcionario.nome }}" data-cpf="{{ funcionario.cpf }}"
+                            data-funcao="{{ funcionario.funcao }}" data-nivel_funcao="{{ funcionario.nivel_funcao }}"
+                            data-status="{{ funcionario.status }}" data-obra="{{ funcionario.obra }}"
                             data-data_admissao="{{ funcionario.data_admissao|date:'Y-m-d' }}"
-                            data-cep="{{ funcionario.cep }}" 
-                            data-logradouro="{{ funcionario.logradouro }}"
-                            data-bairro="{{ funcionario.bairro }}" 
-                            data-cidade="{{ funcionario.cidade }}"
+                            data-cep="{{ funcionario.cep }}" data-logradouro="{{ funcionario.logradouro }}"
+                            data-numero="{{ funcionario.numero }}" data-complemento="{{ funcionario.complemento }}"
+                            data-bairro="{{ funcionario.bairro }}" data-cidade="{{ funcionario.cidade }}"
                             data-uf="{{ funcionario.uf }}" onclick="handleEditClick(this)">
                             <i class="bi bi-pencil text-muted"></i>
                         </button>
@@ -92,9 +87,10 @@
                                     style="display: flex; flex-wrap: wrap; gap: 20px; align-items: flex-start;">
                                     <!-- Informações do funcionário -->
                                     <div style="flex: 1; min-width: 200px; margin-top: 10px;">
-                                        <p><strong>Matrícula:</strong> {{ funcionario.matricula|default:"Nãoinformado"}}</p>
+                                        <p><strong>Matrícula:</strong> {{ funcionario.matricula|default:"Nãoinformado"}}
+                                        </p>
                                         <p><strong>Nome:</strong> {{ funcionario.nome|default:"Não informado" }}</p>
-                                        
+
                                         <p><strong>CPF:</strong>
                                             {% if funcionario.cpf %}
                                             <span data-format-cpf>{{ funcionario.cpf }}</span>
@@ -102,20 +98,27 @@
                                             Não informado
                                             {% endif %}
                                         </p>
-                                        
+
                                         <p><strong>Função:</strong> {{ funcionario.funcao|default:"Não informado" }}</p>
-                                        <p><strong>Nível da função:</strong> {{ funcionario.nivel_funcao|default:"Não informado" }}</p>
-                                        <p><strong>Status:</strong> {{ funcionario.get_status_display|default:"Não informado" }}</p>
+                                        <p><strong>Nível da função:</strong> {{ funcionario.nivel_funcao|default:"Não
+                                            informado" }}</p>
+                                        <p><strong>Status:</strong> {{ funcionario.get_status_display|default:"Não
+                                            informado" }}</p>
                                         <p><strong>Obra:</strong> {{ funcionario.obra|default:"Não informado" }}</p>
 
                                         {% if funcionario.data_admissao %}
-                                        <p><strong>Data de Admissão:</strong> {{ funcionario.data_admissao|date:"d/m/Y"}}</p>
+                                        <p><strong>Data de Admissão:</strong> {{
+                                            funcionario.data_admissao|date:"d/m/Y"}}</p>
                                         {% else %}
                                         <p><strong>Data de Admissão:</strong> Não informada</p>
                                         {% endif %}
 
                                         <p><strong>CEP:</strong> {{ funcionario.cep|default:"Não informado" }}</p>
-                                        <p><strong>Logradouro:</strong> {{ funcionario.logradouro|default:"Não informado" }}</p>
+                                        <p><strong>Logradouro:</strong> {{ funcionario.logradouro|default:"Não
+                                            informado" }}</p>
+                                        <p><strong>Numero:</strong> {{ funcionario.numero|default:"Não informado" }}</p>
+                                        <p><strong>Complemento:</strong> {{ funcionario.complemento|default:"Não
+                                            informado" }}</p>
                                         <p><strong>Bairro:</strong> {{ funcionario.bairro|default:"Não informado" }}</p>
                                         <p><strong>Cidade:</strong> {{ funcionario.cidade|default:"Não informado" }}</p>
                                         <p><strong>UF:</strong> {{ funcionario.uf|default:"Não informado" }}</p>
@@ -312,6 +315,16 @@
                                             </div>
                                             {% endif %}
                                         </div>
+
+                                        <div class="mb-3">
+                                            <label for="id_numero" class="form-label">Número</label>
+                                            {{ form.numero }}
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label for="id_complemento" class="form-label">Complemento</label>
+                                            {{ form.complemento }}
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -371,10 +384,10 @@
 
                 document.getElementById('id_matricula').value = '';
                 document.getElementById('id_nome').value = '';
-                document.getElementById('id_cpf').value = ''; 
+                document.getElementById('id_cpf').value = '';
                 document.getElementById('id_funcao').value = '';
                 document.getElementById('id_status').value = '';
-                document.getElementById('id_obra').value = ''; 
+                document.getElementById('id_obra').value = '';
                 document.getElementById('id_nivel_funcao').value = '';
                 document.getElementById('dataAdmissao').value = '';
 
@@ -384,6 +397,8 @@
                 document.getElementById('id_bairro').value = '';
                 document.getElementById('id_cidade').value = '';
                 document.getElementById('id_uf').value = '';
+                document.getElementById('id_numero').value = '';
+                document.getElementById('id_complemento').value = '';
 
                 document.getElementById('id_matricula').readOnly = false;
 
@@ -405,7 +420,7 @@
                 return cpf.substring(0, 3) + '.' + cpf.substring(3, 6) + '.' + cpf.substring(6, 9) + '-' + cpf.substring(9, 11);
             }
 
-            function setUpdateMode(matricula, nome, cpf, funcao, nivel_funcao, status, obra, data_admissao, cep, logradouro, bairro, cidade, uf) {
+            function setUpdateMode(matricula, nome, cpf, funcao, nivel_funcao, status, obra, data_admissao, cep, logradouro, bairro, cidade, uf, numero, complemento) {
                 function cleanValue(value) {
                     if (!value || value === "None") {
                         return '';
@@ -424,7 +439,7 @@
                 document.getElementById('id_status').value = status;
                 document.getElementById('id_obra').value = obra;
                 document.getElementById('id_nivel_funcao').value = nivel_funcao;
-                document.getElementById('id_data_admissao').value = data_admissao;
+                document.getElementById('id_data_admissao').value = cleanValue(data_admissao);
 
                 // Endereço
                 document.getElementById('id_cep').value = cleanValue(cep);
@@ -432,7 +447,8 @@
                 document.getElementById('id_bairro').value = cleanValue(bairro);
                 document.getElementById('id_cidade').value = cleanValue(cidade);
                 document.getElementById('id_uf').value = cleanValue(uf);
-                document.getElementById('id_data_admissao').value = cleanValue(data_admissao);
+                document.getElementById('id_numero').value = cleanValue(numero);
+                document.getElementById('id_complemento').value = cleanValue(complemento);
 
                 document.getElementById('id_matricula').readOnly = true;
             }
@@ -453,7 +469,9 @@
                     data.logradouro,
                     data.bairro,
                     data.cidade,
-                    data.uf
+                    data.uf,
+                    data.numero,
+                    data.complemento
                 );
             }
 
