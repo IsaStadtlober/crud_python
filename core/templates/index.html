@@ -72,7 +72,7 @@
                     <!-- Modal de Visualizar -->
                     <div class="modal fade" id="viewModal{{ funcionario.matricula }}" tabindex="-1"
                         aria-labelledby="viewModalLabel{{ funcionario.matricula }}" aria-hidden="true">
-                        <div class="modal-dialog">
+                        <div class="modal-dialog modal-xl">
                             <div class="modal-content">
                                 <div class="modal-header bg-info text-white">
                                     <h5 class="modal-title" id="viewModalLabel{{ funcionario.matricula }}">
@@ -143,7 +143,7 @@
                     <!-- Modal de Deleção (dentro do for) -->
                     <div class="modal fade" id="deleteModal{{ funcionario.matricula }}" tabindex="-1"
                         aria-labelledby="deleteModalLabel{{ funcionario.matricula }}" aria-hidden="true">
-                        <div class="modal-dialog">
+                        <div class="modal-dialog modal-xl">
                             <div class="modal-content">
                                 <div class="modal-header bg-danger text-white">
                                     <h5 class="modal-title" id="deleteModalLabel{{ funcionario.matricula }}">Confirmar
@@ -177,7 +177,7 @@
     <form method="post" id="funcionarioForm" enctype="multipart/form-data" autocomplete="off">
         <div class="modal fade" id="funcionarioModal" tabindex="-1" aria-labelledby="funcionarioModalLabel"
             aria-hidden="true">
-            <div class="modal-dialog">
+            <div class="modal-dialog modal-xl">
                 <div class="modal-content">
                     <form method="post" id="funcionarioForm">
                         {% csrf_token %}
