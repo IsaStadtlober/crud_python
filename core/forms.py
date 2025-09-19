@@ -1,6 +1,7 @@
 from django import forms
 from core.models import Funcionario
 import re
+from datetime import date
 
 class FuncionarioForm(forms.ModelForm):
     class Meta:
@@ -14,6 +15,7 @@ class FuncionarioForm(forms.ModelForm):
             'bairro': forms.TextInput(attrs={'id': 'id_bairro'}),
             'cidade': forms.TextInput(attrs={'id': 'id_cidade'}),
             'uf': forms.TextInput(attrs={'id': 'id_uf'}),
+             'data_admissao': forms.DateInput(attrs={'type': 'date'}),
         }
 
     def __init__(self, *args, **kwargs):
@@ -74,3 +76,17 @@ class FuncionarioForm(forms.ModelForm):
             raise forms.ValidationError('Este CPF já está cadastrado.')
 
         return cpf  # ✅ CPF limpo e válido
+
+    def clean_data_admissao(self):
+        data = self.cleaned_data.get('data_admissao')
+        hoje = date.today()
+        cem_anos_atras = date(hoje.year - 100, hoje.month, hoje.day)
+
+        if not data:
+            raise forms.ValidationError('Data de admissão é obrigatória.')
+
+        if data < cem_anos_atras or data > hoje:
+            raise forms.ValidationError(
+                f'Data deve estar entre {cem_anos_atras.strftime("%d/%m/%Y")} e {hoje.strftime("%d/%m/%Y")}.'
+            )
+        return data

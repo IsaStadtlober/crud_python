@@ -239,11 +239,16 @@
                             </div>
 
                             <div class="mb-3">
-                                <label for="dataAdmissao" class="form-label">Data de Admissão</label>
-                                <input type="date" id="dataAdmissao" name="data_admissao" class="form-control"
-                                    value="{{ form.data_admissao.value|default:'' }}" max="{% now 'Y-m-d' %}">
+                                <label for="id_data_admissao" class="form-label">Data de Admissão</label>
+                                {% if form.data_admissao.errors %}
+                                {{ form.data_admissao }}
+                                <div class="invalid-feedback d-block">
+                                    {{ form.data_admissao.errors.0 }}
+                                </div>
+                                {% else %}
+                                {{ form.data_admissao }}
+                                {% endif %}
                             </div>
-
                             <div class="mb-3">
                                 <label for="id_cep" class="form-label">CEP</label>
                                 <input type="text" class="form-control" id="id_cep" name="cep" maxlength="9" required>
