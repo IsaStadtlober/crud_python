@@ -86,11 +86,14 @@
                                     style="display: flex; flex-wrap: wrap; gap: 20px; align-items: flex-start;">
                                     <!-- Informações do funcionário -->
                                     <div style="flex: 1; min-width: 200px; margin-top: 10px;">
-                                        <p><strong>Matrícula:</strong> {{ funcionario.matricula|default:"Não informado"}}</p>
+                                        <p><strong>Matrícula:</strong> {{ funcionario.matricula|default:"Não
+                                            informado"}}</p>
                                         <p><strong>Nome:</strong> {{ funcionario.nome|default:"Não informado" }}</p>
                                         <p><strong>Função:</strong> {{ funcionario.funcao|default:"Não informado" }}</p>
-                                        <p><strong>Nível da função:</strong> {{ funcionario.nivel_funcao|default:"Não informado" }}</p>
-                                        <p><strong>Status:</strong> {{ funcionario.get_status_display|default:"Não informado" }}</p>
+                                        <p><strong>Nível da função:</strong> {{ funcionario.nivel_funcao|default:"Não
+                                            informado" }}</p>
+                                        <p><strong>Status:</strong> {{ funcionario.get_status_display|default:"Não
+                                            informado" }}</p>
                                         <p><strong>Obra:</strong> {{ funcionario.obra|default:"Não informado" }}</p>
 
                                         <p><strong>CPF:</strong>
@@ -102,13 +105,15 @@
                                         </p>
 
                                         {% if funcionario.data_admissao %}
-                                        <p><strong>Data de Admissão:</strong> {{ funcionario.data_admissao|date:"d/m/Y"}}</p>
+                                        <p><strong>Data de Admissão:</strong> {{
+                                            funcionario.data_admissao|date:"d/m/Y"}}</p>
                                         {% else %}
                                         <p><strong>Data de Admissão:</strong> Não informada</p>
                                         {% endif %}
 
                                         <p><strong>CEP:</strong> {{ funcionario.cep|default:"Não informado" }}</p>
-                                        <p><strong>Logradouro:</strong> {{ funcionario.logradouro|default:"Não informado" }}</p>
+                                        <p><strong>Logradouro:</strong> {{ funcionario.logradouro|default:"Não
+                                            informado" }}</p>
                                         <p><strong>Bairro:</strong> {{ funcionario.bairro|default:"Não informado" }}</p>
                                         <p><strong>Cidade:</strong> {{ funcionario.cidade|default:"Não informado" }}</p>
                                         <p><strong>UF:</strong> {{ funcionario.uf|default:"Não informado" }}</p>
@@ -321,7 +326,7 @@
                 document.getElementById('id_funcao').value = '';
                 document.getElementById('id_status').value = '';
                 document.getElementById('id_obra').value = '';
-                document.getElementById('id_cpf').value = formatCPF(cpf) || '';
+                document.getElementById('id_cpf').value = '';  // <-- Corrigido aqui
                 document.getElementById('id_nivel_funcao').value = '';
                 document.getElementById('dataAdmissao').value = '';
 
