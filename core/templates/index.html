@@ -118,14 +118,18 @@
                                         <p><strong>UF:</strong> {{ funcionario.uf|default:"Não informado" }}</p>
                                         <p><strong>Ordem de Serviço:</strong>
                                             {% if funcionario.ordem_servico %}
-                                            <a href="{{ funcionario.ordem_servico.url }}" target="_blank">Ver arquivo</a>
+                                            <a href="{{ funcionario.ordem_servico.url }}" target="_blank">
+                                                <i class="bi bi-eye" style="font-size: 1.5rem;"></i>
+                                            </a>
                                             {% else %}
                                             Não informado
                                             {% endif %}
                                         </p>
                                         <p><strong>Contrato de Trabalho:</strong>
                                             {% if funcionario.contrato_trabalho %}
-                                            <a href="{{ funcionario.contrato_trabalho.url }}" target="_blank">Ver arquivo</a>
+                                            <a href="{{ funcionario.contrato_trabalho.url }}" target="_blank">
+                                                <i class="bi bi-eye" style="font-size: 1.5rem;"></i>
+                                            </a>
                                             {% else %}
                                             Não informado
                                             {% endif %}
