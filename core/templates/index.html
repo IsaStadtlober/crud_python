@@ -113,11 +113,9 @@
                                         {% endif %}
 
                                         <p><strong>CEP:</strong> {{ funcionario.cep|default:"Não informado" }}</p>
-                                        <p><strong>Logradouro:</strong> {{ funcionario.logradouro|default:"Não
-                                            informado" }}</p>
+                                        <p><strong>Logradouro:</strong> {{ funcionario.logradouro|default:"Não informado" }}</p>
                                         <p><strong>Numero:</strong> {{ funcionario.numero|default:"Não informado" }}</p>
-                                        <p><strong>Complemento:</strong> {{ funcionario.complemento|default:"Não
-                                            informado" }}</p>
+                                        <p><strong>Complemento:</strong> {{ funcionario.complemento|default:"Não informado" }}</p>
                                         <p><strong>Bairro:</strong> {{ funcionario.bairro|default:"Não informado" }}</p>
                                         <p><strong>Cidade:</strong> {{ funcionario.cidade|default:"Não informado" }}</p>
                                         <p><strong>UF:</strong> {{ funcionario.uf|default:"Não informado" }}</p>
@@ -131,8 +129,7 @@
                                         </p>
                                         <p><strong>Contrato de Trabalho:</strong>
                                             {% if funcionario.contrato_trabalho %}
-                                            <a href="{{ funcionario.contrato_trabalho.url }}" target="_blank">Ver
-                                                arquivo</a>
+                                            <a href="{{ funcionario.contrato_trabalho.url }}" target="_blank">Ver arquivo</a>
                                             {% else %}
                                             Não informado
                                             {% endif %}
@@ -163,7 +160,7 @@
                     <!-- Modal de Deleção (dentro do for) -->
                     <div class="modal fade" id="deleteModal{{ funcionario.matricula }}" tabindex="-1"
                         aria-labelledby="deleteModalLabel{{ funcionario.matricula }}" aria-hidden="true">
-                        <div class="modal-dialog modal-xl">
+                        <div class="modal-dialog modal-md">
                             <div class="modal-content">
                                 <div class="modal-header bg-danger text-white">
                                     <h5 class="modal-title" id="deleteModalLabel{{ funcionario.matricula }}">Confirmar
