@@ -50,21 +50,14 @@
 
                         <!-- Editar -->
                         <button class="btn btn-warning text-white" data-bs-toggle="modal"
-                            data-bs-target="#funcionarioModal" 
-                            data-matricula="{{ funcionario.matricula }}"
-                            data-nome="{{ funcionario.nome }}" 
-                            data-cpf="{{ funcionario.cpf }}"
-                            data-funcao="{{ funcionario.funcao }}" 
-                            data-nivel_funcao="{{ funcionario.nivel_funcao }}"
-                            data-status="{{ funcionario.status }}" 
-                            data-obra="{{ funcionario.obra }}"
+                            data-bs-target="#funcionarioModal" data-matricula="{{ funcionario.matricula }}"
+                            data-nome="{{ funcionario.nome }}" data-cpf="{{ funcionario.cpf }}"
+                            data-funcao="{{ funcionario.funcao }}" data-nivel_funcao="{{ funcionario.nivel_funcao }}"
+                            data-status="{{ funcionario.status }}" data-obra="{{ funcionario.obra }}"
                             data-data_admissao="{{ funcionario.data_admissao|date:'Y-m-d' }}"
-                            data-cep="{{ funcionario.cep }}" 
-                            data-logradouro="{{ funcionario.logradouro }}"
-                            data-numero="{{ funcionario.numero }}" 
-                            data-complemento="{{ funcionario.complemento }}"
-                            data-bairro="{{ funcionario.bairro }}" 
-                            data-cidade="{{ funcionario.cidade }}"
+                            data-cep="{{ funcionario.cep }}" data-logradouro="{{ funcionario.logradouro }}"
+                            data-numero="{{ funcionario.numero }}" data-complemento="{{ funcionario.complemento }}"
+                            data-bairro="{{ funcionario.bairro }}" data-cidade="{{ funcionario.cidade }}"
                             data-uf="{{ funcionario.uf }}" onclick="handleEditClick(this)">
                             <i class="bi bi-pencil text-muted"></i>
                         </button>
@@ -94,7 +87,8 @@
                                     style="display: flex; flex-wrap: wrap; gap: 20px; align-items: flex-start;">
                                     <!-- Informações do funcionário -->
                                     <div style="flex: 1; min-width: 200px; margin-top: 10px;">
-                                        <p><strong>Matrícula:</strong> {{ funcionario.matricula|default:"Nãoinformado"}}</p>
+                                        <p><strong>Matrícula:</strong> {{ funcionario.matricula|default:"Nãoinformado"}}
+                                        </p>
                                         <p><strong>Nome:</strong> {{ funcionario.nome|default:"Não informado" }}</p>
                                         <p><strong>CPF:</strong>
                                             {% if funcionario.cpf %}
@@ -105,37 +99,44 @@
                                         </p>
 
                                         <p><strong>Função:</strong> {{ funcionario.funcao|default:"Não informado" }}</p>
-                                        <p><strong>Nível da função:</strong> {{ funcionario.nivel_funcao|default:"Não informado" }}</p>
-                                        <p><strong>Status:</strong> {{ funcionario.get_status_display|default:"Não informado" }}</p>
+                                        <p><strong>Nível da função:</strong> {{ funcionario.nivel_funcao|default:"Não
+                                            informado" }}</p>
+                                        <p><strong>Status:</strong> {{ funcionario.get_status_display|default:"Não
+                                            informado" }}</p>
                                         <p><strong>Obra:</strong> {{ funcionario.obra|default:"Não informado" }}</p>
 
                                         {% if funcionario.data_admissao %}
-                                        <p><strong>Data de Admissão:</strong> {{funcionario.data_admissao|date:"d/m/Y"}}</p>
+                                        <p><strong>Data de Admissão:</strong> {{funcionario.data_admissao|date:"d/m/Y"}}
+                                        </p>
                                         {% else %}
                                         <p><strong>Data de Admissão:</strong> Não informada</p>
                                         {% endif %}
 
                                         <p><strong>CEP:</strong> {{ funcionario.cep|default:"Não informado" }}</p>
-                                        <p><strong>Logradouro:</strong> {{ funcionario.logradouro|default:"Não informado" }}</p>
+                                        <p><strong>Logradouro:</strong> {{ funcionario.logradouro|default:"Não
+                                            informado" }}</p>
                                         <p><strong>Numero:</strong> {{ funcionario.numero|default:"Não informado" }}</p>
-                                        <p><strong>Complemento:</strong> {{ funcionario.complemento|default:"Não informado" }}</p>
+                                        <p><strong>Complemento:</strong> {{ funcionario.complemento|default:"Não
+                                            informado" }}</p>
                                         <p><strong>Bairro:</strong> {{ funcionario.bairro|default:"Não informado" }}</p>
                                         <p><strong>Cidade:</strong> {{ funcionario.cidade|default:"Não informado" }}</p>
                                         <p><strong>UF:</strong> {{ funcionario.uf|default:"Não informado" }}</p>
                                         <p><strong>Ordem de Serviço:</strong>
                                             {% if funcionario.ordem_servico %}
-                                            <a href="{{ funcionario.ordem_servico.url }}" target="_blank">Ver arquivo</a>
+                                            <a href="{{ funcionario.ordem_servico.url }}" target="_blank">Ver
+                                                arquivo</a>
                                             {% else %}
                                             Não informado
                                             {% endif %}
                                         </p>
-                                        <p><strong>Contrato de Trabalho:</strong> 
+                                        <p><strong>Contrato de Trabalho:</strong>
                                             {% if funcionario.contrato_trabalho %}
-                                            <a href="{{ funcionario.contrato_trabalho.url }}" target="_blank">Ver arquivo</a>
+                                            <a href="{{ funcionario.contrato_trabalho.url }}" target="_blank">Ver
+                                                arquivo</a>
                                             {% else %}
                                             Não informado
-                                            {% endif %}                                    
-                                        </p> 
+                                            {% endif %}
+                                        </p>
                                     </div>
 
 
@@ -210,7 +211,7 @@
                                 <div class="row">
                                     <!-- Coluna 1 -->
                                     <div class="col-md-4">
-                                        <div class="mb-3">
+                                        <div class="mb-1">
                                             <label for="id_matricula" class="form-label">Matrícula</label>
                                             {{ form.matricula }}
                                             {% if form.matricula.errors %}
@@ -220,50 +221,51 @@
                                             {% endif %}
                                         </div>
 
-                                        <div class="mb-3">
+                                        <div class="mb-1">
                                             <label for="id_nome" class="form-label">Nome</label>
                                             {{ form.nome }}
                                         </div>
 
-                                        <div class="mb-3">
-                                            <label for="id_cpf" class="form-label">CPF</label>
-                                            {{ form.cpf }}
-                                            {% if form.cpf.errors %}
-                                            <div class="invalid-feedback d-block">
-                                                {{ form.cpf.errors.0 }}
-                                            </div>
-                                            {% endif %}
-                                        </div>
-
-                                        <div class="mb-3">
+                                        <div class="mb-1">
                                             <label for="id_funcao" class="form-label">Função</label>
                                             {{ form.funcao }}
                                         </div>
 
-                                        <div class="mb-3">
-                                            <label for="id_nivel_funcao" class="form-label">Nível da Função</label>
-                                            {{ form.nivel_funcao }}
-                                        </div>
-                                    </div>
+                                        <div class="row">
+                                            <div class="col-md-6 mb-3">
+                                                <label for="id_cpf" class="form-label">CPF</label>
+                                                {{ form.cpf }}
+                                                {% if form.cpf.errors %}
+                                                <div class="invalid-feedback d-block">
+                                                    {{ form.cpf.errors.0 }}
+                                                </div>
+                                                {% endif %}
+                                            </div>
 
-                                    <!-- Coluna 2 -->
-                                    <div class="col-md-4">
-                                        <div class="mb-3">
-                                            <label for="id_status" class="form-label">Status</label>
-                                            {{ form.status }}
+                                            <div class="col-md-6 mb-3">
+                                                <label for="id_nivel_funcao" class="form-label">Nível da Função</label>
+                                                {{ form.nivel_funcao }}
+                                            </div>
                                         </div>
 
-                                        <div class="mb-3">
-                                            <label for="id_obra" class="form-label">Obra</label>
-                                            {{ form.obra }}
+                                        <div class="row">
+                                            <div class="col-md-6 mb-3">
+                                                <label for="id_status" class="form-label">Status</label>
+                                                {{ form.status }}
+                                            </div>
+
+                                            <div class="col-md-6 mb-3">
+                                                <label for="id_obra" class="form-label">Obra</label>
+                                                {{ form.obra }}
+                                            </div>
                                         </div>
 
-                                        <div class="mb-3">
+                                        <div class="mb-1">
                                             <label for="id_foto" class="form-label">Foto</label>
                                             {{ form.foto }}
                                         </div>
 
-                                        <div class="mb-3">
+                                        <div class="mb-1">
                                             <label for="id_data_admissao" class="form-label">Data de Admissão</label>
                                             {{ form.data_admissao }}
                                             {% if form.data_admissao.errors %}
@@ -274,9 +276,9 @@
                                         </div>
                                     </div>
 
-                                    <!-- Coluna 3 -->
+                                    <!-- Coluna 2 -->
                                     <div class="col-md-4">
-                                        <div class="mb-3">
+                                        <div class="mb-1">
                                             <label for="id_cep" class="form-label">CEP</label>
                                             <input type="text"
                                                 class="form-control{% if form.errors.cep %} is-invalid{% endif %}"
@@ -286,7 +288,7 @@
                                                 inválido ou não encontrado.</div>
                                         </div>
 
-                                        <div class="mb-3">
+                                        <div class="mb-1">
                                             <label for="{{ form.logradouro.id_for_label }}"
                                                 class="form-label">Logradouro</label>
                                             {{ form.logradouro }}
@@ -297,7 +299,7 @@
                                             {% endif %}
                                         </div>
 
-                                        <div class="mb-3">
+                                        <div class="mb-1">
                                             <label for="{{ form.bairro.id_for_label }}"
                                                 class="form-label">Bairro</label>
                                             {{ form.bairro }}
@@ -308,7 +310,7 @@
                                             {% endif %}
                                         </div>
 
-                                        <div class="mb-3">
+                                        <div class="mb-1">
                                             <label for="{{ form.cidade.id_for_label }}"
                                                 class="form-label">Cidade</label>
                                             {{ form.cidade }}
@@ -319,7 +321,7 @@
                                             {% endif %}
                                         </div>
 
-                                        <div class="mb-3">
+                                        <div class="mb-1">
                                             <label for="{{ form.uf.id_for_label }}" class="form-label">Estado
                                                 (UF)</label>
                                             {{ form.uf }}
@@ -330,17 +332,20 @@
                                             {% endif %}
                                         </div>
 
-                                        <div class="mb-3">
+                                        <div class="mb-1">
                                             <label for="id_numero" class="form-label">Número</label>
                                             {{ form.numero }}
                                         </div>
 
-                                        <div class="mb-3">
+                                        <div class="mb-1">
                                             <label for="id_complemento" class="form-label">Complemento</label>
                                             {{ form.complemento }}
                                         </div>
+                                    </div>
 
-                                        <div class="mb-3">
+                                    <!-- Coluna 3 -->
+                                    <div class="col-md-4">
+                                        <div class="mb-1">
                                             <label for="id_ordem_servico" class="form-label">Ordem de Serviço</label>
                                             {{ form.ordem_servico }}
                                             {% if form.ordem_servico.errors %}
@@ -350,7 +355,7 @@
                                             {% endif %}
                                         </div>
 
-                                        <div class="mb-3">
+                                        <div class="mb-1">
                                             <label for="id_contrato_trabalho" class="form-label">Contrato de
                                                 Trabalho</label>
                                             {{ form.contrato_trabalho }}
