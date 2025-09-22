@@ -86,7 +86,7 @@
                                 <div class="modal-body"
                                     style="display: flex; flex-wrap: wrap; gap: 20px; align-items: flex-start;">
                                     <!-- Informações do funcionário -->
-                                    <div style="flex: 1; min-width: 300px;">
+                                    <div style="flex: 1; min-width: 100px;">
                                         <p><strong>Matrícula:</strong> {{ funcionario.matricula|default:"Não informado"}}</p>
                                         <p><strong>Nome:</strong> {{ funcionario.nome|default:"Não informado" }}</p>
                                         <p><strong>CPF:</strong>
@@ -108,7 +108,7 @@
                                     </div>
 
                                     <!-- Coluna 2 -->
-                                    <div style="flex: 1; min-width: 300px;">
+                                    <div style="flex: 1; min-width: 100px;">
                                         <p><strong>CEP:</strong> {{ funcionario.cep|default:"Não informado" }}</p>
                                         <p><strong>Logradouro:</strong> {{ funcionario.logradouro|default:"Não informado" }}</p>
                                         <p><strong>Número:</strong> {{ funcionario.numero|default:"Não informado" }}</p>
@@ -116,6 +116,10 @@
                                         <p><strong>Bairro:</strong> {{ funcionario.bairro|default:"Não informado" }}</p>
                                         <p><strong>Cidade:</strong> {{ funcionario.cidade|default:"Não informado" }}</p>
                                         <p><strong>UF:</strong> {{ funcionario.uf|default:"Não informado" }}</p>
+                                    </div>
+
+                                    <!-- Coluna 2 -->
+                                    <div style="flex: 1; min-width: 100px;">
                                         <p><strong>Ordem de Serviço:</strong>
                                             {% if funcionario.ordem_servico %}
                                             <a href="{{ funcionario.ordem_servico.url }}" target="_blank">
