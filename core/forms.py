@@ -16,6 +16,8 @@ class FuncionarioForm(forms.ModelForm):
             'cidade': forms.TextInput(attrs={'id': 'id_cidade', 'class': 'form-control'}),
             'uf': forms.TextInput(attrs={'id': 'id_uf', 'class': 'form-control'}),
             'data_admissao': forms.DateInput(attrs={'type': 'date', 'class': 'form-control', 'id': 'id_data_admissao'}),
+            'ordem_servico': forms.FileInput(attrs={'class': 'form-control'}),
+            'contrato_trabalho': forms.FileInput(attrs={'class': 'form-control'}),
     }
 
     def __init__(self, *args, **kwargs):

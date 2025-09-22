@@ -37,6 +37,8 @@ class Funcionario(models.Model):
     bairro = models.CharField(max_length=100, blank=True, null=True)
     cidade = models.CharField(max_length=100, blank=True, null=True)
     uf = models.CharField(max_length=2, blank=True, null=True)
+    ordem_servico = models.FileField(upload_to='ordens_servico/', blank=True, null=True)
+    contrato_trabalho = models.FileField(upload_to='contratos_trabalho/', blank=True, null=True)
     
     def __str__(self) -> str: 
         return self.nome 
