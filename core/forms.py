@@ -8,15 +8,15 @@ class FuncionarioForm(forms.ModelForm):
         model = Funcionario
         fields = '__all__'
         widgets = {
-            'foto': forms.FileInput(),
-            'nivel_funcao': forms.Select(),
-            'cep': forms.TextInput(attrs={'id': 'id_cep'}),
-            'logradouro': forms.TextInput(attrs={'id': 'id_logradouro'}),
-            'bairro': forms.TextInput(attrs={'id': 'id_bairro'}),
-            'cidade': forms.TextInput(attrs={'id': 'id_cidade'}),
-            'uf': forms.TextInput(attrs={'id': 'id_uf'}),
-             'data_admissao': forms.DateInput(attrs={'type': 'date'}),
-        }
+            'foto': forms.FileInput(attrs={'class': 'form-control'}),
+            'nivel_funcao': forms.Select(attrs={'class': 'form-select'}),  # para <select>, geralmente usa 'form-select'
+            'cep': forms.TextInput(attrs={'id': 'id_cep', 'class': 'form-control'}),
+            'logradouro': forms.TextInput(attrs={'id': 'id_logradouro', 'class': 'form-control'}),
+            'bairro': forms.TextInput(attrs={'id': 'id_bairro', 'class': 'form-control'}),
+            'cidade': forms.TextInput(attrs={'id': 'id_cidade', 'class': 'form-control'}),
+            'uf': forms.TextInput(attrs={'id': 'id_uf', 'class': 'form-control'}),
+            'data_admissao': forms.DateInput(attrs={'type': 'date', 'class': 'form-control', 'id': 'id_data_admissao'}),
+    }
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
