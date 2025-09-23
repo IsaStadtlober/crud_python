@@ -514,6 +514,44 @@
                     el.style.display = 'none';
                     el.classList.remove('d-block');
                 });
+
+                // Campos e ícones
+                const fileFields = [
+                    { id: 'id_foto', previewReset: true },
+                    { id: 'id_ordem_servico', iconId: 'icon-ordem-servico' },
+                    { id: 'id_contrato_trabalho', iconId: 'icon-contrato-trabalho' }
+                ];
+
+                fileFields.forEach(field => {
+                    const oldInput = document.getElementById(field.id);
+                    if (oldInput) {
+                        const newInput = oldInput.cloneNode(true);
+                        oldInput.parentNode.replaceChild(newInput, oldInput);
+
+                        if (field.previewReset) {
+                            // Reset preview da foto
+                            const preview = document.getElementById('preview-foto');
+                            if (preview) {
+                                preview.src = '';
+                                preview.style.display = 'none';
+                            }
+                        }
+
+                        if (field.iconId) {
+                            const icon = document.getElementById(field.iconId);
+                            if (icon) {
+                                icon.src = "{% static 'img/box_aberto.png' %}";
+                                icon.alt = "Baú aberto";
+                                icon.classList.remove('icon-animate');
+                            }
+                        }
+                    }
+                });
+
+                // Reaplicar event listeners nos inputs clonados
+                setupFotoPreview();
+                setupIconAnimation('id_ordem_servico', 'icon-ordem-servico');
+                setupIconAnimation('id_contrato_trabalho', 'icon-contrato-trabalho');
             }
 
             function formatCPF(cpf) {
@@ -723,35 +761,7 @@
             });
 
             // anexo
-            document.addEventListener('DOMContentLoaded', function () {
-                function setupIconAnimation(inputId, iconId) {
-                    const input = document.getElementById(inputId);
-                    const icon = document.getElementById(iconId);
-
-                    if (input && icon) {
-                        input.addEventListener('change', function () {
-                            if (input.files.length > 0) {
-                                icon.src = "{% static 'img/box_fechado.png' %}";
-                                icon.alt = "Baú fechado";
-                            } else {
-                                icon.src = "{% static 'img/box_aberto.png' %}";
-                                icon.alt = "Baú aberto";
-                            }
-
-                            // Animação
-                            icon.classList.remove('icon-animate'); // Reinicia se já tiver
-                            void icon.offsetWidth; // Força reflow para reiniciar animação
-                            icon.classList.add('icon-animate');
-                        });
-                    }
-                }
-
-                setupIconAnimation('id_ordem_servico', 'icon-ordem-servico');
-                setupIconAnimation('id_contrato_trabalho', 'icon-contrato-trabalho');
-            });
-
-            // Pré-visualização da foto
-            document.addEventListener('DOMContentLoaded', function () {
+            function setupFotoPreview() {
                 const inputFoto = document.getElementById('id_foto');
                 const preview = document.getElementById('preview-foto');
 
@@ -771,8 +781,28 @@
                         }
                     });
                 }
-            });
+            }
 
+            function setupIconAnimation(inputId, iconId) {
+                const input = document.getElementById(inputId);
+                const icon = document.getElementById(iconId);
+
+                if (input && icon) {
+                    input.addEventListener('change', function () {
+                        if (input.files.length > 0) {
+                            icon.src = "{% static 'img/box_fechado.png' %}";
+                            icon.alt = "Baú fechado";
+                        } else {
+                            icon.src = "{% static 'img/box_aberto.png' %}";
+                            icon.alt = "Baú aberto";
+                        }
+
+                        icon.classList.remove('icon-animate'); // Reinicia animação
+                        void icon.offsetWidth; // Força reflow
+                        icon.classList.add('icon-animate');
+                    });
+                }
+            }
         </script>
 
         <script src="https://unpkg.com/imask"></script>
