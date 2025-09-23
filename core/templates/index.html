@@ -6,6 +6,8 @@
 
 {% load static %}
 
+{% load form_tags %}
+
 <div class="container mt-3">
     <div class="container mt-3">
         <div class="row mb-3 align-items-center">
@@ -87,7 +89,8 @@
                                     style="display: flex; flex-wrap: wrap; gap: 20px; align-items: flex-start;">
                                     <!-- Informações do funcionário -->
                                     <div style="flex: 1; min-width: 100px;">
-                                        <p><strong>Matrícula:</strong> {{ funcionario.matricula|default:"Não informado"}}</p>
+                                        <p><strong>Matrícula:</strong> {{ funcionario.matricula|default:"Não
+                                            informado"}}</p>
                                         <p><strong>Nome:</strong> {{ funcionario.nome|default:"Não informado" }}</p>
                                         <p><strong>CPF:</strong>
                                             {% if funcionario.cpf %}
@@ -97,11 +100,14 @@
                                             {% endif %}
                                         </p>
                                         <p><strong>Função:</strong> {{ funcionario.funcao|default:"Não informado" }}</p>
-                                        <p><strong>Nível da função:</strong> {{ funcionario.nivel_funcao|default:"Não informado" }}</p>
-                                        <p><strong>Status:</strong> {{ funcionario.get_status_display|default:"Não informado" }}</p>
+                                        <p><strong>Nível da função:</strong> {{ funcionario.nivel_funcao|default:"Não
+                                            informado" }}</p>
+                                        <p><strong>Status:</strong> {{ funcionario.get_status_display|default:"Não
+                                            informado" }}</p>
                                         <p><strong>Obra:</strong> {{ funcionario.obra|default:"Não informado" }}</p>
                                         {% if funcionario.data_admissao %}
-                                        <p><strong>Data de Admissão:</strong> {{ funcionario.data_admissao|date:"d/m/Y"}}</p>
+                                        <p><strong>Data de Admissão:</strong> {{
+                                            funcionario.data_admissao|date:"d/m/Y"}}</p>
                                         {% else %}
                                         <p><strong>Data de Admissão:</strong> Não informada</p>
                                         {% endif %}
@@ -110,9 +116,11 @@
                                     <!-- Coluna 2 -->
                                     <div style="flex: 1; min-width: 100px;">
                                         <p><strong>CEP:</strong> {{ funcionario.cep|default:"Não informado" }}</p>
-                                        <p><strong>Logradouro:</strong> {{ funcionario.logradouro|default:"Não informado" }}</p>
+                                        <p><strong>Logradouro:</strong> {{ funcionario.logradouro|default:"Não
+                                            informado" }}</p>
                                         <p><strong>Número:</strong> {{ funcionario.numero|default:"Não informado" }}</p>
-                                        <p><strong>Complemento:</strong> {{ funcionario.complemento|default:"Não informado" }}</p>
+                                        <p><strong>Complemento:</strong> {{ funcionario.complemento|default:"Não
+                                            informado" }}</p>
                                         <p><strong>Bairro:</strong> {{ funcionario.bairro|default:"Não informado" }}</p>
                                         <p><strong>Cidade:</strong> {{ funcionario.cidade|default:"Não informado" }}</p>
                                         <p><strong>UF:</strong> {{ funcionario.uf|default:"Não informado" }}</p>
@@ -233,7 +241,7 @@
                                         </div>
 
                                         <div class="row">
-                                            <div class="col-md-6 mb-3">
+                                            <div class="col-md-6 mb-1">
                                                 <label for="id_cpf" class="form-label">CPF</label>
                                                 {{ form.cpf }}
                                                 {% if form.cpf.errors %}
@@ -243,37 +251,97 @@
                                                 {% endif %}
                                             </div>
 
-                                            <div class="col-md-6 mb-3">
+                                            <div class="col-md-6 mb-1">
                                                 <label for="id_nivel_funcao" class="form-label">Nível da Função</label>
                                                 {{ form.nivel_funcao }}
                                             </div>
                                         </div>
 
                                         <div class="row">
-                                            <div class="col-md-6 mb-3">
+                                            <div class="col-md-6 mb-1">
                                                 <label for="id_status" class="form-label">Status</label>
                                                 {{ form.status }}
                                             </div>
 
-                                            <div class="col-md-6 mb-3">
+                                            <div class="col-md-6 mb-1">
                                                 <label for="id_obra" class="form-label">Obra</label>
                                                 {{ form.obra }}
                                             </div>
                                         </div>
 
-                                        <div class="mb-1">
-                                            <label for="id_foto" class="form-label">Foto</label>
-                                            {{ form.foto }}
-                                        </div>
-
-                                        <div class="mb-1">
-                                            <label for="id_data_admissao" class="form-label">Data de Admissão</label>
-                                            {{ form.data_admissao }}
-                                            {% if form.data_admissao.errors %}
-                                            <div class="invalid-feedback d-block">
-                                                {{ form.data_admissao.errors.0 }}
+                                        <div class="row">
+                                            <!-- Foto -->
+                                            <div class="col-md-6 mb-1">
+                                                <label class="form-label d-block">Foto</label>
+                                                <label for="id_foto" style="cursor: pointer;">
+                                                    {% if funcionario.foto %}
+                                                    <img id="icon-bau-img" src="{% static 'img/box_fechado.png' %}"
+                                                        alt="Baú fechado" style="height: 40px;">
+                                                    {% else %}
+                                                    <img id="icon-bau-img" src="{% static 'img/box_aberto.png' %}"
+                                                        alt="Baú aberto" style="height: 40px;">
+                                                    {% endif %}
+                                                </label>
+                                                {{ form.foto|add_class:"d-none" }}
                                             </div>
-                                            {% endif %}
+
+                                            <!-- Data de Admissão -->
+                                            <div class="col-md-6 mb-1">
+                                                <label for="id_data_admissao" class="form-label">Data de
+                                                    Admissão</label>
+                                                {{ form.data_admissao }}
+                                                {% if form.data_admissao.errors %}
+                                                <div class="invalid-feedback d-block">
+                                                    {{ form.data_admissao.errors.0 }}
+                                                </div>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <!-- Ordem de Serviço -->
+                                            <div class="col-md-6 mb-1">
+                                                <label class="form-label d-block" for="id_ordem_servico">Ordem de
+                                                    Serviço</label>
+                                                <label for="id_ordem_servico" style="cursor: pointer;">
+                                                    {% if funcionario.ordem_servico %}
+                                                    <img id="icon-ordem-servico"
+                                                        src="{% static 'img/box_fechado.png' %}" alt="Baú fechado"
+                                                        style="height: 40px;">
+                                                    {% else %}
+                                                    <img id="icon-ordem-servico" src="{% static 'img/box_aberto.png' %}"
+                                                        alt="Baú aberto" style="height: 40px;">
+                                                    {% endif %}
+                                                </label>
+                                                {{ form.ordem_servico|add_class:"d-none" }}
+                                                {% if form.ordem_servico.errors %}
+                                                <div class="invalid-feedback d-block">
+                                                    {{ form.ordem_servico.errors.0 }}
+                                                </div>
+                                                {% endif %}
+                                            </div>
+
+                                            <!-- Contrato de Trabalho -->
+                                            <div class="col-md-6 mb-1">
+                                                <label class="form-label d-block" for="id_contrato_trabalho">Contrato de
+                                                    Trabalho</label>
+                                                <label for="id_contrato_trabalho" style="cursor: pointer;">
+                                                    {% if funcionario.contrato_trabalho %}
+                                                    <img id="icon-contrato-trabalho"
+                                                        src="{% static 'img/box_fechado.png' %}" alt="Baú fechado"
+                                                        style="height: 40px;">
+                                                    {% else %}
+                                                    <img id="icon-contrato-trabalho"
+                                                        src="{% static 'img/box_aberto.png' %}" alt="Baú aberto"
+                                                        style="height: 40px;">
+                                                    {% endif %}
+                                                </label>
+                                                {{ form.contrato_trabalho|add_class:"d-none" }}
+                                                {% if form.contrato_trabalho.errors %}
+                                                <div class="invalid-feedback d-block">
+                                                    {{ form.contrato_trabalho.errors.0 }}
+                                                </div>
+                                                {% endif %}
+                                            </div>
                                         </div>
                                     </div>
 
@@ -346,26 +414,7 @@
 
                                     <!-- Coluna 3 -->
                                     <div class="col-md-4">
-                                        <div class="mb-1">
-                                            <label for="id_ordem_servico" class="form-label">Ordem de Serviço</label>
-                                            {{ form.ordem_servico }}
-                                            {% if form.ordem_servico.errors %}
-                                            <div class="invalid-feedback d-block">
-                                                {{ form.ordem_servico.errors.0 }}
-                                            </div>
-                                            {% endif %}
-                                        </div>
 
-                                        <div class="mb-1">
-                                            <label for="id_contrato_trabalho" class="form-label">Contrato de
-                                                Trabalho</label>
-                                            {{ form.contrato_trabalho }}
-                                            {% if form.contrato_trabalho.errors %}
-                                            <div class="invalid-feedback d-block">
-                                                {{ form.contrato_trabalho.errors.0 }}
-                                            </div>
-                                            {% endif %}
-                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -659,6 +708,34 @@
                     document.getElementById('id_cidade').value = '';
                     document.getElementById('id_uf').value = '';
                 }
+            });
+
+
+            document.addEventListener('DOMContentLoaded', function () {
+                function setupIconAnimation(inputId, iconId) {
+                    const input = document.getElementById(inputId);
+                    const icon = document.getElementById(iconId);
+
+                    if (input && icon) {
+                        input.addEventListener('change', function () {
+                            if (input.files.length > 0) {
+                                icon.src = "{% static 'img/box_fechado.png' %}";
+                                icon.alt = "Baú fechado";
+                            } else {
+                                icon.src = "{% static 'img/box_aberto.png' %}";
+                                icon.alt = "Baú aberto";
+                            }
+
+                            // Animação
+                            icon.classList.remove('icon-animate'); // Reinicia se já tiver
+                            void icon.offsetWidth; // Força reflow para reiniciar animação
+                            icon.classList.add('icon-animate');
+                        });
+                    }
+                }
+
+                setupIconAnimation('id_ordem_servico', 'icon-ordem-servico');
+                setupIconAnimation('id_contrato_trabalho', 'icon-contrato-trabalho');
             });
         </script>
 
