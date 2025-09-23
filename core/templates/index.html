@@ -51,16 +51,32 @@
                         </button>
 
                         <!-- Editar -->
-                        <button class="btn btn-warning text-white" data-bs-toggle="modal"
-                            data-bs-target="#funcionarioModal" data-matricula="{{ funcionario.matricula }}"
-                            data-nome="{{ funcionario.nome }}" data-cpf="{{ funcionario.cpf }}"
-                            data-funcao="{{ funcionario.funcao }}" data-nivel_funcao="{{ funcionario.nivel_funcao }}"
-                            data-status="{{ funcionario.status }}" data-obra="{{ funcionario.obra }}"
-                            data-data_admissao="{{ funcionario.data_admissao|date:'Y-m-d' }}"
-                            data-cep="{{ funcionario.cep }}" data-logradouro="{{ funcionario.logradouro }}"
-                            data-numero="{{ funcionario.numero }}" data-complemento="{{ funcionario.complemento }}"
-                            data-bairro="{{ funcionario.bairro }}" data-cidade="{{ funcionario.cidade }}"
-                            data-uf="{{ funcionario.uf }}" onclick="handleEditClick(this)">
+                        <button type="button" class="btn btn-warning text-white" 
+                            data-bs-toggle="modal"
+                            data-bs-target="#funcionarioModal"
+                            data-matricula="{{ funcionario.matricula }}"
+                            data-nome="{{ funcionario.nome }}" 
+                            data-cpf="{{ funcionario.cpf }}"
+                            data-funcao="{{ funcionario.funcao }}" 
+                            data-nivel_funcao="{{ funcionario.nivel_funcao }}"
+                            data-status="{{ funcionario.status }}" 
+                            data-obra="{{ funcionario.obra }}"
+                            data-data_admissao="{{ funcionario.data_admissao }}" 
+                            data-cep="{{ funcionario.cep }}"
+                            data-logradouro="{{ funcionario.logradouro }}" 
+                            data-bairro="{{ funcionario.bairro }}"
+                            data-cidade="{{ funcionario.cidade }}" 
+                            data-uf="{{ funcionario.uf }}"
+                            data-numero="{{ funcionario.numero }}" 
+                            data-complemento="{{ funcionario.complemento }}" 
+                            {%if funcionario.foto %} 
+                            data-foto-url="{{ funcionario.foto.url }}" 
+                            {% else %}
+                            data-foto-url="" 
+                            {% endif %}
+                            data-ordem-servico-existe="{% if funcionario.ordem_servico %}true{% else %}false{% endif %}"
+                            data-contrato-trabalho-existe="{% if funcionario.contrato_trabalho %}true{% else %}false{% endif %}"
+                            onclick="handleEditClick(this)">
                             <i class="bi bi-pencil text-muted"></i>
                         </button>
 
@@ -560,7 +576,7 @@
                 return cpf.substring(0, 3) + '.' + cpf.substring(3, 6) + '.' + cpf.substring(6, 9) + '-' + cpf.substring(9, 11);
             }
 
-            function setUpdateMode(matricula, nome, cpf, funcao, nivel_funcao, status, obra, data_admissao, cep, logradouro, bairro, cidade, uf, numero, complemento) {
+            function setUpdateMode(matricula, nome, cpf, funcao, nivel_funcao, status, obra, data_admissao, cep, logradouro, bairro, cidade, uf, numero, complemento, fotoUrl, ordemServicoExiste, contratoTrabalhoExiste) {
                 function cleanValue(value) {
                     if (!value || value === "None") {
                         return '';
@@ -591,7 +607,53 @@
                 document.getElementById('id_complemento').value = cleanValue(complemento);
 
                 document.getElementById('id_matricula').readOnly = true;
+
+                // Mostrar preview da foto
+                const preview = document.getElementById('preview-foto');
+                if (fotoUrl && fotoUrl.trim() !== '') {
+                    preview.src = fotoUrl;
+                    preview.style.display = 'inline-block';
+                } else {
+                    preview.src = '';
+                    preview.style.display = 'none';
+                }
+
+                // Reset inputs file (não pode setar valor, então clone)
+                ['id_foto', 'id_ordem_servico', 'id_contrato_trabalho'].forEach(id => {
+                    const input = document.getElementById(id);
+                    if (input) {
+                        const newInput = input.cloneNode(true);
+                        input.parentNode.replaceChild(newInput, input);
+                    }
+                });
+
+                // Atualizar ícones dos anexos
+                const iconOrdem = document.getElementById('icon-ordem-servico');
+                if (ordemServicoExiste) {
+                    iconOrdem.src = "{% static 'img/box_fechado.png' %}";
+                    iconOrdem.alt = "Baú fechado";
+                } else {
+                    iconOrdem.src = "{% static 'img/box_aberto.png' %}";
+                    iconOrdem.alt = "Baú aberto";
+                }
+                iconOrdem.classList.remove('icon-animate');
+
+                const iconContrato = document.getElementById('icon-contrato-trabalho');
+                if (contratoTrabalhoExiste) {
+                    iconContrato.src = "{% static 'img/box_fechado.png' %}";
+                    iconContrato.alt = "Baú fechado";
+                } else {
+                    iconContrato.src = "{% static 'img/box_aberto.png' %}";
+                    iconContrato.alt = "Baú aberto";
+                }
+                iconContrato.classList.remove('icon-animate');
+
+                // Reaplicar event listeners nos inputs clonados
+                setupFotoPreview();
+                setupIconAnimation('id_ordem_servico', 'icon-ordem-servico');
+                setupIconAnimation('id_contrato_trabalho', 'icon-contrato-trabalho');
             }
+
 
             function handleEditClick(button) {
                 const data = button.dataset;
@@ -611,7 +673,10 @@
                     data.cidade,
                     data.uf,
                     data.numero,
-                    data.complemento
+                    data.complemento,
+                    data.fotoUrl,
+                    data.ordemServicoExiste === 'true',
+                    data.contratoTrabalhoExiste === 'true'
                 );
             }
 
@@ -761,6 +826,27 @@
             });
 
             // anexo
+            function setupIconAnimation(inputId, iconId) {
+                const input = document.getElementById(inputId);
+                const icon = document.getElementById(iconId);
+
+                if (input && icon) {
+                    input.addEventListener('change', function () {
+                        if (input.files.length > 0) {
+                            icon.src = "{% static 'img/box_fechado.png' %}";
+                            icon.alt = "Baú fechado";
+                        } else {
+                            icon.src = "{% static 'img/box_aberto.png' %}";
+                            icon.alt = "Baú aberto";
+                        }
+
+                        icon.classList.remove('icon-animate'); // Reinicia se já tiver
+                        void icon.offsetWidth; // Força reflow
+                        icon.classList.add('icon-animate');
+                    });
+                }
+            }
+
             function setupFotoPreview() {
                 const inputFoto = document.getElementById('id_foto');
                 const preview = document.getElementById('preview-foto');
@@ -783,26 +869,6 @@
                 }
             }
 
-            function setupIconAnimation(inputId, iconId) {
-                const input = document.getElementById(inputId);
-                const icon = document.getElementById(iconId);
-
-                if (input && icon) {
-                    input.addEventListener('change', function () {
-                        if (input.files.length > 0) {
-                            icon.src = "{% static 'img/box_fechado.png' %}";
-                            icon.alt = "Baú fechado";
-                        } else {
-                            icon.src = "{% static 'img/box_aberto.png' %}";
-                            icon.alt = "Baú aberto";
-                        }
-
-                        icon.classList.remove('icon-animate'); // Reinicia animação
-                        void icon.offsetWidth; // Força reflow
-                        icon.classList.add('icon-animate');
-                    });
-                }
-            }
         </script>
 
         <script src="https://unpkg.com/imask"></script>
