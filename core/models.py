@@ -1,4 +1,5 @@
 from django.db import models
+from datetime import date
 
 STATUS_CHOICES = [
     ('AT', 'Ativo'),
@@ -43,3 +44,10 @@ class Funcionario(models.Model):
     
     def __str__(self) -> str: 
         return self.nome 
+    
+    @property
+    def idade(self):
+        if not self.data_nascimento:
+            return None
+        hoje = date.today()
+        return hoje.year - self.data_nascimento.year - ((hoje.month, hoje.day) < (self.data_nascimento.month, self.data_nascimento.day))

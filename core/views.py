@@ -5,6 +5,7 @@ from .forms import FuncionarioForm
 from django.urls import reverse_lazy
 from django.shortcuts import get_object_or_404, redirect
 from django.contrib import messages
+from datetime import date
 
 class ListFuncionario(ListView):
     template_name = 'index.html'
@@ -13,6 +14,23 @@ class ListFuncionario(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        
+        def calcula_idade(data_nascimento):
+            if not data_nascimento:
+                return None
+            hoje = date.today()
+            return hoje.year - data_nascimento.year - ((hoje.month, hoje.day) < (data_nascimento.month, data_nascimento.day))
+
+        # Calcula idade para cada funcionário
+        funcionarios_com_idade = []
+        for f in context['funcionarios']:
+            idade = calcula_idade(f.data_nascimento)
+            funcionarios_com_idade.append({
+                'funcionario': f,
+                'idade': idade,
+            })
+
+        context['funcionarios_com_idade'] = funcionarios_com_idade
         
         # Só adiciona o form se não estiver vindo de um erro (i.e., via render com form com erros)
         if 'form' not in context:
