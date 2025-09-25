@@ -8,6 +8,7 @@ class FuncionarioForm(forms.ModelForm):
         model = Funcionario
         fields = '__all__'
         widgets = {
+            'matricula': forms.TextInput(attrs={'class': 'form-control no-spinners'}),
             'foto': forms.FileInput(attrs={'class': 'form-control'}),
             'nivel_funcao': forms.Select(attrs={'class': 'form-select'}),  # para <select>, geralmente usa 'form-select'
             'cep': forms.TextInput(attrs={'id': 'id_cep', 'class': 'form-control'}),

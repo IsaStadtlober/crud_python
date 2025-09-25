@@ -21,7 +21,7 @@ NIVEL_FUNCAO_CHOICES = [
     ]
 
 class Funcionario(models.Model):
-    matricula = models.IntegerField(primary_key=True)
+    matricula = models.CharField(max_length=100, default='', primary_key=True)
     nome = models.CharField(max_length=100, default='')
     funcao = models.CharField( max_length=100, verbose_name="Função", default='')
     nivel_funcao = models.IntegerField(choices=NIVEL_FUNCAO_CHOICES, default=1)
