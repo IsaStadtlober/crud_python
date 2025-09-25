@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views.generic import ListView, CreateView
 from .models import Funcionario
 from .forms import FuncionarioForm
@@ -6,6 +6,9 @@ from django.urls import reverse_lazy
 from django.shortcuts import get_object_or_404, redirect
 from django.contrib import messages
 from datetime import date
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
 
 class ListFuncionario(ListView):
     template_name = 'index.html'
@@ -77,3 +80,19 @@ def delete_funcionario(request, matricula):
     funcionario.delete()
     messages.success(request, 'Funcionário deletado com sucesso!')
     return redirect('Listar')
+
+def login_view(request):
+    if request.method == 'POST':
+        username = request.POST['username']
+        password = request.POST['password']
+        user = authenticate(request, username=username, password=password)
+        if user:
+            login(request, user)
+            return redirect('index')  # Redireciona para /index/
+        else:
+            messages.error(request, 'Usuário ou senha inválidos')
+    return render(request, 'login.html')
+
+def logout_view(request):
+    logout(request)
+    return redirect('login')
