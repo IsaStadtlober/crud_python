@@ -31,7 +31,8 @@ def create_funcionario(request):
             funcionarios = Funcionario.objects.all()
             return render(request, 'index.html', {
                 'form': form,
-                'funcionarios': funcionarios
+                'funcionarios': funcionarios,
+                'funcionario': form.instance 
             })
     return redirect('Listar')
 
@@ -47,7 +48,8 @@ def update_funcionario(request, matricula):
             funcionarios = Funcionario.objects.all()
             return render(request, 'index.html', {
                 'form': form,
-                'funcionarios': funcionarios
+                'funcionarios': funcionarios,
+                'funcionario': form.instance
             })
 
     return redirect('Listar')

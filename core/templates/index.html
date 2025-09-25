@@ -51,29 +51,17 @@
                         </button>
 
                         <!-- Editar -->
-                        <button type="button" class="btn btn-warning text-white" 
-                            data-bs-toggle="modal"
-                            data-bs-target="#funcionarioModal"
-                            data-matricula="{{ funcionario.matricula }}"
-                            data-nome="{{ funcionario.nome }}" 
-                            data-cpf="{{ funcionario.cpf }}"
-                            data-funcao="{{ funcionario.funcao }}" 
-                            data-nivel_funcao="{{ funcionario.nivel_funcao }}"
-                            data-status="{{ funcionario.status }}" 
-                            data-obra="{{ funcionario.obra }}"
+                        <button type="button" class="btn btn-warning text-white" data-bs-toggle="modal"
+                            data-bs-target="#funcionarioModal" data-matricula="{{ funcionario.matricula }}"
+                            data-nome="{{ funcionario.nome }}" data-cpf="{{ funcionario.cpf }}"
+                            data-funcao="{{ funcionario.funcao }}" data-nivel_funcao="{{ funcionario.nivel_funcao }}"
+                            data-status="{{ funcionario.status }}" data-obra="{{ funcionario.obra }}"
                             data-data_admissao="{{ funcionario.data_admissao|date:'Y-m-d' }}"
-                            data-cep="{{ funcionario.cep }}"
-                            data-logradouro="{{ funcionario.logradouro }}" 
-                            data-bairro="{{ funcionario.bairro }}"
-                            data-cidade="{{ funcionario.cidade }}" 
-                            data-uf="{{ funcionario.uf }}"
-                            data-numero="{{ funcionario.numero }}" 
-                            data-complemento="{{ funcionario.complemento }}" 
-                            {%if funcionario.foto %} 
-                            data-foto-url="{{ funcionario.foto.url }}" 
-                            {% else %}
-                            data-foto-url="" 
-                            {% endif %}
+                            data-cep="{{ funcionario.cep }}" data-logradouro="{{ funcionario.logradouro }}"
+                            data-bairro="{{ funcionario.bairro }}" data-cidade="{{ funcionario.cidade }}"
+                            data-uf="{{ funcionario.uf }}" data-numero="{{ funcionario.numero }}"
+                            data-complemento="{{ funcionario.complemento }}" {%if funcionario.foto %}
+                            data-foto-url="{{ funcionario.foto.url }}" {% else %} data-foto-url="" {% endif %}
                             data-ordem-servico-existe="{% if funcionario.ordem_servico %}true{% else %}false{% endif %}"
                             data-contrato-trabalho-existe="{% if funcionario.contrato_trabalho %}true{% else %}false{% endif %}"
                             onclick="handleEditClick(this)">
@@ -105,7 +93,8 @@
                                     style="display: flex; flex-wrap: wrap; gap: 20px; align-items: flex-start;">
                                     <!-- Informações do funcionário -->
                                     <div style="flex: 1; min-width: 100px;">
-                                        <p><strong>Matrícula:</strong> {{ funcionario.matricula|default:"Não informado"}}</p>
+                                        <p><strong>Matrícula:</strong> {{ funcionario.matricula|default:"Não
+                                            informado"}}</p>
                                         <p><strong>Nome:</strong> {{ funcionario.nome|default:"Não informado" }}</p>
                                         <p><strong>CPF:</strong>
                                             {% if funcionario.cpf %}
@@ -115,11 +104,14 @@
                                             {% endif %}
                                         </p>
                                         <p><strong>Função:</strong> {{ funcionario.funcao|default:"Não informado" }}</p>
-                                        <p><strong>Nível da função:</strong> {{ funcionario.nivel_funcao|default:"Não informado" }}</p>
-                                        <p><strong>Status:</strong> {{ funcionario.get_status_display|default:"Não informado" }}</p>
+                                        <p><strong>Nível da função:</strong> {{ funcionario.nivel_funcao|default:"Não
+                                            informado" }}</p>
+                                        <p><strong>Status:</strong> {{ funcionario.get_status_display|default:"Não
+                                            informado" }}</p>
                                         <p><strong>Obra:</strong> {{ funcionario.obra|default:"Não informado" }}</p>
                                         {% if funcionario.data_admissao %}
-                                        <p><strong>Data de Admissão:</strong> {{funcionario.data_admissao|date:"d/m/Y"}}</p>
+                                        <p><strong>Data de Admissão:</strong> {{funcionario.data_admissao|date:"d/m/Y"}}
+                                        </p>
                                         {% else %}
                                         <p><strong>Data de Admissão:</strong> Não informada</p>
                                         {% endif %}
@@ -128,9 +120,11 @@
                                     <!-- Coluna 2 -->
                                     <div style="flex: 1; min-width: 100px;">
                                         <p><strong>CEP:</strong> {{ funcionario.cep|default:"Não informado" }}</p>
-                                        <p><strong>Logradouro:</strong> {{ funcionario.logradouro|default:"Não informado" }}</p>
+                                        <p><strong>Logradouro:</strong> {{ funcionario.logradouro|default:"Não
+                                            informado" }}</p>
                                         <p><strong>Número:</strong> {{ funcionario.numero|default:"Não informado" }}</p>
-                                        <p><strong>Complemento:</strong> {{ funcionario.complemento|default:"Não informado" }}</p>
+                                        <p><strong>Complemento:</strong> {{ funcionario.complemento|default:"Não
+                                            informado" }}</p>
                                         <p><strong>Bairro:</strong> {{ funcionario.bairro|default:"Não informado" }}</p>
                                         <p><strong>Cidade:</strong> {{ funcionario.cidade|default:"Não informado" }}</p>
                                         <p><strong>UF:</strong> {{ funcionario.uf|default:"Não informado" }}</p>
@@ -865,6 +859,13 @@
                     });
                 }
             }
+
+            document.addEventListener("DOMContentLoaded", function () {
+                const previewFoto = document.getElementById('preview-foto');
+                if (previewFoto && previewFoto.src && !previewFoto.src.includes('base64') && previewFoto.src.trim() !== '') {
+                    previewFoto.style.display = 'inline-block';
+                }
+            });
 
         </script>
 
