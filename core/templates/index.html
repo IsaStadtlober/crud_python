@@ -94,7 +94,8 @@
                                     style="display: flex; flex-wrap: wrap; gap: 20px; align-items: flex-start;">
                                     <!-- Informações do funcionário -->
                                     <div style="flex: 1; min-width: 100px;">
-                                        <p><strong>Matrícula:</strong> {{ funcionario.matricula|default:"Não informado"}}</p>
+                                        <p><strong>Matrícula:</strong> {{ funcionario.matricula|default:"Não
+                                            informado"}}</p>
                                         <p><strong>Data de nascimento:</strong>
                                             {{funcionario.data_nascimento|date:"d/m/Y"|default:"Não informado" }}</p>
                                         <p><strong>Idade:</strong>
@@ -113,8 +114,10 @@
                                             {% endif %}
                                         </p>
                                         <p><strong>Função:</strong> {{ funcionario.funcao|default:"Não informado" }}</p>
-                                        <p><strong>Nível da função:</strong> {{ funcionario.nivel_funcao|default:"Não informado" }}</p>
-                                        <p><strong>Status:</strong> {{ funcionario.get_status_display|default:"Não informado" }}</p>
+                                        <p><strong>Nível da função:</strong> {{ funcionario.nivel_funcao|default:"Não
+                                            informado" }}</p>
+                                        <p><strong>Status:</strong> {{ funcionario.get_status_display|default:"Não
+                                            informado" }}</p>
                                         <p><strong>Obra:</strong> {{ funcionario.obra|default:"Não informado" }}</p>
                                         {% if funcionario.data_admissao %}
                                         <p><strong>Data de Admissão:</strong> {{funcionario.data_admissao|date:"d/m/Y"}}
@@ -127,9 +130,11 @@
                                     <!-- Coluna 2 -->
                                     <div style="flex: 1; min-width: 100px;">
                                         <p><strong>CEP:</strong> {{ funcionario.cep|default:"Não informado" }}</p>
-                                        <p><strong>Logradouro:</strong> {{ funcionario.logradouro|default:"Não informado" }}</p>
+                                        <p><strong>Logradouro:</strong> {{ funcionario.logradouro|default:"Não
+                                            informado" }}</p>
                                         <p><strong>Número:</strong> {{ funcionario.numero|default:"Não informado" }}</p>
-                                        <p><strong>Complemento:</strong> {{ funcionario.complemento|default:"Não informado" }}</p>
+                                        <p><strong>Complemento:</strong> {{ funcionario.complemento|default:"Não
+                                            informado" }}</p>
                                         <p><strong>Bairro:</strong> {{ funcionario.bairro|default:"Não informado" }}</p>
                                         <p><strong>Cidade:</strong> {{ funcionario.cidade|default:"Não informado" }}</p>
                                         <p><strong>UF:</strong> {{ funcionario.uf|default:"Não informado" }}</p>
@@ -215,7 +220,7 @@
     <form method="post" id="funcionarioForm" enctype="multipart/form-data" autocomplete="off">
         <div class="modal fade" id="funcionarioModal" tabindex="-1" aria-labelledby="funcionarioModalLabel"
             aria-hidden="true">
-            <div class="modal-dialog modal-xl">
+            <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                     <form method="post" id="funcionarioForm">
                         {% csrf_token %}
@@ -228,7 +233,7 @@
                             <div class="container-fluid">
                                 <div class="row">
                                     <!-- Coluna 1 -->
-                                    <div class="col-md-4">
+                                    <div class="col-md-6">
                                         <div class="row">
                                             <div class="col-md-6 mb-1">
                                                 <label for="id_matricula" class="form-label">Matrícula</label>
@@ -318,7 +323,6 @@
                                                 {{ form.foto|add_class:"d-none" }}
                                             </div>
 
-
                                             <!-- Data de Admissão -->
                                             <div class="col-md-6 mb-1">
                                                 <label for="id_data_admissao" class="form-label">Data de
@@ -381,7 +385,7 @@
                                     </div>
 
                                     <!-- Coluna 2 -->
-                                    <div class="col-md-4">
+                                    <div class="col-md-6">
                                         <div class="mb-1">
                                             <label for="id_cep" class="form-label">CEP</label>
                                             <input type="text"
@@ -459,6 +463,7 @@
             </div>
         </div>
     </form>
+
 
     <!-- Modal de Sucesso -->
     <div class="modal fade" id="cadastroSucessoModal" tabindex="-1" aria-labelledby="cadastroSucessoLabel"
