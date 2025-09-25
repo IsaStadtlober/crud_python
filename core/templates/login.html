@@ -1,11 +1,29 @@
 {% extends 'base.html' %}
-{% block title %}Login{% endblock %}
+{% load static %}
 
-{% block header %}{% endblock %} {# Oculta o "Lista de Funcionários" da base #}
+{% block title %}Login{% endblock %}
+{% block header %}{% endblock %}
 
 {% block content %}
-<div class="d-flex justify-content-center align-items-center" style="height: 80vh;">
-    <div class="card shadow p-4" style="min-width: 300px; max-width: 400px; width: 100%;">
+<style>
+  body {
+    background: url("{% static 'img/img_login.jpg' %}") no-repeat center center fixed;
+    background-size: cover;
+  }
+
+  .login-card {
+    background-color: white; /* <-- Aqui deixa o fundo branco */
+    border-radius: 8px;
+    padding: 2rem;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+    min-width: 300px;
+    max-width: 400px;
+    width: 100%;
+  }
+</style>
+
+<div class="d-flex justify-content-center align-items-center" style="height: 90vh;">
+    <div class="login-card">
         <h4 class="mb-4 text-center">
             <i class="bi bi-box-arrow-in-right"></i> Acesso ao Sistema
         </h4>
@@ -30,11 +48,14 @@
                 <input type="password" class="form-control" id="password" name="password" required>
             </div>
 
-            <button type="submit" class="btn btn-primary w-100">
-                Entrar
-            </button>
+            <button type="submit" class="btn btn-primary w-100">Entrar</button>
         </form>
     </div>
 </div>
 {% endblock %}
 
+
+
+
+
+  
