@@ -18,6 +18,21 @@ class ListFuncionario(LoginRequiredMixin, ListView):
     model = Funcionario
     context_object_name = 'funcionarios'
     
+    def get_queryset(self):
+        queryset = super().get_queryset()
+
+        # Filtro de busca
+        search = self.request.GET.get('search')
+        if search:
+            queryset = queryset.filter(nome__icontains=search)
+
+        # Filtro de quantidade
+        quantidade = self.request.GET.get('quantidade')
+        if quantidade and quantidade.isdigit():
+            queryset = queryset[:int(quantidade)]
+
+        return queryset
+
     def dispatch(self, request, *args, **kwargs):
         print(">>> ListFuncionario.dispatch — user:", request.user, "is_authenticated:", request.user.is_authenticated)
         return super().dispatch(request, *args, **kwargs)
@@ -40,6 +55,9 @@ class ListFuncionario(LoginRequiredMixin, ListView):
 
         context['funcionarios_com_idade'] = funcionarios_com_idade
         context['form'] = FuncionarioForm()
+        
+        context['search'] = self.request.GET.get('search', '')
+        context['quantidade'] = self.request.GET.get('quantidade', '')
         return context
 
 @login_required(login_url=reverse_lazy('login'))
@@ -100,3 +118,26 @@ def login_view(request):
 def logout_view(request):
     logout(request)
     return redirect('login')
+
+def lista_funcionarios(request):
+    funcionarios = Funcionario.objects.all()
+
+    # Aplica o filtro da busca (se houver)
+    search = request.GET.get('search')
+    if search:
+        funcionarios = funcionarios.filter(nome__icontains=search)
+
+    # Aplica o filtro de quantidade independentemente da busca
+    quantidade = request.GET.get('quantidade')
+    if quantidade and quantidade.isdigit():
+        funcionarios = funcionarios[:int(quantidade)]
+
+    return render(request, 'index.html', {
+        'funcionarios': funcionarios
+    })
+    
+def lista_funcionarios(request):
+    funcionarios = Funcionario.objects.all()
+
+    quantidade = request.GET.get('quantidade')
+    print(f"Quantidade recebida: {quantidade}")  # DEBUG
