@@ -9,45 +9,47 @@ from datetime import date
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.http import HttpResponse
 
-class ListFuncionario(ListView):
+class ListFuncionario(LoginRequiredMixin, ListView):
+    login_url = 'login'  # <- usa o nome da rota definida no urls.py
     template_name = 'index.html'
     model = Funcionario
     context_object_name = 'funcionarios'
+    
+    def dispatch(self, request, *args, **kwargs):
+        print(">>> ListFuncionario.dispatch — user:", request.user, "is_authenticated:", request.user.is_authenticated)
+        return super().dispatch(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        
+
         def calcula_idade(data_nascimento):
             if not data_nascimento:
                 return None
             hoje = date.today()
-            return hoje.year - data_nascimento.year - ((hoje.month, hoje.day) < (data_nascimento.month, data_nascimento.day))
+            return hoje.year - data_nascimento.year - (
+                (hoje.month, hoje.day) < (data_nascimento.month, data_nascimento.day)
+            )
 
-        # Calcula idade para cada funcionário
         funcionarios_com_idade = []
         for f in context['funcionarios']:
             idade = calcula_idade(f.data_nascimento)
-            funcionarios_com_idade.append({
-                'funcionario': f,
-                'idade': idade,
-            })
+            funcionarios_com_idade.append({'funcionario': f, 'idade': idade})
 
         context['funcionarios_com_idade'] = funcionarios_com_idade
-        
-        # Só adiciona o form se não estiver vindo de um erro (i.e., via render com form com erros)
-        if 'form' not in context:
-            context['form'] = FuncionarioForm()
-        
+        context['form'] = FuncionarioForm()
         return context
 
+@login_required(login_url=reverse_lazy('login'))
 def create_funcionario(request):
     if request.method == 'POST':
         form = FuncionarioForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
             messages.success(request, 'Funcionário cadastrado com sucesso!', extra_tags='cadastro')
-            return redirect('Listar')  # Isso limpa o estado do POST
+            return redirect('listar')  # Isso limpa o estado do POST
         else:
             funcionarios = Funcionario.objects.all()
             return render(request, 'index.html', {
@@ -55,8 +57,9 @@ def create_funcionario(request):
                 'funcionarios': funcionarios,
                 'funcionario': form.instance 
             })
-    return redirect('Listar')
+    return redirect('listar')
 
+@login_required(login_url=reverse_lazy('login'))
 def update_funcionario(request, matricula):
     funcionario = get_object_or_404(Funcionario, matricula=matricula)
 
@@ -64,7 +67,7 @@ def update_funcionario(request, matricula):
         form = FuncionarioForm(request.POST, request.FILES, instance=funcionario)
         if form.is_valid():
             form.save()
-            return redirect('Listar')
+            return redirect('listar')
         else:
             funcionarios = Funcionario.objects.all()
             return render(request, 'index.html', {
@@ -73,13 +76,14 @@ def update_funcionario(request, matricula):
                 'funcionario': form.instance
             })
 
-    return redirect('Listar')
+    return redirect('listar')
 
+@login_required(login_url=reverse_lazy('login'))
 def delete_funcionario(request, matricula):
     funcionario = get_object_or_404(Funcionario, matricula=matricula)
     funcionario.delete()
     messages.success(request, 'Funcionário deletado com sucesso!')
-    return redirect('Listar')
+    return redirect('listar')
 
 def login_view(request):
     if request.method == 'POST':
@@ -88,7 +92,7 @@ def login_view(request):
         user = authenticate(request, username=username, password=password)
         if user:
             login(request, user)
-            return redirect('Listar')  # Redireciona para /index/
+            return redirect('listar')  # Redireciona para /index/
         else:
             messages.error(request, 'Usuário ou senha inválidos')
     return render(request, 'login.html')
@@ -96,3 +100,7 @@ def login_view(request):
 def logout_view(request):
     logout(request)
     return redirect('login')
+
+@login_required(login_url='login')
+def teste_acesso(request):
+    return HttpResponse("Se você vê isso, login obrigatório funcionou!")
