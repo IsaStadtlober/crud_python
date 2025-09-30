@@ -9,33 +9,35 @@
 {% load form_tags %}
 
 <div class="container mt-3">
-    <div class="row mb-3 align-items-center">
-        <form method="get" class="row w-100">
+    <div class="no-print">
+        <div class="row mb-3 align-items-center">
+            <form method="get" class="row w-100">
 
-            <!-- Campo de quantidade -->
-            <div class="col-md-1">
-                <input type="number" name="quantidade" min="1" class="form-control" placeholder=""
-                    value="{{ request.GET.quantidade }}" oninput="this.form.submit()">
-            </div>
+                <!-- Campo de quantidade -->
+                <div class="col-md-1">
+                    <input type="number" name="quantidade" min="1" class="form-control" placeholder=""
+                        value="{{ request.GET.quantidade }}" oninput="this.form.submit()">
+                </div>
 
-            <!-- Campo de busca -->
-            <div class="col-md-3">
-                <input id="searchInput" type="search" name="search" class="form-control" placeholder="Pesquisar..."
-                    value="{{ request.GET.search }}">
-            </div>
+                <!-- Campo de busca -->
+                <div class="col-md-3">
+                    <input id="searchInput" type="search" name="search" class="form-control" placeholder="Pesquisar..."
+                        value="{{ request.GET.search }}">
+                </div>
 
-            <!-- Espaço vazio -->
-            <div class="col-md-4"></div>
+                <!-- Espaço vazio -->
+                <div class="col-md-4"></div>
 
-            <!-- Botão "Novo funcionário" (AGORA COM type="button") -->
-            <div class="col-md-4 text-end">
-                <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#funcionarioModal"
-                    onclick="setCreateMode()">
-                    <i class="bi bi-person-plus"></i> Novo funcionário
-                </button>
-            </div>
+                <!-- Botão "Novo funcionário" (AGORA COM type="button") -->
+                <div class="col-md-4 text-end">
+                    <button type="button" class="btn btn-success" data-bs-toggle="modal"
+                        data-bs-target="#funcionarioModal" onclick="setCreateMode()">
+                        <i class="bi bi-person-plus"></i> Novo funcionário
+                    </button>
+                </div>
 
-        </form>
+            </form>
+        </div>
     </div>
 
     <div id="content-to-print">
@@ -47,7 +49,7 @@
                     <th scope="col">Função</th>
                     <th scope="col">Status</th>
                     <th scope="col">Obra</th>
-                    <th></th>
+                    <th class="no-print"></th>
                 </tr>
             </thead>
             <tbody>
@@ -58,7 +60,7 @@
                     <td>{{ funcionario.funcao }}</td>
                     <td>{{ funcionario.get_status_display }}</td>
                     <td>{{ funcionario.obra }}</td>
-                    <td class="text-center">
+                    <td class="text-center no-print">
                         <!-- Visualizar -->
                         <button type="button" class="btn btn-sm btn-info text-white" style="background-color: #78b7ff;"
                             data-bs-toggle="modal" data-bs-target="#viewModal{{ funcionario.matricula }}">
@@ -910,19 +912,7 @@
 <script>
     document.getElementById('print-pdf').addEventListener('click', function (e) {
         e.preventDefault();
-
-        const element = document.getElementById('content-to-print');
-
-        const opt = {
-            margin: 0.5,
-            filename: 'funcionarios.pdf',
-            image: { type: 'jpeg', quality: 0.98 },
-            html2canvas: { scale: 2 },
-            jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' },
-            pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
-        };
-
-        html2pdf().set(opt).from(element).save();
+        window.print();
     });
 </script>
 
