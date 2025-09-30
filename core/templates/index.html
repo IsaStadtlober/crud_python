@@ -8,7 +8,7 @@
 
 {% load form_tags %}
 
-<div class="container mt-3">
+<div class="container mt-3 px-0">
     <div class="no-print">
         <div class="row mb-3 align-items-center">
             <form method="get" class="row w-100">
@@ -28,13 +28,14 @@
                 <!-- Espaço vazio -->
                 <div class="col-md-4"></div>
 
-                <!-- Botão "Novo funcionário" (AGORA COM type="button") -->
-                <div class="col-md-4 text-end">
+                <!-- Botão "Novo funcionário" alinhado à direita e rente à tabela -->
+                <div class="col-md-4 d-flex justify-content-end px-0">
                     <button type="button" class="btn btn-success" data-bs-toggle="modal"
                         data-bs-target="#funcionarioModal" onclick="setCreateMode()">
                         <i class="bi bi-person-plus"></i> Novo funcionário
                     </button>
                 </div>
+
 
             </form>
         </div>
