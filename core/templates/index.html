@@ -45,7 +45,7 @@
         <table class="table table-bordered table-striped">
             <thead class="table-dark">
                 <tr>
-                    <th scope="col">Matrícula</th>
+                    <th scope="col" class="matricula-col">Matrícula</th>
                     <th scope="col">Nome</th>
                     <th scope="col">Função</th>
                     <th scope="col">Status</th>
@@ -56,7 +56,7 @@
             <tbody>
                 {% for funcionario in funcionarios %}
                 <tr>
-                    <td>{{ funcionario.matricula }}</td>
+                    <td class="matricula-col">{{ funcionario.matricula }}</td>
                     <td>{{ funcionario.nome }}</td>
                     <td>{{ funcionario.funcao }}</td>
                     <td>{{ funcionario.get_status_display }}</td>

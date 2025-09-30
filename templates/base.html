@@ -12,6 +12,7 @@
     <style>
         body {
             font-size: 0.9rem;
+            overflow-x: hidden;
         }
 
         h2 {
@@ -58,6 +59,12 @@
 
         @media print {
             .no-print {
+                display: none !important;
+            }
+        }
+
+        @media (max-width: 1032px) {
+            .matricula-col {
                 display: none !important;
             }
         }
