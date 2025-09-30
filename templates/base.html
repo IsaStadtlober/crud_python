@@ -68,6 +68,38 @@
                 display: none !important;
             }
         }
+
+        .input-quantidade {
+            width: 80px;
+            min-width: 80px;
+            max-width: 80px;
+        }
+
+        .input-pesquisa {
+            width: 220px;
+            min-width: 220px;
+            max-width: 220px;
+        }
+
+        @media (max-width: 809px) {
+            .form-row-stack {
+                flex-direction: column !important;
+                align-items: flex-start !important;
+                gap: 0.5rem;
+            }
+
+            .input-quantidade {
+                width: 80px !important;
+                min-width: 80px !important;
+                max-width: 80px !important;
+            }
+
+            .input-pesquisa {
+                width: 100% !important;
+                min-width: 0 !important;
+                max-width: none !important;
+            }
+        }
     </style>
 </head>
 
