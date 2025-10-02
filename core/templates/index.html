@@ -686,6 +686,23 @@
         }
         return cookieValue;
     }
+
+    document.getElementById('modalCadastrarUsuario').addEventListener('hidden.bs.modal', function () {
+        const form = document.getElementById('formCadastrarUsuario');
+        form.reset();
+
+        // Limpa estados de erro
+        const inputs = form.querySelectorAll('.form-control');
+        inputs.forEach(input => {
+            input.classList.remove('is-invalid');
+        });
+
+        // Restaura mensagens padrão
+        document.getElementById('cpf').nextElementSibling.textContent = 'CPF inválido.';
+        document.getElementById('username').nextElementSibling.textContent = 'Informe o usuário.';
+        document.getElementById('senha').nextElementSibling.textContent = 'Informe a senha.';
+        document.getElementById('confirmaSenha').nextElementSibling.textContent = 'As senhas não conferem.';
+    });
 </script>
 
 {% if messages %}
