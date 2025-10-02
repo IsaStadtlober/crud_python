@@ -155,19 +155,27 @@ def cadastrar_usuario(request):
             username = data.get('username')
             senha = data.get('senha')
 
-            # Validação básica
-            if not all([cpf, username, senha]):
-                return JsonResponse({'error': 'Todos os campos são obrigatórios.'}, status=400)
+            erros = {}
 
-            # Verifica se username já existe
+            if not cpf:
+                erros['cpf'] = 'CPF é obrigatório.'
+            if not username:
+                erros['username'] = 'Usuário é obrigatório.'
+            if not senha:
+                erros['senha'] = 'Senha é obrigatória.'
+
+            if erros:
+                return JsonResponse({'errors': erros}, status=400)
+
             if Usuario.objects.filter(username=username).exists():
-                return JsonResponse({'error': 'Usuário já existe.'}, status=400)
+                erros['username'] = 'Usuário já existe.'
 
-            # Verifica se CPF já existe
             if Usuario.objects.filter(cpf=cpf).exists():
-                return JsonResponse({'error': 'CPF já cadastrado.'}, status=400)
+                erros['cpf'] = 'CPF já cadastrado.'
 
-            # Criação do usuário
+            if erros:
+                return JsonResponse({'errors': erros}, status=400)
+
             user = Usuario(cpf=cpf, username=username)
             user.set_senha(senha)
             user.save()
