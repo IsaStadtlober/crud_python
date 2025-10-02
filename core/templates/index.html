@@ -488,9 +488,130 @@
     </div>
 </div>
 
+<a href="#" id="btn-cadastrar-usuario" title="Cadastrar Usuário">
+    <i class="bi bi-person-plus"></i>
+</a>
+
 <a href="#" id="print-pdf" title="Imprimir PDF">
     <i class="bi bi-printer"></i>
 </a>
+
+<div class="modal fade" id="modalCadastrarUsuario" tabindex="-1" aria-labelledby="modalCadastrarUsuarioLabel"
+    aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form id="formCadastrarUsuario" novalidate>
+                <div class="modal-header bg-success text-white py-1">
+                    <h5 class="modal-title" id="modalCadastrarUsuarioLabel">Cadastrar Usuário</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                        aria-label="Fechar"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="cpf" class="form-label">CPF</label>
+                        <input type="text" class="form-control" id="cpf" required maxlength="14"
+                            placeholder="000.000.000-00">
+                        <div class="invalid-feedback">CPF inválido.</div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="username" class="form-label">Usuário</label>
+                        <input type="text" class="form-control" id="username" required>
+                        <div class="invalid-feedback">Informe o usuário.</div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="senha" class="form-label">Senha</label>
+                        <input type="password" class="form-control" id="senha" required>
+                        <div class="invalid-feedback">Informe a senha.</div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="confirmaSenha" class="form-label">Confirmar Senha</label>
+                        <input type="password" class="form-control" id="confirmaSenha" required>
+                        <div class="invalid-feedback">As senhas não conferem.</div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-success">Cadastrar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Abrir modal ao clicar no botão
+    document.getElementById('btn-cadastrar-usuario').addEventListener('click', function (e) {
+        e.preventDefault();
+        var myModal = new bootstrap.Modal(document.getElementById('modalCadastrarUsuario'));
+        myModal.show();
+
+        // Aplica máscara IMask no campo CPF
+        var cpfElement = document.getElementById('cpf');
+        var cpfMask = IMask(cpfElement, {
+            mask: '000.000.000-00'
+        });
+    });
+
+    // Validação CPF simples (exemplo)
+    function validarCPF(cpf) {
+        cpf = cpf.replace(/[^\d]+/g, '');
+        if (cpf.length !== 11 || /^(\d)\1+$/.test(cpf)) return false;
+        // cálculo simplificado, posso detalhar se quiser
+        var sum = 0, rest;
+        for (var i = 1; i <= 9; i++) sum += parseInt(cpf.substring(i - 1, i)) * (11 - i);
+        rest = (sum * 10) % 11;
+        if ((rest === 10) || (rest === 11)) rest = 0;
+        if (rest !== parseInt(cpf.substring(9, 10))) return false;
+        sum = 0;
+        for (i = 1; i <= 10; i++) sum += parseInt(cpf.substring(i - 1, i)) * (12 - i);
+        rest = (sum * 10) % 11;
+        if ((rest === 10) || (rest === 11)) rest = 0;
+        if (rest !== parseInt(cpf.substring(10, 11))) return false;
+        return true;
+    }
+
+    document.getElementById('formCadastrarUsuario').addEventListener('submit', function (e) {
+        e.preventDefault();
+        var cpfInput = document.getElementById('cpf');
+        var userInput = document.getElementById('username');
+        var senhaInput = document.getElementById('senha');
+        var confirmaInput = document.getElementById('confirmaSenha');
+
+        var valid = true;
+
+        // CPF
+        if (!validarCPF(cpfInput.value)) {
+            cpfInput.classList.add('is-invalid');
+            valid = false;
+        } else {
+            cpfInput.classList.remove('is-invalid');
+        }
+
+        // Usuário
+        if (!userInput.value.trim()) {
+            userInput.classList.add('is-invalid');
+            valid = false;
+        } else {
+            userInput.classList.remove('is-invalid');
+        }
+
+        // Senha
+        if (!senhaInput.value.trim()) {
+            senhaInput.classList.add('is-invalid');
+            valid = false;
+        } else {
+            senhaInput.classList.remove('is-invalid');
+        }
+
+        // Confirmar senha
+        if (confirmaInput.value !== senhaInput.value || !confirmaInput.value.trim()) {
+            confirmaInput.classList.add('is-invalid');
+            valid = false;
+        } else {
+            confirmaInput.classList.remove('is-invalid');
+        }
+    });
+</script>
 
 {% if messages %}
 {% for message in messages %}

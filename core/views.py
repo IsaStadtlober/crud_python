@@ -140,4 +140,4 @@ def lista_funcionarios(request):
     funcionarios = Funcionario.objects.all()
 
     quantidade = request.GET.get('quantidade')
-    print(f"Quantidade recebida: {quantidade}")  # DEBUG
+    print(f"Quantidade recebida: {quantidade}")  
