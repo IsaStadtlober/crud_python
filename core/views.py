@@ -14,7 +14,7 @@ from django.contrib.auth import get_user_model
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
 import json
-
+from .models import Usuario
 
 class ListFuncionario(LoginRequiredMixin, ListView):
     login_url = 'login'  # <- usa o nome da rota definida no urls.py
@@ -155,26 +155,22 @@ def cadastrar_usuario(request):
             username = data.get('username')
             senha = data.get('senha')
 
-            User = get_user_model()
-
             # Validação básica
             if not all([cpf, username, senha]):
                 return JsonResponse({'error': 'Todos os campos são obrigatórios.'}, status=400)
 
             # Verifica se username já existe
-            if User.objects.filter(username=username).exists():
+            if Usuario.objects.filter(username=username).exists():
                 return JsonResponse({'error': 'Usuário já existe.'}, status=400)
 
-            # Verifica se CPF já existe (se tiver o campo 'cpf' no modelo)
-            if hasattr(User, 'cpf') and User.objects.filter(cpf=cpf).exists():
+            # Verifica se CPF já existe
+            if Usuario.objects.filter(cpf=cpf).exists():
                 return JsonResponse({'error': 'CPF já cadastrado.'}, status=400)
 
             # Criação do usuário
-            user = User.objects.create_user(username=username, password=senha)
-
-            if hasattr(user, 'cpf'):
-                user.cpf = cpf
-                user.save()
+            user = Usuario(cpf=cpf, username=username)
+            user.set_senha(senha)
+            user.save()
 
             return JsonResponse({'message': 'Usuário cadastrado com sucesso!'}, status=201)
 

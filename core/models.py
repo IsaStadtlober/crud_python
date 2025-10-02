@@ -1,5 +1,8 @@
 from django.db import models
 from datetime import date
+from django.db import models
+from django.contrib.auth.hashers import make_password, check_password
+
 
 STATUS_CHOICES = [
     ('AT', 'Ativo'),
@@ -51,3 +54,17 @@ class Funcionario(models.Model):
             return None
         hoje = date.today()
         return hoje.year - self.data_nascimento.year - ((hoje.month, hoje.day) < (self.data_nascimento.month, self.data_nascimento.day))
+    
+class Usuario(models.Model):
+    cpf = models.CharField(max_length=14, unique=True)
+    username = models.CharField(max_length=150, unique=True)
+    senha = models.CharField(max_length=128)  # Hash da senha
+    
+    def set_senha(self, raw_password):
+        self.senha = make_password(raw_password)
+        
+    def check_senha(self, raw_password):
+        return check_password(raw_password, self.senha)
+
+    def __str__(self):
+        return self.username
