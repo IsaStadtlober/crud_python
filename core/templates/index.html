@@ -6,6 +6,8 @@
 
 {% load static %}
 
+{% csrf_token %}
+
 {% load form_tags %}
 
 <div class="container mt-3 px-0 ">
@@ -579,7 +581,7 @@
 
         var valid = true;
 
-        // CPF
+        // Validação dos campos
         if (!validarCPF(cpfInput.value)) {
             cpfInput.classList.add('is-invalid');
             valid = false;
@@ -587,7 +589,6 @@
             cpfInput.classList.remove('is-invalid');
         }
 
-        // Usuário
         if (!userInput.value.trim()) {
             userInput.classList.add('is-invalid');
             valid = false;
@@ -595,7 +596,6 @@
             userInput.classList.remove('is-invalid');
         }
 
-        // Senha
         if (!senhaInput.value.trim()) {
             senhaInput.classList.add('is-invalid');
             valid = false;
@@ -603,14 +603,64 @@
             senhaInput.classList.remove('is-invalid');
         }
 
-        // Confirmar senha
         if (confirmaInput.value !== senhaInput.value || !confirmaInput.value.trim()) {
             confirmaInput.classList.add('is-invalid');
             valid = false;
         } else {
             confirmaInput.classList.remove('is-invalid');
         }
+
+        // 🔽 Envia os dados para o backend se tudo estiver válido
+        if (valid) {
+            fetch('/cadastrar-usuario/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getCookie('csrftoken') // Só funciona se o CSRF estiver no cookie
+                },
+                body: JSON.stringify({
+                    cpf: cpfInput.value,
+                    username: userInput.value,
+                    senha: senhaInput.value
+                })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.error) {
+                        alert('Erro: ' + data.error);
+                    } else {
+                        alert(data.message);
+                        // Fecha o modal
+                        var myModalEl = document.getElementById('modalCadastrarUsuario');
+                        var modal = bootstrap.Modal.getInstance(myModalEl);
+                        modal.hide();
+
+                        // Limpa o formulário
+                        document.getElementById('formCadastrarUsuario').reset();
+                    }
+                })
+                .catch(error => {
+                    console.error('Erro ao cadastrar:', error);
+                    alert('Erro no servidor. Tente novamente.');
+                });
+        }
     });
+
+    // 🍪 Função auxiliar para pegar o CSRF token do cookie
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let cookie of cookies) {
+                cookie = cookie.trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
 </script>
 
 {% if messages %}

@@ -10,7 +10,11 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.http import HttpResponse
+from django.contrib.auth import get_user_model
+from django.views.decorators.csrf import csrf_exempt
+from django.http import JsonResponse
+import json
+
 
 class ListFuncionario(LoginRequiredMixin, ListView):
     login_url = 'login'  # <- usa o nome da rota definida no urls.py
@@ -141,3 +145,40 @@ def lista_funcionarios(request):
 
     quantidade = request.GET.get('quantidade')
     print(f"Quantidade recebida: {quantidade}")  
+    
+@csrf_exempt
+def cadastrar_usuario(request):
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body)
+            cpf = data.get('cpf')
+            username = data.get('username')
+            senha = data.get('senha')
+
+            User = get_user_model()
+
+            # Validação básica
+            if not all([cpf, username, senha]):
+                return JsonResponse({'error': 'Todos os campos são obrigatórios.'}, status=400)
+
+            # Verifica se username já existe
+            if User.objects.filter(username=username).exists():
+                return JsonResponse({'error': 'Usuário já existe.'}, status=400)
+
+            # Verifica se CPF já existe (se tiver o campo 'cpf' no modelo)
+            if hasattr(User, 'cpf') and User.objects.filter(cpf=cpf).exists():
+                return JsonResponse({'error': 'CPF já cadastrado.'}, status=400)
+
+            # Criação do usuário
+            user = User.objects.create_user(username=username, password=senha)
+
+            if hasattr(user, 'cpf'):
+                user.cpf = cpf
+                user.save()
+
+            return JsonResponse({'message': 'Usuário cadastrado com sucesso!'}, status=201)
+
+        except Exception as e:
+            return JsonResponse({'error': f'Erro no servidor: {str(e)}'}, status=500)
+
+    return JsonResponse({'error': 'Método não permitido.'}, status=405)
