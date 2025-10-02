@@ -626,7 +626,26 @@
             })
                 .then(response => response.json())
                 .then(data => {
-                    if (data.error) {
+                    // Limpa erros anteriores
+                    cpfInput.classList.remove('is-invalid');
+                    userInput.classList.remove('is-invalid');
+
+                    // Remove mensagens antigas
+                    cpfInput.nextElementSibling.textContent = 'CPF inválido.';
+                    userInput.nextElementSibling.textContent = 'Informe o usuário.';
+
+                    if (data.errors) {
+                        // Se o backend retornou erros específicos
+                        if (data.errors.cpf) {
+                            cpfInput.classList.add('is-invalid');
+                            cpfInput.nextElementSibling.textContent = data.errors.cpf;
+                        }
+                        if (data.errors.username) {
+                            userInput.classList.add('is-invalid');
+                            userInput.nextElementSibling.textContent = data.errors.username;
+                        }
+                    } else if (data.error) {
+                        // Erro genérico
                         alert('Erro: ' + data.error);
                     } else {
                         alert(data.message);
@@ -639,10 +658,6 @@
                         document.getElementById('formCadastrarUsuario').reset();
                     }
                 })
-                .catch(error => {
-                    console.error('Erro ao cadastrar:', error);
-                    alert('Erro no servidor. Tente novamente.');
-                });
         }
     });
 
