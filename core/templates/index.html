@@ -14,28 +14,28 @@
     <div class="no-print mb-3">
         <form method="get" class="d-flex flex-wrap align-items-center justify-content-between w-100">
 
-            <div class="d-flex flex-wrap align-items-center gap-2">
+            <div class="d-flex flex-wrap align-items-center gap-2 ms-2">
                 <!-- Quantidade -->
-                <input type="number" name="quantidade" min="1" class="form-control input-quantidade"
-                    value="{{ request.GET.quantidade }}" oninput="this.form.submit()">
-
+                <input type="number" name="quantidade" min="1" class="form-control input-quantidade" style="width: 38px; height: 38px;"
+                    value="{{ request.GET.quantidade }}" oninput="this.form.submit();">
                 <!-- Pesquisa -->
-                <input id="searchInput" type="search" name="search" class="form-control input-pesquisa"
+                <input id="searchInput" type="search" name="search" class="form-control input-pesquisa" style="height: 38px; width: 200px;"
                     placeholder="Pesquisar..." value="{{ request.GET.search }}">
             </div>
 
-            <div>
-                <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#funcionarioModal"
-                    onclick="setCreateMode()">
-                    <i class="bi bi-person-plus"></i> Novo funcionário
-                </button>
-            </div>
+                <div class="d-flex align-items-center ms-2 me-2">
+                        <button type="button" class="btn btn-success rounded-2 d-flex align-items-center justify-content-center" 
+                            style="width: 38px; height: 38px;" data-bs-toggle="modal" data-bs-target="#funcionarioModal"
+                            onclick="setCreateMode()" title="Novo funcionário">
+                            <i class="bi bi-person-plus fs-5"></i>
+                        </button>
+                </div>
 
         </form>
     </div>
 
-    <div id="content-to-print">
-        <table class="table table-bordered table-striped">
+    <div id="content-to-print" class="table-responsive">
+        <table class="table table-bordered table-striped table-sm">
             <thead class="table-dark">
                 <tr>
                     <th scope="col" class="matricula-col">Matrícula</th>
@@ -56,13 +56,13 @@
                     <td>{{ funcionario.obra }}</td>
                     <td class="text-center no-print">
                         <!-- Visualizar -->
-                        <button type="button" class="btn btn-sm btn-info text-white" style="background-color: #78b7ff;"
+                        <button type="button" class="btn btn-sm btn-info text-white p-1" style="background-color: #78b7ff;"
                             data-bs-toggle="modal" data-bs-target="#viewModal{{ funcionario.matricula }}">
                             <i class="bi bi-eye text-muted"></i>
                         </button>
 
                         <!-- Editar -->
-                        <button type="button" class="btn btn-warning text-white" data-bs-toggle="modal"
+                        <button type="button" class="btn btn-sm btn-warning text-white p-1" data-bs-toggle="modal"
                             data-bs-target="#funcionarioModal" data-matricula="{{ funcionario.matricula }}"
                             data-data-nascimento="{{ funcionario.data_nascimento|date:'Y-m-d' }}"
                             data-nome="{{ funcionario.nome }}" data-cpf="{{ funcionario.cpf }}"
@@ -81,7 +81,7 @@
                         </button>
 
                         <!-- Deletar -->
-                        <button type="button" class="btn btn-sm btn-danger text-white"
+                        <button type="button" class="btn btn-sm btn-danger text-white p-1"
                             style="background-color: #ff5555;" data-bs-toggle="modal"
                             data-bs-target="#deleteModal{{ funcionario.matricula }}">
                             <i class="bi bi-trash text-muted"></i>

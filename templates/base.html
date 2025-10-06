@@ -31,8 +31,28 @@
             font-size: 0.85rem;
         }
 
+        @media (max-width: 576px) {
+            table th,
+            table td {
+                padding: 0.2rem !important;
+                font-size: 0.75rem;
+            }
+            .btn-sm {
+                padding: 0.15rem 0.3rem !important;
+                font-size: 0.75rem !important;
+            }
+        }
+
         .container {
             max-width: 960px;
+            padding: 0;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                max-width: 100%;
+                margin: 0;
+            }
         }
 
         #print-pdf {
@@ -99,6 +119,9 @@
         }
 
         .input-pesquisa {
+            .btn-novo-funcionario-text {
+                display: inline;
+            }
             width: 220px;
             min-width: 220px;
             max-width: 220px;
@@ -112,15 +135,30 @@
             }
 
             .input-quantidade {
-                width: 80px !important;
-                min-width: 80px !important;
-                max-width: 80px !important;
+                width: 70px !important;
+                min-width: 70px !important;
+                max-width: 70px !important;
             }
 
             .input-pesquisa {
                 width: 100% !important;
                 min-width: 0 !important;
                 max-width: none !important;
+            }
+
+            .table {
+                margin: 0;
+                width: 100%;
+            }
+
+            .table-responsive {
+                margin: 0;
+                padding: 0;
+            }
+
+            body {
+                padding: 0;
+                margin: 0;
             }
         }
     </style>
