@@ -35,7 +35,7 @@
     </div>
 
     <div id="content-to-print" class="table-responsive">
-        <table class="table table-bordered table-striped table-sm" style="margin-bottom: 16px;">
+        <table class="table table-bordered table-striped table-sm" style="margin-bottom: 30px;">
             <thead class="table-dark sticky-thead">
                 <tr>
                     <th scope="col" class="matricula-col">Matrícula</th>
@@ -536,26 +536,37 @@
 
 <!-- Footer mobile fixo -->
 <div class="mobile-footer">
-    <a href="#" title="Cadastrar Usuário">
+    <a href="#" id="footer-cadastrar-usuario" title="Cadastrar Usuário">
         <i class="bi bi-person-plus"></i>
     </a>
-    <a href="#" title="Imprimir PDF">
+    <a href="#" id="footer-print-pdf" title="Imprimir PDF">
         <i class="bi bi-printer"></i>
     </a>
 </div>
 
 <script>
-    // Abrir modal ao clicar no botão
+    // Abrir modal ao clicar no botão principal
     document.getElementById('btn-cadastrar-usuario').addEventListener('click', function (e) {
         e.preventDefault();
         var myModal = new bootstrap.Modal(document.getElementById('modalCadastrarUsuario'));
         myModal.show();
-
-        // Aplica máscara IMask no campo CPF
         var cpfElement = document.getElementById('cpf');
-        var cpfMask = IMask(cpfElement, {
-            mask: '000.000.000-00'
-        });
+        var cpfMask = IMask(cpfElement, { mask: '000.000.000-00' });
+    });
+
+    // Abrir modal ao clicar no ícone do footer mobile
+    document.getElementById('footer-cadastrar-usuario').addEventListener('click', function (e) {
+        e.preventDefault();
+        var myModal = new bootstrap.Modal(document.getElementById('modalCadastrarUsuario'));
+        myModal.show();
+        var cpfElement = document.getElementById('cpf');
+        var cpfMask = IMask(cpfElement, { mask: '000.000.000-00' });
+    });
+
+    // Imprimir ao clicar no ícone do footer mobile
+    document.getElementById('footer-print-pdf').addEventListener('click', function (e) {
+        e.preventDefault();
+        window.print();
     });
 
     // Validação CPF simples (exemplo)
