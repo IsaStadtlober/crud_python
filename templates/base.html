@@ -27,19 +27,21 @@
 
         table th,
         table td {
-            padding: 0.3rem !important;
+            padding: 0.3rem;
             font-size: 0.85rem;
         }
 
         @media (max-width: 576px) {
+
             table th,
             table td {
-                padding: 0.2rem !important;
+                padding: 0.2rem;
                 font-size: 0.75rem;
             }
+
             .btn-sm {
-                padding: 0.15rem 0.3rem !important;
-                font-size: 0.75rem !important;
+                padding: 0.15rem 0.3rem;
+                font-size: 0.75rem;
             }
         }
 
@@ -102,13 +104,13 @@
 
         @media print {
             .no-print {
-                display: none !important;
+                display: none;
             }
         }
 
         @media (max-width: 1032px) {
             .matricula-col {
-                display: none !important;
+                display: none;
             }
         }
 
@@ -122,6 +124,7 @@
             .btn-novo-funcionario-text {
                 display: inline;
             }
+
             width: 220px;
             min-width: 220px;
             max-width: 220px;
@@ -129,21 +132,21 @@
 
         @media (max-width: 809px) {
             .form-row-stack {
-                flex-direction: column !important;
-                align-items: flex-start !important;
+                flex-direction: column;
+                align-items: flex-start;
                 gap: 0.5rem;
             }
 
             .input-quantidade {
-                width: 70px !important;
-                min-width: 70px !important;
-                max-width: 70px !important;
+                width: 70px;
+                min-width: 70px;
+                max-width: 70px;
             }
 
             .input-pesquisa {
-                width: 100% !important;
-                min-width: 0 !important;
-                max-width: none !important;
+                width: 100%;
+                min-width: 0;
+                max-width: none;
             }
 
             .table {
@@ -159,6 +162,44 @@
             body {
                 padding: 0;
                 margin: 0;
+            }
+        }
+
+        .mobile-footer {
+            display: none;
+        }
+
+        /* Exibe como footer fixo em telas pequenas */
+        @media (max-width: 576px) {
+
+            /* Oculta os botões flutuantes no mobile */
+            #print-pdf,
+            #btn-cadastrar-usuario {
+                display: none;
+            }
+
+            .mobile-footer {
+                display: flex;
+                justify-content: space-around;
+                align-items: center;
+                position: fixed;
+                bottom: 0;
+                left: 0;
+                width: 100%;
+                background-color: #f1f1f1;
+                padding: 10px 0;
+                border-top: 1px solid #ccc;
+                z-index: 999;
+            }
+
+            .mobile-footer a {
+                text-decoration: none;
+                color: #444;
+                font-size: 24px;
+            }
+
+            .mobile-footer a:hover {
+                color: #000;
             }
         }
     </style>
