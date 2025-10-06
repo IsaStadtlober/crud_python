@@ -24,7 +24,7 @@
             </div>
 
                 <div class="d-flex align-items-center ms-2 me-2">
-                        <button type="button" class="btn btn-success rounded-2 d-flex align-items-center justify-content-center" 
+                        <button type="button" class="btn btn-success rounded-2 d-flex align-items-center justify-content-center no-print" 
                             style="width: 38px; height: 38px;" data-bs-toggle="modal" data-bs-target="#funcionarioModal"
                             onclick="setCreateMode()" title="Novo funcionário">
                             <i class="bi bi-person-plus fs-5"></i>
@@ -149,7 +149,7 @@
                                     <div style="flex: 1; min-width: 100px;">
                                         <p><strong>Ordem de Serviço:</strong>
                                             {% if funcionario.ordem_servico %}
-                                            <a href="{{ funcionario.ordem_servico.url }}" target="_blank">
+                                            <a href="{{ funcionario.ordem_servico.url }}" target="_blank" class="no-print">
                                                 <i class="bi bi-eye" style="font-size: 1.5rem;"></i>
                                             </a>
                                             {% else %}
@@ -158,7 +158,7 @@
                                         </p>
                                         <p><strong>Contrato de Trabalho:</strong>
                                             {% if funcionario.contrato_trabalho %}
-                                            <a href="{{ funcionario.contrato_trabalho.url }}" target="_blank">
+                                            <a href="{{ funcionario.contrato_trabalho.url }}" target="_blank" class="no-print">
                                                 <i class="bi bi-eye" style="font-size: 1.5rem;"></i>
                                             </a>
                                             {% else %}
@@ -182,7 +182,7 @@
                                     </div>
                                 </div>
                                 <div class="modal-footer">
-                                    <button class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                                    <button class="btn btn-secondary no-print" data-bs-dismiss="modal">Fechar</button>
                                 </div>
                             </div>
                         </div>
@@ -203,10 +203,10 @@
                                     Tem certeza que deseja excluir o funcionário <strong>{{ funcionario.nome}}</strong>?
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary"
+                                    <button type="button" class="btn btn-secondary no-print"
                                         data-bs-dismiss="modal">Cancelar</button>
                                     <a href="{% url 'delete' funcionario.matricula %}"
-                                        class="btn btn-danger">Excluir</a>
+                                        class="btn btn-danger no-print">Excluir</a>
                                 </div>
                             </div>
                         </div>
@@ -484,11 +484,11 @@
     </div>
 </div>
 
-<a href="#" id="btn-cadastrar-usuario" title="Cadastrar Usuário">
+<a href="#" id="btn-cadastrar-usuario" title="Cadastrar Usuário" class="no-print">
     <i class="bi bi-person-plus"></i>
 </a>
 
-<a href="#" id="print-pdf" title="Imprimir PDF">
+<a href="#" id="print-pdf" title="Imprimir PDF" class="no-print">
     <i class="bi bi-printer"></i>
 </a>
 
@@ -535,7 +535,7 @@
 </div>
 
 <!-- Footer mobile fixo -->
-<div class="mobile-footer">
+<div class="mobile-footer no-print">
     <a href="#" id="footer-cadastrar-usuario" title="Cadastrar Usuário">
         <i class="bi bi-person-plus"></i>
     </a>

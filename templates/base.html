@@ -103,8 +103,26 @@
         }
 
         @media print {
-            .no-print {
-                display: none;
+            .no-print,
+            #print-pdf,
+            #btn-cadastrar-usuario,
+            .mobile-footer {
+                display: none !important;
+            }
+            .table-responsive {
+                max-height: none !important;
+                overflow: visible !important;
+            }
+            .sticky-thead th {
+                position: static !important;
+                background-color: #343a40 !important;
+                color: #fff !important;
+            }
+            table, thead, tbody, tr, th, td {
+                page-break-inside: avoid !important;
+            }
+            tbody {
+                page-break-after: always;
             }
         }
 
