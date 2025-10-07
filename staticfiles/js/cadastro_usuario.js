@@ -1,39 +1,34 @@
-// Botões para abrir o modal
-document.getElementById('btn-cadastrar-usuario')?.addEventListener('click', abrirModalCadastro);
-document.getElementById('footer-cadastrar-usuario')?.addEventListener('click', abrirModalCadastro);
-
-// Botão imprimir
-document.getElementById('print-pdf')?.addEventListener('click', e => {
-    e.preventDefault();
-    window.print();
-});
-
 // Função para abrir o modal
 function abrirModalCadastro(e) {
     e.preventDefault();
 
-    // Remove qualquer backdrop já aberto (para evitar sobreposição)
-    const backdrop = document.querySelector('.modal-backdrop');
-    if (backdrop) {
-        backdrop.remove();
-        document.body.classList.remove('modal-open');
-        document.body.style.overflow = '';
-        document.body.style.paddingRight = '';
-    }
-
     const modalEl = document.getElementById('modalCadastrarUsuario');
-
-    // Verifica se já existe uma instância do modal criada
-    let myModal = bootstrap.Modal.getInstance(modalEl);
-    if (!myModal) {
-        myModal = new bootstrap.Modal(modalEl);
-    }
+    const myModal = new bootstrap.Modal(modalEl, {
+        backdrop: true,
+        keyboard: true
+    });
 
     myModal.show();
 
     // Máscara do CPF
     IMask(document.getElementById('cpf'), { mask: '000.000.000-00' });
+
+    // Armazena a instância para uso posterior
+    window.modalUsuarioInstance = myModal;
 }
+
+// Botões que abrem o modal
+document.getElementById('btn-cadastrar-usuario')?.addEventListener('click', abrirModalCadastro);
+document.getElementById('footer-cadastrar-usuario')?.addEventListener('click', abrirModalCadastro);
+
+// Fecha modal e garante remoção da sombra
+document.getElementById('modalCadastrarUsuario')?.addEventListener('hidden.bs.modal', () => {
+    // Remove manualmente qualquer backdrop que persistir
+    document.querySelectorAll('.modal-backdrop').forEach(el => el.remove());
+    document.body.classList.remove('modal-open');
+    document.body.style.overflow = '';
+    document.body.style.paddingRight = '';
+});
 
 // Submissão do formulário
 document.getElementById('formCadastrarUsuario')?.addEventListener('submit', function (e) {
@@ -75,7 +70,6 @@ document.getElementById('formCadastrarUsuario')?.addEventListener('submit', func
         confirmaInput.classList.remove('is-invalid');
     }
 
-    // Se tudo estiver válido
     if (valid) {
         fetch('/cadastrar-usuario/', {
             method: 'POST',
@@ -92,25 +86,13 @@ document.getElementById('formCadastrarUsuario')?.addEventListener('submit', func
         .then(response => response.json())
         .then(data => {
             if (data.errors) {
-                // Exibe os erros (você pode personalizar isso)
                 alert("Erro ao cadastrar usuário.");
             } else {
                 alert(data.message);
 
-                // Fecha o modal com segurança
-                const modalEl = document.getElementById('modalCadastrarUsuario');
-                const modalInstance = bootstrap.Modal.getInstance(modalEl);
-                if (modalInstance) {
-                    modalInstance.hide();
-
-                    // Fallback: remove backdrop se continuar na tela
-                    setTimeout(() => {
-                        const backdrop = document.querySelector('.modal-backdrop');
-                        if (backdrop) backdrop.remove();
-                        document.body.classList.remove('modal-open');
-                        document.body.style.overflow = '';
-                        document.body.style.paddingRight = '';
-                    }, 500);
+                // Fecha o modal usando instância salva
+                if (window.modalUsuarioInstance) {
+                    window.modalUsuarioInstance.hide();
                 }
 
                 // Limpa o formulário
@@ -120,8 +102,3 @@ document.getElementById('formCadastrarUsuario')?.addEventListener('submit', func
     }
 });
 
-// Fallback extra: caso o backdrop não saia sozinho
-document.getElementById('modalCadastrarUsuario')?.addEventListener('hidden.bs.modal', () => {
-    const backdrop = document.querySelector('.modal-backdrop');
-    if (backdrop) backdrop.remove();
-});
