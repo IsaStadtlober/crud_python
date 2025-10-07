@@ -1,6 +1,6 @@
 document.getElementById('btn-cadastrar-usuario')?.addEventListener('click', abrirModalCadastro);
 document.getElementById('footer-cadastrar-usuario')?.addEventListener('click', abrirModalCadastro);
-document.getElementById('footer-print-pdf')?.addEventListener('click', e => {
+document.getElementById('print-pdf')?.addEventListener('click', e => {
     e.preventDefault();
     window.print();
 });
