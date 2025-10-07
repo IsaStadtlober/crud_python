@@ -103,27 +103,46 @@
         }
 
         @media print {
+
             .no-print,
             #print-pdf,
             #btn-cadastrar-usuario,
             .mobile-footer {
                 display: none !important;
             }
+
             .table-responsive {
                 max-height: none !important;
                 overflow: visible !important;
             }
+
             .sticky-thead th {
                 position: static !important;
                 background-color: #343a40 !important;
                 color: #fff !important;
             }
-            table, thead, tbody, tr, th, td {
-                page-break-inside: avoid !important;
+
+            thead {
+                display: table-header-group;
             }
-            tbody {
-                page-break-after: always;
+
+            tfoot {
+                display: table-footer-group;
             }
+
+            tr {
+                page-break-inside: avoid;
+                page-break-after: auto;
+            }
+
+            td,
+            th {
+                page-break-inside: avoid;
+            }
+        }
+
+        tbody {
+            page-break-after: auto;
         }
 
         @media (max-width: 1032px) {
@@ -185,7 +204,7 @@
 
         .mobile-footer {
             display: none;
-            
+
         }
 
         /* Exibe como footer fixo em telas pequenas */
