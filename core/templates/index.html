@@ -551,6 +551,21 @@
     </a>
 </div>
 
+<script>
+    document.getElementById('modalCadastrarUsuario').addEventListener('hidden.bs.modal', function () {
+    // Remove o estilo inline de overflow e padding-right do body
+    document.body.style.overflow = '';
+    document.body.style.paddingRight = '';
+
+    // Remove a classe modal-open do body (caso esteja presente)
+    document.body.classList.remove('modal-open');
+
+    // Remove qualquer backdrop que possa estar sobrando
+    document.querySelectorAll('.modal-backdrop').forEach(el => el.remove());
+});
+
+</script>
+
 {% if messages %}
 {% for message in messages %}
 {% if 'cadastro' in message.tags %}
