@@ -11,8 +11,24 @@ document.getElementById('print-pdf')?.addEventListener('click', e => {
 // Função para abrir o modal
 function abrirModalCadastro(e) {
     e.preventDefault();
+
+    // Remove qualquer backdrop já aberto (para evitar sobreposição)
+    const backdrop = document.querySelector('.modal-backdrop');
+    if (backdrop) {
+        backdrop.remove();
+        document.body.classList.remove('modal-open');
+        document.body.style.overflow = '';
+        document.body.style.paddingRight = '';
+    }
+
     const modalEl = document.getElementById('modalCadastrarUsuario');
-    const myModal = new bootstrap.Modal(modalEl);
+
+    // Verifica se já existe uma instância do modal criada
+    let myModal = bootstrap.Modal.getInstance(modalEl);
+    if (!myModal) {
+        myModal = new bootstrap.Modal(modalEl);
+    }
+
     myModal.show();
 
     // Máscara do CPF
