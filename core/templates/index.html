@@ -16,20 +16,22 @@
 
             <div class="d-flex flex-wrap align-items-center gap-2 ms-2">
                 <!-- Quantidade -->
-                <input type="number" name="quantidade" min="1" class="form-control input-quantidade" style="width: 38px; height: 38px;"
-                    value="{{ request.GET.quantidade }}" oninput="this.form.submit();">
+                <input type="number" name="quantidade" min="1" class="form-control input-quantidade"
+                    style="width: 38px; height: 38px;" value="{{ request.GET.quantidade }}"
+                    oninput="this.form.submit();">
                 <!-- Pesquisa -->
-                <input id="searchInput" type="search" name="search" class="form-control input-pesquisa" style="height: 38px; width: 200px;"
-                    placeholder="Pesquisar..." value="{{ request.GET.search }}">
+                <input id="searchInput" type="search" name="search" class="form-control input-pesquisa"
+                    style="height: 38px; width: 200px;" placeholder="Pesquisar..." value="{{ request.GET.search }}">
             </div>
 
-                <div class="d-flex align-items-center ms-2 me-2">
-                        <button type="button" class="btn btn-success rounded-2 d-flex align-items-center justify-content-center no-print" 
-                            style="width: 38px; height: 38px;" data-bs-toggle="modal" data-bs-target="#funcionarioModal"
-                            onclick="setCreateMode()" title="Novo funcionário">
-                            <i class="bi bi-person-plus fs-5"></i>
-                        </button>
-                </div>
+            <div class="d-flex align-items-center ms-2 me-2">
+                <button type="button"
+                    class="btn btn-success rounded-2 d-flex align-items-center justify-content-center no-print"
+                    style="width: 38px; height: 38px;" data-bs-toggle="modal" data-bs-target="#funcionarioModal"
+                    onclick="setCreateMode()" title="Novo funcionário">
+                    <i class="bi bi-person-plus fs-5"></i>
+                </button>
+            </div>
 
         </form>
     </div>
@@ -56,8 +58,9 @@
                     <td>{{ funcionario.obra }}</td>
                     <td class="text-center no-print">
                         <!-- Visualizar -->
-                        <button type="button" class="btn btn-sm btn-info text-white p-1" style="background-color: #78b7ff;"
-                            data-bs-toggle="modal" data-bs-target="#viewModal{{ funcionario.matricula }}">
+                        <button type="button" class="btn btn-sm btn-info text-white p-1"
+                            style="background-color: #78b7ff;" data-bs-toggle="modal"
+                            data-bs-target="#viewModal{{ funcionario.matricula }}">
                             <i class="bi bi-eye text-muted"></i>
                         </button>
 
@@ -128,7 +131,8 @@
                                         <p><strong>Status:</strong> {{ funcionario.get_status_display|default:"Não informado" }}</p>
                                         <p><strong>Obra:</strong> {{ funcionario.obra|default:"Não informado" }}</p>
                                         {% if funcionario.data_admissao %}
-                                        <p><strong>Data de Admissão:</strong> {{funcionario.data_admissao|date:"d/m/Y"}}</p>
+                                        <p><strong>Data de Admissão:</strong> {{funcionario.data_admissao|date:"d/m/Y"}}
+                                        </p>
                                         {% else %}
                                         <p><strong>Data de Admissão:</strong> Não informada</p>
                                         {% endif %}
@@ -149,7 +153,8 @@
                                     <div style="flex: 1; min-width: 100px;">
                                         <p><strong>Ordem de Serviço:</strong>
                                             {% if funcionario.ordem_servico %}
-                                            <a href="{{ funcionario.ordem_servico.url }}" target="_blank" class="no-print">
+                                            <a href="{{ funcionario.ordem_servico.url }}" target="_blank"
+                                                class="no-print">
                                                 <i class="bi bi-eye" style="font-size: 1.5rem;"></i>
                                             </a>
                                             {% else %}
@@ -158,7 +163,8 @@
                                         </p>
                                         <p><strong>Contrato de Trabalho:</strong>
                                             {% if funcionario.contrato_trabalho %}
-                                            <a href="{{ funcionario.contrato_trabalho.url }}" target="_blank" class="no-print">
+                                            <a href="{{ funcionario.contrato_trabalho.url }}" target="_blank"
+                                                class="no-print">
                                                 <i class="bi bi-eye" style="font-size: 1.5rem;"></i>
                                             </a>
                                             {% else %}
@@ -182,45 +188,46 @@
                                     </div>
                                 </div>
                                 <div class="modal-footer">
+                                    <button id="btnDownload{{ funcionario.matricula }}"
+                                        class="btn btn-secondary no-print">Baixar Info</button>
                                     <button class="btn btn-secondary no-print" data-bs-dismiss="modal">Fechar</button>
                                 </div>
                             </div>
                         </div>
                     </div>
-
-                    <!-- Modal de Deleção (dentro do for) -->
-                    <div class="modal fade" id="deleteModal{{ funcionario.matricula }}" tabindex="-1"
-                        aria-labelledby="deleteModalLabel{{ funcionario.matricula }}" aria-hidden="true">
-                        <div class="modal-dialog modal-md">
-                            <div class="modal-content">
-                                <div class="modal-header bg-danger text-white">
-                                    <h5 class="modal-title" id="deleteModalLabel{{ funcionario.matricula }}">Confirmar
-                                        Exclusão</h5>
-                                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
-                                        aria-label="Fechar"></button>
-                                </div>
-                                <div class="modal-body">
-                                    Tem certeza que deseja excluir o funcionário <strong>{{ funcionario.nome}}</strong>?
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary no-print"
-                                        data-bs-dismiss="modal">Cancelar</button>
-                                    <a href="{% url 'delete' funcionario.matricula %}"
-                                        class="btn btn-danger no-print">Excluir</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                </tr>
-                {% empty %}
-                <tr>
-                    <td colspan="5" class="text-center">Nenhum funcionário cadastrado.</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
     </div>
+
+    <!-- Modal de Deleção (dentro do for) -->
+    <div class="modal fade" id="deleteModal{{ funcionario.matricula }}" tabindex="-1"
+        aria-labelledby="deleteModalLabel{{ funcionario.matricula }}" aria-hidden="true">
+        <div class="modal-dialog modal-md">
+            <div class="modal-content">
+                <div class="modal-header bg-danger text-white">
+                    <h5 class="modal-title" id="deleteModalLabel{{ funcionario.matricula }}">Confirmar
+                        Exclusão</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                        aria-label="Fechar"></button>
+                </div>
+                <div class="modal-body">
+                    Tem certeza que deseja excluir o funcionário <strong>{{ funcionario.nome}}</strong>?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary no-print" data-bs-dismiss="modal">Cancelar</button>
+                    <a href="{% url 'delete' funcionario.matricula %}" class="btn btn-danger no-print">Excluir</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    </tr>
+    {% empty %}
+    <tr>
+        <td colspan="5" class="text-center">Nenhum funcionário cadastrado.</td>
+    </tr>
+    {% endfor %}
+    </tbody>
+    </table>
+</div>
 </div>
 
 <form method="post" id="funcionarioForm" enctype="multipart/form-data" autocomplete="off">
